@@ -1,0 +1,23 @@
+{
+    "name": "des-api",
+    "version": "1.0.0",
+    "description": "Digital Evaluation System API",
+    "license": "MIT",
+    "scripts": {
+        "start": "nodemon ./server.js"
+    },
+    "dependencies": {
+        "body-parser": "^1.18.3",
+        "cors": "^2.8.4",
+        "express": "^4.16.3",
+        "express-jwt": "^5.3.1",
+        "jsonwebtoken": "^8.2.2",
+        "rootpath": "^0.1.2",
+        "mongodb": "^3.3.2",
+        "mongoskin": "^2.1.0",
+        "q": "^1.4.1"
+    },
+    "devDependencies": {
+        "nodemon": "^1.17.5"
+    }
+}
