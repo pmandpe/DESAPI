@@ -1,5 +1,5 @@
 ﻿{
-    "secret": "THIS IS USED TO SIGN AND VERIFY JWT TOKENS, REPLACE IT WITH YOUR OWN SECRET, IT CAN BE ANY STRING",
+    "secret": "LP1234",
     "db_user" :"pmandpe" ,
     "pwd" :"abcd1234",
     "database":"desdb"

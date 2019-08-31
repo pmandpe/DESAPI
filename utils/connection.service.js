@@ -5,10 +5,11 @@ var Q = require('q') ;
 
 service.getConnection = getConnection ; 
 service.getDocuments = getDocuments ;
+service.addDocuments = addDocuments ;
 
 module.exports = service
 
-function getConnection(){
+async function getConnection(){
 
     let url = 'mongodb://'
     var deferred = Q.defer() ; 
@@ -49,13 +50,9 @@ function getConnection(){
 
         }
 
-
-
-
-
     })
 
-
+    return deferred.promise ;
 }
 
 function closeConnection(db){
@@ -72,17 +69,28 @@ function closeConnection(db){
 }
 
 
-function getDocuments(query, collectionName){
-    this.getConnection().then(function(connectionObject){
-        var collection = connectionObject.collection(collectionName) ;
-        collection.find({}).toArray(function(err, docs) {
-            assert.equal(err, null);
-            console.log("Found the following records");
-            console.log(docs)
-            callback(docs);
-          });
+async function getDocuments(query, collectionName){
+    var connectionObject = await this.getConnection() ;
+    var collection = connectionObject.db(config.database).collection(collectionName) ;
+    var docs = await collection.find(query).toArray() ;
+    return docs ; 
         
         
-    })
+}
 
+
+async function addDocuments(query, collectionName){
+    
+    try{
+        var connectionObject = await this.getConnection() ;
+        var collection = connectionObject.db(config.database).collection(collectionName) ;
+        var docs = await collection.insertOne(query) ;
+        return 1 ; 
+    }
+    catch (err){
+        console.log("Error occured in inserting : "+ err) ;
+    }
+    return -1 ; 
+        
+        
 }

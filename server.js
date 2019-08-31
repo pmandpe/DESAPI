@@ -15,6 +15,11 @@ app.use(jwt());
 
 // api routes
 app.use('/users', require('./users/users.controller'));
+app.use('/api/v1/master', require('./api/master.controller'));
+app.use('/api/v1/lookup', require('./api/lookup.controller'));
+
+
+//app.use('/api/v1', (req, res) => res.send('Hello World!')) ;
 
 // global error handler
 app.use(errorHandler);
