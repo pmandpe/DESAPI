@@ -1,0 +1,13 @@
+/* You can add global styles to this file, and also import other style files */
+    /* padding: 4rem 2rem; */
+    /* width: 500px; */
+  .loginbox  {
+    margin: auto;
+    margin-top: 101px;
+    border: 1px solid #d0d0d0;
+    padding: 35px;
+    }
+
+    body{
+        background-color:#fafeff;
+    }
