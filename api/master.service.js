@@ -22,6 +22,16 @@ async function addSubject(subject) {
 }
 
 
+async function getAllSubjects() {
+
+    var query = {
+        
+    };
+
+    var subjects  = await connectionService.getDocuments(query, "subjectCollection");
+    return subjects ; 
+}
+
 
 
 
