@@ -6,6 +6,8 @@ var Q = require('q') ;
 service.getConnection = getConnection ; 
 service.getDocuments = getDocuments ;
 service.addDocuments = addDocuments ;
+service.upsertDocument = upsertDocument ; 
+service.updateDocument = updateDocument ; 
 
 module.exports = service
 
@@ -89,6 +91,42 @@ async function addDocuments(query, collectionName){
     }
     catch (err){
         console.log("Error occured in inserting : "+ err) ;
+        return err.code ; 
+    }
+    return -1 ; 
+        
+        
+}
+
+
+async function upsertDocument(uniqueIdQuery, setQuery, collectionName){
+    
+    try{
+        var connectionObject = await this.getConnection() ;
+        var collection = connectionObject.db(config.database).collection(collectionName) ;
+        var docs = await collection.updateOne(uniqueIdQuery, setQuery, {upsert:true}) ;
+        return 1 ; 
+    }
+    catch (err){
+        console.log("Error occured in inserting : "+ err) ;
+        return err.code ; 
+    }
+    return -1 ; 
+        
+        
+}
+
+async function updateDocument(whereClause, setQuery, collectionName){
+    
+    try{
+        var connectionObject = await this.getConnection() ;
+        var collection = connectionObject.db(config.database).collection(collectionName) ;
+        var docs = await collection.updateOne(whereClause, setQuery) ;
+        return 1 ; 
+    }
+    catch (err){
+        console.log("Error occured in inserting : "+ err) ;
+        return err.code ; 
     }
     return -1 ; 
         

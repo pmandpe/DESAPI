@@ -6,19 +6,33 @@ var Q = require('q');
 const users = [{ id: 1, username: 'test', password: 'test', firstName: 'Test', lastName: 'User' }];
 
 module.exports = {
-    addSubject,
-    getAll
+    saveSubject,
+    getAllSubjects,
+    getSubjectDetails
 };
 
-async function addSubject(subject) {
-
-    var query = {
-        "subjectcode": subject.subjectcode,
-        "subjectname": subject.subjectname
+async function saveSubject(subject) {
+    var uniqueIdQuery = {"subjectcode": subject.subjectcode}
+    var addDoc =  {
+        
+        "subjectname": subject.subjectname,
+        "subjectclass": subject.subjectclass,
+        "examyear": subject.examyear,
+    }
+    var updateCount = 0 ;
+    var setQuery = {
+        $set: addDoc     
     };
-
-    var insertedCount = await connectionService.addDocuments(query, "subjectCollection");
-    return { "insertCount": insertedCount };
+    if (subject.editmode == 'NEW'){
+        addDoc.subjectcode = subject.subjectcode ;
+        updateCount = await connectionService.addDocuments(addDoc, "subjectCollection");
+    }
+    if (subject.editmode == 'EDIT'){
+        updateCount = await connectionService.updateDocument(uniqueIdQuery, setQuery,  "subjectCollection");
+    }
+    if (updateCount == 11000) {//its a duplicate error
+        return { "updateCount": updateCount, "error" : "This subject code already exist. Please try a different one." };
+    }
 }
 
 
@@ -30,6 +44,17 @@ async function getAllSubjects() {
 
     var subjects  = await connectionService.getDocuments(query, "subjectCollection");
     return subjects ; 
+}
+
+
+async function getSubjectDetails(subjectcode) {
+
+    var query = {
+        "subjectcode" : subjectcode 
+    };
+
+    var subject  = await connectionService.getDocuments(query, "subjectCollection");
+    return subject ; 
 }
 
 
