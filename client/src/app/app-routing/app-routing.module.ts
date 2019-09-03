@@ -7,6 +7,7 @@ import { AuthGuard } from 'app/guards';
 import { Role } from 'app/models/Role';
 import { AdminDashboardComponent } from 'app/admin-dashboard/admin-dashboard.component';
 import { SubjectComponent } from 'app/master/subject/subject.component';
+import { EditSubjectComponent } from 'app/master/edit-subject/edit-subject.component';
 
 
 
@@ -28,6 +29,10 @@ const routes: Routes = [
       {
         path: 'subject',
         component: SubjectComponent
+      },
+      {
+        path: 'edit-subject/:mode/:subjectcode',
+        component: EditSubjectComponent
       }
     ]
   }

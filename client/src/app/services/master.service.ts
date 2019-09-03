@@ -26,7 +26,22 @@ export class MasterService {
                 return res ; 
             }))
 
+    }
+    getSubjectDetails(subjectcode) {
+        return this.http.post<any>(environment.apiURL + `/api/v1/master/subject/getdetails`, {"subjectcode" : subjectcode})
+            .pipe(map((res: Response) => {
 
+                
+                return res ; 
+            }))
+
+    }
+    saveSubject(formData) {
+        return this.http.post<any>(environment.apiURL + `/api/v1/master/subject/save`, formData)
+            .pipe(map((res: Response) => {
+                console.log(JSON.stringify(res));
+                return res ; 
+            }))
 
     }
 

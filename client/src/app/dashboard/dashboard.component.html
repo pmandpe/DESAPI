@@ -4,16 +4,16 @@
       <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" [routerLink]="['./subject']">
-              Subject Master</a>
+            Main Menu
           </h4>
         </div>
         <div id="collapse1" class="panel-collapse collapse in">
           <ul class="list-group">
             <li class="list-group-item">
-              <span class="badge"></span> Create New Exam</li>
+              <span class="badge"></span><a data-toggle="collapse" data-parent="#accordion" [routerLink]="['./subject']">
+                Manage Subjects</a></li>
             <li class="list-group-item">
-              <span class="badge">17</span> Manage Users</li>
+              <span class="badge">17</span> Manage Exams</li>
             <li class="list-group-item">
               <span class="badge">3</span> Reports</li>
           </ul>

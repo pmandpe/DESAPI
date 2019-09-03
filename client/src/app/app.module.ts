@@ -16,6 +16,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ErrorInterceptor, JwtInterceptor } from 'app/helpers';
 import { AdminDashboardComponent } from 'app/admin-dashboard/admin-dashboard.component';
 import { SubjectComponent } from 'app/master/subject/subject.component';
+import { EditSubjectComponent } from 'app/master/edit-subject/edit-subject.component';
 const appRoutes: Routes = [
   {
     path: 'login',
@@ -39,7 +40,8 @@ const appRoutes: Routes = [
     AlertComponent,
     DashboardComponent,
     AdminDashboardComponent,
-    SubjectComponent
+    SubjectComponent,
+    EditSubjectComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,61 @@
+<div class="row">
+  <div class="col-lg-6 col-sm-6 col-md-6">
+    <h3>Add / Edit Subject</h3>
+  </div>
+  <div class="col-lg-6 col-sm-6 col-md-6" style="text-align:right">
+    <a [routerLink]="['../subject']" class="btn primary"> Back </a>
+  </div>
+</div>
+
+
+<div class="">
+  <form [formGroup]="subjectForm" (ngSubmit)="saveSubject()" class="form-login">
+    <div class="form-group">
+      <label for="subjectcode">Subject Code</label>
+      <input type="text" formControlName="subjectcode" class="form-control" [readonly]="disableSubjectCode" [ngClass]="{ 'is-invalid': submitted && f.subjectcode.errors }"
+      />
+      <div *ngIf="submitted && f.subjectcode.errors" class="invalid-feedback">
+        <div *ngIf="f.subjectcode.errors.required">Subject Code is required</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="subjectname">Subject Name</label>
+      <input type="input" formControlName="subjectname" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.subjectname.errors }"
+      />
+      <div *ngIf="submitted && f.subjectname.errors" class="invalid-feedback">
+        <div *ngIf="f.subjectname.errors.required">Subject Name is required</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="subjectclass">Class</label>
+      <input type="input" formControlName="subjectclass" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.subjectclass.errors }"
+      />
+      <div *ngIf="submitted && f.subjectclass.errors" class="invalid-feedback">
+        <div *ngIf="f.subjectclass.errors.required">Class Name is required</div>
+      </div>
+    </div>
+  
+    <div class="form-group">
+        <label for="examyear">Examination Year</label>
+        <input type="input" formControlName="examyear" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.examyear.errors }"
+        />
+        <div *ngIf="submitted && f.examyear.errors" class="invalid-feedback">
+          <div *ngIf="f.examyear.errors.required">Examination Year is required</div>
+        </div>
+      </div>
+      <div class="form-group">
+      <input type="hidden" formControlName="editmode" [(ngModel)]= "mode"/>
+         
+    </div>
+
+    <div class="form-group">
+      <button [disabled]="loading" class="btn btn-primary">Save Subject</button>
+      <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+      />
+
+
+    </div>
+
+  </form>
+
+</div>

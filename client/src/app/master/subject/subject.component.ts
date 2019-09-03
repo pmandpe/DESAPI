@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MasterService } from 'app/services/master.service';
 import { AlertService } from 'app/services';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-subject',
@@ -9,7 +10,8 @@ import { AlertService } from 'app/services';
 })
 export class SubjectComponent implements OnInit {
   Subjects: any ;
-  constructor(private masterService: MasterService, private alertService: AlertService) {   }
+  
+  constructor(private router : Router, private masterService: MasterService, private alertService: AlertService) {   }
  
   ngOnInit() {
   
@@ -20,11 +22,13 @@ export class SubjectComponent implements OnInit {
                 data => {
                     console.log(JSON.stringify(data)) ;
                     this.Subjects = data ; 
+                 
                 },
                 error => {
                     this.alertService.error(error);
                     
                 });
   }
+
 
 }
