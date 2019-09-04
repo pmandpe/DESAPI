@@ -8,6 +8,7 @@ import { Role } from '../models/Role';
 import { AdminDashboardComponent } from '../admin-dashboard/admin-dashboard.component';
 import { SubjectComponent } from '../master/subject/subject.component';
 import { EditSubjectComponent } from '../master/edit-subject/edit-subject.component';
+import { ExamListComponent } from 'app/administrator/exams/exam-list/exam-list.component';
 
 
 
@@ -33,7 +34,11 @@ const routes: Routes = [
       {
         path: 'edit-subject/:mode/:subjectcode',
         component: EditSubjectComponent
-      }
+      },
+    {
+      path: 'exams',
+      component: ExamListComponent
+    },
     ]
   }
 ];

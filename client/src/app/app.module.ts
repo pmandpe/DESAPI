@@ -17,6 +17,8 @@ import { ErrorInterceptor, JwtInterceptor } from './helpers';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { SubjectComponent } from './master/subject/subject.component';
 import { EditSubjectComponent } from './master/edit-subject/edit-subject.component';
+import { ExamListComponent } from './administrator/exams/exam-list/exam-list.component';
+import { ExamDetailsComponent } from './administrator/exams/exam-details/exam-details.component';
 const appRoutes: Routes = [
   {
     path: 'login',
@@ -41,7 +43,9 @@ const appRoutes: Routes = [
     DashboardComponent,
     AdminDashboardComponent,
     SubjectComponent,
-    EditSubjectComponent
+    EditSubjectComponent,
+    ExamListComponent,
+    ExamDetailsComponent
   ],
   imports: [
     BrowserModule,

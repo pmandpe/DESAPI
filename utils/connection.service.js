@@ -72,11 +72,16 @@ function closeConnection(db){
 
 
 async function getDocuments(query, collectionName){
+    try{
     var connectionObject = await this.getConnection() ;
     var collection = connectionObject.db(config.database).collection(collectionName) ;
     var docs = await collection.find(query).toArray() ;
     return docs ; 
-        
+    }
+    catch(err){
+        console.log("Error in connecting database : " + err)
+    }
+    return null ;
         
 }
 

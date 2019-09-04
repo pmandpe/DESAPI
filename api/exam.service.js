@@ -54,19 +54,19 @@ async function getAllExams() {
 
     };
 
-    var subjects = await connectionService.getDocuments(query, "subjectCollection");
-    return subjects;
+    var exams = await connectionService.getDocuments(query, "examCollection");
+    return exams;
 }
 
 
-async function getExamDetails(subjectcode) {
+async function getExamDetails(examcode) {
 
     var query = {
-        "subjectcode": subjectcode
+        "examcode": examcode
     };
 
-    var subject = await connectionService.getDocuments(query, "subjectCollection");
-    return subject;
+    var examDetails = await connectionService.getDocuments(query, "examCollection");
+    return examDetails;
 }
 
 

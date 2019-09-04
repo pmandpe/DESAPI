@@ -16,8 +16,8 @@ module.exports = router;
 
 async function getExams(req, res, next) {
     //var subjects = await lookupService.getAllSubjects() ;
-    
-    res.json(username) ;
+    var exams = await examService.getAllExams() ;
+    res.json(exams) ;
 }
 
 

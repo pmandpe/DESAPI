@@ -3,13 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Subjects } from '../models/subjects';
-import { environment } from 'environments/environment';
-
+import { environment } from '../../environments/environment';
 
 
 
 @Injectable({ providedIn: 'root' })
-export class MasterService {
+export class ExamService {
 
 
     constructor(private http: HttpClient) {
@@ -18,16 +17,14 @@ export class MasterService {
 
 
 
-    getSubjects() {
-        return this.http.post<any>(environment.apiURL + `/api/v1/master/subject/get`, {})
+    getExams() {
+        return this.http.post<any>(environment.apiURL + `/api/v1/exams/get`, {})
             .pipe(map((res: Response) => {
-
-                console.log(JSON.stringify(res));
                 return res ; 
             }))
 
     }
-    getSubjectDetails(subjectcode) {
+    getExamDetails(subjectcode) {
         return this.http.post<any>(environment.apiURL + `/api/v1/master/subject/getdetails`, {"subjectcode" : subjectcode})
             .pipe(map((res: Response) => {
 
@@ -45,6 +42,5 @@ export class MasterService {
 
     }
 
-    
 
 }

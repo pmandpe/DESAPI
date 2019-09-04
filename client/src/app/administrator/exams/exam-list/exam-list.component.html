@@ -1,0 +1,33 @@
+<div>
+    <a [routerLink]="['../edit-exam', 'NEW', '0']">Add New Exam</a>
+  </div>
+  <br>
+  <table class="table table table-hover table-striped">
+      <thead>
+        <tr>
+          <th>Subject Code</th>
+          <th>Exam Name</th>
+          <th>Exam Date</th>
+          <th>Examination Year</th>
+          <th>Number of Copies</th>
+          <th>Scanned Copies</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr  *ngFor="let exam of Exams">
+          
+          <td>{{exam.subjectcode}}</td>
+          <td>{{exam.examname}}</td>
+          <td>{{exam.examdate}}</td>
+          <td>{{exam.examyear}}</td>
+          <td>{{exam.numberofcopies}}</td>
+          <td>{{exam.scannedcopies}}</td>
+          <td> <a [routerLink]="['../edit-exam', 'EDIT', exam.examcode]">Edit Exam</a></td>
+          
+         
+         
+          
+        </tr>
+      </tbody>
+    </table>
