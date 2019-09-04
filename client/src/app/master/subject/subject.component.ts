@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MasterService } from 'app/services/master.service';
-import { AlertService } from 'app/services';
+import { MasterService } from '../../services/master.service';
+import { AlertService } from '../../services';
 import { Router } from '@angular/router';
 
 @Component({

@@ -10,13 +10,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { LoginComponent } from './login/login.component';
 import { MyMaterialModule } from  './material.module';
-import { AlertComponent } from 'app/components';
+import { AlertComponent } from './components';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
-import { ErrorInterceptor, JwtInterceptor } from 'app/helpers';
-import { AdminDashboardComponent } from 'app/admin-dashboard/admin-dashboard.component';
-import { SubjectComponent } from 'app/master/subject/subject.component';
-import { EditSubjectComponent } from 'app/master/edit-subject/edit-subject.component';
+import { ErrorInterceptor, JwtInterceptor } from './helpers';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { SubjectComponent } from './master/subject/subject.component';
+import { EditSubjectComponent } from './master/edit-subject/edit-subject.component';
 const appRoutes: Routes = [
   {
     path: 'login',

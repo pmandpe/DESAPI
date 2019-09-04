@@ -3,8 +3,8 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router';
 import { get } from 'http';
 import { first } from 'rxjs/operators';
-import { MasterService } from 'app/services/master.service';
-import { AlertService } from 'app/services';
+import { MasterService } from '../../services/master.service';
+import { AlertService } from '../../services';
 
 @Component({
   selector: 'app-edit-subject',
