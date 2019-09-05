@@ -9,6 +9,7 @@ import { AdminDashboardComponent } from '../admin-dashboard/admin-dashboard.comp
 import { SubjectComponent } from '../master/subject/subject.component';
 import { EditSubjectComponent } from '../master/edit-subject/edit-subject.component';
 import { ExamListComponent } from 'app/administrator/exams/exam-list/exam-list.component';
+import { ExamDetailsComponent } from 'app/administrator/exams/exam-details/exam-details.component';
 
 
 
@@ -39,6 +40,10 @@ const routes: Routes = [
       path: 'exams',
       component: ExamListComponent
     },
+    {
+      path: 'edit-exam/:mode/:examcode',
+      component: ExamDetailsComponent
+    }
     ]
   }
 ];

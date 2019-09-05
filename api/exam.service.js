@@ -26,7 +26,7 @@ async function saveExam(exam, userid) {
         "scannedcopies": exam.scannedcopies,
         "modified_date": new Date(),
         "modified_by": userid,
-        "comment": exam.comments
+        "comments": exam.comments
     }
     var updateCount = 0;
     var setQuery = {
@@ -81,6 +81,6 @@ async function getAll() {
 
 function getUniqueCode(examname){
     var exName = examname.replace(/\s/g, "") ;
-    var prefix = exName.substring(0,3)
+    var prefix = (exName.substring(0,3)).toUpperCase() ; 
     return prefix + "-" + utilities.generateUniqueCode() ;
 }

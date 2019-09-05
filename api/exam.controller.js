@@ -10,7 +10,7 @@ const Role = require('_helpers/roles');
 // routes
 router.post('/get', authorize(Role.Admin), getExams);
 router.post('/save', authorize(Role.Admin), saveExams);
-// /router.post('/details',getExamsDetails);
+router.post('/details',getExamsDetails);
 
 module.exports = router;
 
@@ -27,3 +27,11 @@ async function saveExams(req, res, next) {
     var returValue = await examService.saveExam(req.body, username) ;
     res.json(returValue) ;
 }
+
+
+async function getExamsDetails(req, res, next) {
+    var examdetails = await examService.getExamDetails(req.body.examcode);
+    
+    res.json(examdetails) ;
+}
+

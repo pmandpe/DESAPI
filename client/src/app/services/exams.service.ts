@@ -24,8 +24,8 @@ export class ExamService {
             }))
 
     }
-    getExamDetails(subjectcode) {
-        return this.http.post<any>(environment.apiURL + `/api/v1/master/subject/getdetails`, {"subjectcode" : subjectcode})
+    getExamDetails(examcode) {
+        return this.http.post<any>(environment.apiURL + `/api/v1/exams/details`, {"examcode" : examcode})
             .pipe(map((res: Response) => {
 
                 
@@ -33,8 +33,8 @@ export class ExamService {
             }))
 
     }
-    saveSubject(formData) {
-        return this.http.post<any>(environment.apiURL + `/api/v1/master/subject/save`, formData)
+    saveExam(formData) {
+        return this.http.post<any>(environment.apiURL + `/api/v1/exams/save`, formData)
             .pipe(map((res: Response) => {
                 console.log(JSON.stringify(res));
                 return res ; 
