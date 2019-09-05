@@ -13,6 +13,8 @@ import { ExamDetailsComponent } from 'app/administrator/exams/exam-details/exam-
 
 
 
+
+
 const routes: Routes = [
   {
       path: 'login',

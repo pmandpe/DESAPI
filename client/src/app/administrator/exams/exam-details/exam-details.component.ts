@@ -6,6 +6,8 @@ import { first } from 'rxjs/operators';
 import { MasterService } from '../../../services/master.service';
 import { AlertService } from '../../../services';
 import { ExamService } from 'app/services/exams.service';
+import { UtilService } from 'app/services/utilities.service';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-exam-details',
@@ -22,11 +24,14 @@ export class ExamDetailsComponent implements OnInit {
   examdetails: any;
   disableSubjectCode = false;
   showUniqueCode = false ; 
+  closeResult: string;
   constructor(private formBuilder: FormBuilder,
+    private modalService: NgbModal,
     private route: ActivatedRoute,
     private router: Router,
     private examService: ExamService,
     private alertService: AlertService,
+    private utilService : UtilService,
     private _Activatedroute: ActivatedRoute) { }
 
   ngOnInit() {
@@ -39,6 +44,7 @@ export class ExamDetailsComponent implements OnInit {
       resultdate: ['', Validators.required],
       numberofcopies:['', Validators.required],
       comments: new FormControl(""),
+      assignedforscanning: new FormControl(0),
       editmode: new FormControl("")
 
     });
@@ -57,11 +63,15 @@ export class ExamDetailsComponent implements OnInit {
         data => {
 
           this.examdetails = data[0];
+          var exDate = this.utilService.getBrokenDate(this.examdetails.examdate) ;
+          var reDate = this.utilService.getBrokenDate(this.examdetails.resultdate) ;
+          console.log(JSON.stringify(exDate));
           this.examForm.patchValue({ examname: this.examdetails.examname });
           this.examForm.patchValue({ subjectcode: this.examdetails.subjectcode });
-          this.examForm.patchValue({ examdate: this.examdetails.examdate });
+          this.examForm.patchValue({ examdate: exDate });
           this.examForm.patchValue({ numberofcopies: this.examdetails.numberofcopies });
-          this.examForm.patchValue({ resultdate: this.examdetails.resultdate });
+          this.examForm.patchValue({ assignedforscanning: this.examdetails.assignedforscanning });
+          this.examForm.patchValue({ resultdate: reDate });
           this.examForm.patchValue({ comments: this.examdetails.comments });
 
 
@@ -86,7 +96,6 @@ export class ExamDetailsComponent implements OnInit {
     if (this.examForm.invalid) {
       return;
     }
-    console.log("--------------"+ JSON.stringify(this.examForm.value)) ;
      this.loading = true;
      var params = this.examForm.value ; 
      var resultdateValue = this.examForm.value.resultdate.year.toString().padStart(2, '0') + "-" + this.examForm.value.resultdate.month.toString().padStart(2, '0') + "-" + this.examForm.value.resultdate.day.toString().padStart(2, '0') ;
@@ -108,8 +117,37 @@ export class ExamDetailsComponent implements OnInit {
       });
   }
   
-
+  
 
     // convenience getter for easy access to form fields
     get f() { return this.examForm.controls; }
+
+
+
+    open(content) {
+      this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+        this.closeResult = `Closed with: ${result}`;
+      }, (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      });
+    }
+  
+    private getDismissReason(reason: any): string {
+      if (reason === ModalDismissReasons.ESC) {
+        return 'by pressing ESC';
+      } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+        return 'by clicking on a backdrop';
+      } else {
+        return  `with: ${reason}`;
+      }
+    }
+
+
+
+
+
+
+
+
+
 }

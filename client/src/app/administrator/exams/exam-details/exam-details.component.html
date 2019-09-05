@@ -13,21 +13,27 @@
 <div class="">
     <form [formGroup]="examForm" (ngSubmit)="saveExam()" class="form-login">
         <div class="row">
-            <div class="col-lg-3 col-sm-6 col-md-3">
+            <div class="col-lg-6 col-sm-6 col-md-6">
                 <div class="form-group">
+
+
+
+
+
                     <label for="subjectcode">Subject Code</label>
-                    <input type="text" formControlName="subjectcode" class="form-control" [readonly]="disableSubjectCode" [ngClass]="{ 'is-invalid': submitted && f.subjectcode.errors }"
-                    />
+                    <input type="text" formControlName="subjectcode" class="form-control"
+                        [readonly]="disableSubjectCode"
+                        [ngClass]="{ 'is-invalid': submitted && f.subjectcode.errors }" />
                     <div *ngIf="submitted && f.subjectcode.errors" class="invalid-feedback">
                         <div *ngIf="f.subjectcode.errors.required">Subject Code is required</div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3 col-sm-6 col-md-3">
+            <div class="col-lg-6 col-sm-6 col-md-6">
                 <div class="form-group">
                     <label for="subjectname">Exam Name</label>
-                    <input type="input" formControlName="examname" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.examname.errors }"
-                    />
+                    <input type="input" formControlName="examname" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.examname.errors }" />
                     <div *ngIf="submitted && f.examname.errors" class="invalid-feedback">
                         <div *ngIf="f.examname.errors.required">Exam Name is required</div>
                     </div>
@@ -35,71 +41,149 @@
             </div>
         </div>
         <div class="form-group">
-
-            <div class="input-group">
+            <div>
                 <div class="row">
-                    <div class="col-lg-3 col-sm-6 col-md-3">
-                        <div>
-                            <label for="examdate">Exam Date</label>
+                    <div class="col-lg-6 col-sm-6 col-md-6">
+
+                        <label for="examdate">Exam Date</label>
+                        <div class="input-group">
+                            <input id="examdate" formControlName="examdate" class="form-control"
+                                placeholder="yyyy-mm-dd" name="dpexamdate" ngbDatepicker #dp="ngbDatepicker">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()"
+                                    type="button"></button>
+                            </div>
                         </div>
-                        <div>
-                            <input class="form-control" placeholder="yyyy-mm-dd" name="dpexamdate" formControlName="examdate" ngbDatepicker #d="ngbDatepicker"
-                                style="width:92%">
-                            <button class="input-group-addon" (click)="d.toggle()" type="button">
-                                <img src="img/calendar-icon.svg" style="width: 1.3rem; height: 2rem; cursor: pointer;" />
-                            </button>
-                        </div>
+
                         <div *ngIf="submitted && f.examdate.errors">
                             <div *ngIf="f.examdate.errors.required" class="error">Exam Date is required</div>
                         </div>
 
+
                     </div>
 
-                    <div class="col-lg-3 col-sm-6 col-md-3">
-                        <div>
-                            <label for="resultdate">Result Date</label>
+                    <div class="col-lg-6 col-sm-6 col-md-6">
+
+
+                        <label for="resultdate">Result Date</label>
+                        <div class="input-group">
+                            <input id="resultdate" formControlName="resultdate" class="form-control"
+                                placeholder="yyyy-mm-dd" name="dpresultdate" ngbDatepicker #dp="ngbDatepicker">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()"
+                                    type="button"></button>
+                            </div>
                         </div>
-                        <div>
-                            <input class="form-control" placeholder="yyyy-mm-dd" name="dpresultdate" formControlName="resultdate" ngbDatepicker #e="ngbDatepicker"
-                                style="width:92%">
-                            <button class="input-group-addon" (click)="e.toggle()" type="button">
-                                <img src="img/calendar-icon.svg" style="width: 1.3rem; height: 2rem; cursor: pointer;" />
-                            </button>
-                        </div>
+
                         <div *ngIf="submitted && f.resultdate.errors">
                             <div *ngIf="f.resultdate.errors.required" class="error">Result Date is required</div>
                         </div>
+
+
+
                     </div>
-
-
-
                 </div>
-
-
-
             </div>
-
-
-
         </div>
+
 
 
         <div class="form-group">
-            <label for="examyear">Number of Copies</label>
-            <input type="number" formControlName="numberofcopies" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.numberofcopies.errors }"
-            />
-            <div *ngIf="submitted && f.numberofcopies.errors" class="invalid-feedback">
-                <div *ngIf="f.numberofcopies.errors.required">Number of Copies Required</div>
+            <div>
+                <div class="row">
+                    <div class="col-lg-6 col-sm-6 col-md-6">
+
+
+                        <div>
+                            <label for="numberofcopies">Total Copies</label>
+                        </div>
+                        <div>
+                            <div class="input-group">
+                                <input type="number" formControlName="numberofcopies" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && f.numberofcopies.errors }" />
+                                <div *ngIf="submitted && f.numberofcopies.errors">
+                                    <div *ngIf="f.resultdate.errors.required" class="error">Result Date is required
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+                    <div class="col-lg-6 col-sm-6 col-md-6">
+
+
+                        <label for="resultdate">Result Date</label>
+                        <div class="input-group">
+                            <input id="resultdate" formControlName="resultdate" class="form-control"
+                                placeholder="yyyy-mm-dd" name="dpresultdate" ngbDatepicker #dp="ngbDatepicker">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()"
+                                    type="button"></button>
+                            </div>
+                        </div>
+
+                        <div *ngIf="submitted && f.resultdate.errors">
+                            <div *ngIf="f.resultdate.errors.required" class="error">Result Date is required</div>
+                        </div>
+
+
+
+                    </div>
+                </div>
             </div>
         </div>
+
+
+
+
+
+        <div class="form-group">
+            <div class="input-group">
+                <div class="row">
+                    <div class="col-lg-6 col-sm-6 col-md-6">
+                        <div>
+                            <label for="numberofcopies">Total Copies</label>
+                        </div>
+                        <div>
+                            <input type="number" formControlName="numberofcopies" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.numberofcopies.errors }" />
+                            <div *ngIf="submitted && f.numberofcopies.errors">
+                                <div *ngIf="f.resultdate.errors.required" class="error">Result Date is required</div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                    <div class="col-lg-6 col-sm-6 col-md-6">
+                        <div>
+                            <label for="resultdate">Assigned For Scanning</label>
+                        </div>
+                        <div>
+                            <input type="number" [readonly]="true" formControlName="assignedforscanning"
+                                class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.assignedforscanning.errors }" />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <div class="form-group">
             <input type="hidden" formControlName="editmode" [(ngModel)]="mode" />
         </div>
 
         <div class="form-group">
             <label for="examyear">Comments</label>
-            <input type="input" formControlName="comments" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.comments.errors }"
-            />
+            <input type="input" formControlName="comments" class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && f.comments.errors }" />
         </div>
 
         <div class="form-group">
@@ -108,12 +192,41 @@
 
         <div class="form-group">
             <button [disabled]="loading" class="btn btn-primary">Save Exam</button>
-            <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
-            />
+            <img *ngIf="loading"
+                src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
 
 
         </div>
 
-    </form>
 
+
+
+
+    </form>
 </div>
+
+
+
+<ng-template #testcontent let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        Test
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+    </div>
+</ng-template>
+
+
+
+<span style="float:right"> <button class="btn btn-lg btn-outline-primary" (click)="open(testcontent)">Assign For
+        Scanning</button>
+
+</span>
+
+<div>{{closeResult}}</div>

@@ -20,6 +20,7 @@ import { EditSubjectComponent } from './master/edit-subject/edit-subject.compone
 import { ExamListComponent } from './administrator/exams/exam-list/exam-list.component';
 import { ExamDetailsComponent } from './administrator/exams/exam-details/exam-details.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
 const appRoutes: Routes = [
   {
     path: 'login',
@@ -60,6 +61,7 @@ const appRoutes: Routes = [
     NgbModule
 
   ],
+
   
   providers: [
 

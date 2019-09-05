@@ -1,0 +1,6 @@
+﻿{
+    "secret": "LP1234",
+    "db_user" :"pmandpe" ,
+    "pwd" :"abcd1234",
+    "database":"desdb"
+}
