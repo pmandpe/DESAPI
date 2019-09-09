@@ -22,8 +22,8 @@ async function getConnection() {
 
 
     //const uri = "mongodb+srv://"+config.db_user+":"+config.pwd+"@cluster0-wgyza.mongodb.net/test?retryWrites=true&w=majority";
-    //const uri = "mongodb+srv://gneelesh:abcd1234@cluster0-wgyza.mongodb.net/admin?replicaSet=Cluster0-shard-0&connectTimeoutMS=10000&authSource=&authMechanism=SCRAM-SHA-1" ; 
-    const uri = "mongodb://localhost:27017";
+    const uri = "mongodb+srv://gneelesh:abcd1234@cluster0-wgyza.mongodb.net/admin?replicaSet=Cluster0-shard-0&connectTimeoutMS=10000&authSource=&authMechanism=SCRAM-SHA-1" ; 
+    //const uri = "mongodb://localhost:27017";
 
 
     mongodb.MongoClient.connect(uri, { useNewUrlParser: true }, function (err, database) {

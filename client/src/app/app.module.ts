@@ -10,7 +10,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { LoginComponent } from './login/login.component';
 import { MyMaterialModule } from  './material.module';
-import { AlertComponent, InlineEditComponent } from './components';
+import { AlertComponent } from './components';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { ErrorInterceptor, JwtInterceptor } from './helpers';
@@ -22,6 +22,11 @@ import { ExamDetailsComponent } from './administrator/exams/exam-details/exam-de
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { AssignScannerComponent } from 'app/administrator/assign-scanner/assign-scanner.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ScannerDashboardComponent } from './scanner/scanner-dashboard/scanner-dashboard.component';
+import { EvaluatorDashboardComponent } from './evaluator/evaluator-dashboard/evaluator-dashboard.component';
+import { ScannerModule } from './scanner/module/scanner.module';
+import { EvaluatorModule } from './evaluator/evaluator/evaluator.module';
+import { InlineEditComponent } from './components/inline-edit/inline-edit.component';
 
 const appRoutes: Routes = [
   {
@@ -62,7 +67,9 @@ const appRoutes: Routes = [
     AppRoutingModule,
     ReactiveFormsModule,
     MyMaterialModule,
-    NgbModule
+    NgbModule,
+    ScannerModule,
+    EvaluatorModule
 
   ],
 

@@ -13,7 +13,7 @@ export class LoginComponent implements OnInit {
     loading = false;
     submitted = false;
     returnUrl: string;
-
+    dashboardUrl : string ; 
     constructor(
         private formBuilder: FormBuilder,
         private route: ActivatedRoute,
@@ -22,8 +22,9 @@ export class LoginComponent implements OnInit {
         private alertService: AlertService
     ) {
         // redirect to home if already logged in
+        this.dashboardUrl = this.authenticationService.getDashboardUrl() ; 
         if (this.authenticationService.currentUserValue) { 
-            this.router.navigate(['/dashboard']);
+            this.router.navigate([this.dashboardUrl]);
         }
     }
 
@@ -34,15 +35,14 @@ export class LoginComponent implements OnInit {
         });
 
         // get return url from route parameters or default to '/'
-        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
+        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || this.dashboardUrl;
     }
 
     // convenience getter for easy access to form fields
     get f() { return this.loginForm.controls; }
 
     signIn() {
-   
-        console.log("Test") ;
+
         this.submitted = true;
 
         // stop here if form is invalid
@@ -55,6 +55,8 @@ export class LoginComponent implements OnInit {
             .pipe(first())
             .subscribe(
                 data => {
+                    console.log("Logged In User : " +JSON.stringify(data)) ;
+                    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || this.authenticationService.getDashboardUrl();
                     this.router.navigate([this.returnUrl]);
                 },
                 error => {

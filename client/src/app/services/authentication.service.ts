@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { User } from '../models/user';
 import { environment } from 'environments/environment';
+import { Role } from 'app/models/Role';
 
 
 
@@ -11,6 +12,7 @@ import { environment } from 'environments/environment';
 export class AuthenticationService {
     private currentUserSubject: BehaviorSubject<User>;
     public currentUser: Observable<User>;
+   
 
     constructor(private http: HttpClient) {
         this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
@@ -21,6 +23,30 @@ export class AuthenticationService {
         return this.currentUserSubject.value;
     }
 
+    public getDashboardUrl(){
+        var user = localStorage.getItem('currentUser') ;
+        var userObject = {"role":""} ;
+        var dashboardUrl = "/login" ;
+        if (user){
+            userObject  = JSON.parse(user) ;
+            switch (userObject[0].role){
+                case Role.Admin:
+                    dashboardUrl = "/dashboard/scanner" ;
+                    break ; 
+                case Role.Scanner:
+                    dashboardUrl = "/dashboard/scanner" ;
+                    break ; 
+                case Role.Evaluator:
+                    dashboardUrl = "/dashboard/evaluator" ;
+                    break ; 
+
+            }
+            
+        }
+        return dashboardUrl ;
+    }
+
+    
     login(username: string, password: string) {
         return this.http.post<any>(environment.apiURL + `/users/authenticate`, { username, password })
             .pipe(map(user => {
@@ -29,6 +55,8 @@ export class AuthenticationService {
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
                     localStorage.setItem('currentUser', JSON.stringify(user));
                     this.currentUserSubject.next(user);
+                    
+
                 }
 
                 return user;
