@@ -10,7 +10,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { LoginComponent } from './login/login.component';
 import { MyMaterialModule } from  './material.module';
-import { AlertComponent } from './components';
+import { AlertComponent, InlineEditComponent } from './components';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { ErrorInterceptor, JwtInterceptor } from './helpers';
@@ -20,6 +20,8 @@ import { EditSubjectComponent } from './master/edit-subject/edit-subject.compone
 import { ExamListComponent } from './administrator/exams/exam-list/exam-list.component';
 import { ExamDetailsComponent } from './administrator/exams/exam-details/exam-details.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { AssignScannerComponent } from 'app/administrator/assign-scanner/assign-scanner.component';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 const appRoutes: Routes = [
   {
@@ -47,7 +49,9 @@ const appRoutes: Routes = [
     SubjectComponent,
     EditSubjectComponent,
     ExamListComponent,
-    ExamDetailsComponent
+    ExamDetailsComponent,
+    AssignScannerComponent,
+    InlineEditComponent
   ],
   imports: [
     BrowserModule,
@@ -67,7 +71,11 @@ const appRoutes: Routes = [
 
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    NgbActiveModal
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    AssignScannerComponent
+  ]
 })
 export class AppModule { }

@@ -10,7 +10,9 @@ module.exports = {
     saveExam,
     getAllExams,
     getExamDetails,
-    getUniqueCode
+    getUniqueCode,
+    saveScanningAssignment,
+    saveEvaluationAssignment
 };
 
 async function saveExam(exam, userid) {
@@ -34,9 +36,9 @@ async function saveExam(exam, userid) {
     };
     if (exam.editmode == 'NEW') {
         addDoc.examcode = this.getUniqueCode(exam.examname);
-        addDoc.createdby = userid ; 
-        addDoc.createddate = new Date() ; 
-        addDoc.status = "NEW" ;
+        addDoc.createdby = userid;
+        addDoc.createddate = new Date();
+        addDoc.status = "NEW";
         updateCount = await connectionService.addDocuments(addDoc, "examCollection");
     }
     if (exam.editmode == 'EDIT') {
@@ -79,8 +81,50 @@ async function getAll() {
     });
 }
 
-function getUniqueCode(examname){
-    var exName = examname.replace(/\s/g, "") ;
-    var prefix = (exName.substring(0,3)).toUpperCase() ; 
-    return prefix + "-" + utilities.generateUniqueCode() ;
+function getUniqueCode(examname) {
+    var exName = examname.replace(/\s/g, "");
+    var prefix = (exName.substring(0, 3)).toUpperCase();
+    return prefix + "-" + utilities.generateUniqueCode();
+}
+
+
+
+async function saveScanningAssignment(scanningData, userid) {
+    var uniqueIdQuery = { "examcode": scanningData.examcode }
+    var addDoc = {
+        "scanningassignment": scanningData.scanningassignment,
+        "totalcopiesassignedforscanning": scanningData.totalcopiesassignedforscanning,
+        "modified_by": userid,
+        "modified_date": new Date()
+    }
+    var updateCount = 0;
+    var setQuery = {
+        $set: addDoc
+    };
+
+    updateCount = await connectionService.updateDocument(uniqueIdQuery, setQuery, "examCollection");
+    if (updateCount == 11000) {//its a duplicate error
+        return { "updateCount": updateCount, "error": "This subject code already exist. Please try a different one." };
+    }
+}
+
+
+
+async function saveEvaluationAssignment(evaluationData, userid) {
+    var uniqueIdQuery = { "examcode": evaluationData.examcode }
+    var addDoc = {
+        "evaluationassignment": evaluationData.evaluationassignment,
+        "totalcopiesassignedforevaluation": evaluationData.totalcopiesassignedforevaluation,
+        "modified_by": userid,
+        "modified_date": new Date()
+    }
+    var updateCount = 0;
+    var setQuery = {
+        $set: addDoc
+    };
+
+    updateCount = await connectionService.updateDocument(uniqueIdQuery, setQuery, "examCollection");
+    if (updateCount == 11000) {//its a duplicate error
+        return { "updateCount": updateCount, "error": "This subject code already exist. Please try a different one." };
+    }
 }

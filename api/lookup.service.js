@@ -6,7 +6,7 @@ var Q = require('q');
 
 module.exports = {
     getAllSubjects,
-    getAllScanners,
+    getAllUsers,
     getAll
 };
 
@@ -16,8 +16,9 @@ async function getAllSubjects() {
     return subjectDocuments ;
 }
 
-async function getAllScanners() {
-    var query = {"role": "SCANNER"};
+async function getAllUsers(userType) {
+    var query = {"role": userType};
+    var columnList = { username: 1, firstname: 1, emailid: 1, scanningoffice:1 }
     var sacnnerList = await connectionService.getDocuments(query, "userCollection");
     return sacnnerList ;
 }

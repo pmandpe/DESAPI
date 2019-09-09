@@ -1,5 +1,6 @@
-<div class="container-fluid">
-  <div class="col col-md-3">
+
+  <div class="row">
+  <div class="col-sm-6 col-lg-2 col-md-3">
     <div class="panel-group" id="accordion">
       <div class="panel panel-default">
         <div class="panel-heading">
@@ -7,24 +8,23 @@
             Main Menu
           </h4>
         </div>
-        <div id="collapse1" class="panel-collapse collapse in">
+        <div id="collapse1">
           <ul class="list-group">
             <li class="list-group-item">
-              <span class="badge"></span><a [routerLink]="['./subject']">
+              <a [routerLink]="['./subject']">
                 Manage Subjects</a></li>
             <li class="list-group-item">
-              <span class="badge">17</span> <a [routerLink]="['./exams']">Manage Exams</a></li>
+              <a [routerLink]="['./exams']">Manage Exams</a></li>
             <li class="list-group-item">
-              <span class="badge">3</span> Reports</li>
+               Reports</li>
           </ul>
         </div>
       </div>
-
-
     </div>
   </div>
   <div class="col col-md-9 col-lg-9">
       <router-outlet></router-outlet>
   </div>
 </div>
+
 

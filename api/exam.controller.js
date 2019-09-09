@@ -10,28 +10,42 @@ const Role = require('_helpers/roles');
 // routes
 router.post('/get', authorize(Role.Admin), getExams);
 router.post('/save', authorize(Role.Admin), saveExams);
-router.post('/details',getExamsDetails);
+router.post('/details', authorize(Role.Admin), getExamsDetails);
+router.post('/scanningassignment/save', authorize(Role.Admin), saveScanningAssignment);
+router.post('/evaluationassignment/save', authorize(Role.Admin), saveEvaluationAssignment);
+
 
 module.exports = router;
 
 async function getExams(req, res, next) {
     //var subjects = await lookupService.getAllSubjects() ;
-    var exams = await examService.getAllExams() ;
-    res.json(exams) ;
+    var exams = await examService.getAllExams();
+    res.json(exams);
 }
 
 
 async function saveExams(req, res, next) {
-    var username = req.username ; 
-    
-    var returValue = await examService.saveExam(req.body, username) ;
-    res.json(returValue) ;
+    var username = req.username;
+    var returValue = await examService.saveExam(req.body, username);
+    res.json(returValue);
+}
+
+
+async function saveScanningAssignment(req, res, next) {
+    var username = req.username;
+    var returValue = await examService.saveScanningAssignment(req.body, username);
+    res.json(returValue);
+}
+
+async function saveEvaluationAssignment(req, res, next) {
+    var username = req.username;
+    var returValue = await examService.saveEvaluationAssignment(req.body, username);
+    res.json(returValue);
 }
 
 
 async function getExamsDetails(req, res, next) {
     var examdetails = await examService.getExamDetails(req.body.examcode);
-    
-    res.json(examdetails) ;
+    res.json(examdetails);
 }
 

@@ -1,0 +1,73 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">Assign To {{(userType == "SCANNER"? "Scanner" : "Evaluator")}}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <alert></alert>
+
+
+  <div *ngIf="userType == 'SCANNER'">
+    <table class="table table table-hover table-striped">
+      <thead>
+        <tr>
+          <th>Scanning Office</th>
+          <th>Contact Person</th>
+          <th>Phone</th>
+          <th>Email Id</th>
+          <th># Assigned for {{(userType == "SCANNER"? "Scanning" : "Evaluation")}}</th>
+
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of Users">
+          <td>{{user.scanningoffice.officename}}</td>
+          <td>{{user.scanningoffice.contactperson}}</td>
+          <td>{{user.scanningoffice.phone}}</td>
+          <td>{{user.emailid}}</td>
+          <td>
+            <app-inline-edit [(ngModel)]="user.assignedcopies" type="text"> </app-inline-edit>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="userType == 'EVALUATOR'">
+      <table class="table table table-hover table-striped">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email Id</th>
+            <th>Phone</th>
+            
+            <th># of copies assigned</th>
+  
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of Users">
+            <td>{{user.name}}</td>
+            <td>{{user.emailid}}</td>
+            <td>{{user.phone}}</td>
+            <td>
+              <app-inline-edit [(ngModel)]="user.assignedcopies" type="text"> </app-inline-edit>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+
+
+
+
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="save()">Save</button>
+  <button type="button" class="btn btn-outline-dark" (click)="cancel()">Cancel</button>
+</div>

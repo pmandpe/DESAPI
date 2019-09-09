@@ -41,6 +41,23 @@ export class ExamService {
             }))
 
     }
+    saveScanningAssignment(scanningData) {
+        return this.http.post<any>(environment.apiURL + `/api/v1/exams/scanningassignment/save`, scanningData)
+            .pipe(map((res: Response) => {
+                console.log(JSON.stringify(res));
+                return res ; 
+            }))
+
+    }
+
+    saveEvaluationAssignment(evaluationData) {
+        return this.http.post<any>(environment.apiURL + `/api/v1/exams/evaluationassignment/save`, evaluationData)
+            .pipe(map((res: Response) => {
+                console.log(JSON.stringify(res));
+                return res ; 
+            }))
+
+    }
 
 
 }

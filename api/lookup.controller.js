@@ -4,7 +4,7 @@ const lookupService = require('./lookup.service');
 
 // routes
 router.post('/subjects',getAllSubjects);
-router.post('/scanners',getAllScanners);
+router.post('/users',getAllUsers);
 
 
 module.exports = router;
@@ -15,7 +15,7 @@ async function getAllSubjects(req, res, next) {
 }
 
 
-async function getAllScanners(req, res, next) {
-    var scanners = await lookupService.getAllScanners() ;
-    res.json(scanners) ;
+async function getAllUsers(req, res, next) {
+    var users = await lookupService.getAllUsers(req.body.usertype) ;
+    res.json(users) ;
 }

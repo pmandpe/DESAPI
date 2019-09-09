@@ -88,63 +88,15 @@
 
 
 
+
+
+
+
+
         <div class="form-group">
             <div>
                 <div class="row">
-                    <div class="col-lg-6 col-sm-6 col-md-6">
-
-
-                        <div>
-                            <label for="numberofcopies">Total Copies</label>
-                        </div>
-                        <div>
-                            <div class="input-group">
-                                <input type="number" formControlName="numberofcopies" class="form-control"
-                                    [ngClass]="{ 'is-invalid': submitted && f.numberofcopies.errors }" />
-                                <div *ngIf="submitted && f.numberofcopies.errors">
-                                    <div *ngIf="f.resultdate.errors.required" class="error">Result Date is required
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-
-
-
-                    </div>
-
-                    <div class="col-lg-6 col-sm-6 col-md-6">
-
-
-                        <label for="resultdate">Result Date</label>
-                        <div class="input-group">
-                            <input id="resultdate" formControlName="resultdate" class="form-control"
-                                placeholder="yyyy-mm-dd" name="dpresultdate" ngbDatepicker #dp="ngbDatepicker">
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()"
-                                    type="button"></button>
-                            </div>
-                        </div>
-
-                        <div *ngIf="submitted && f.resultdate.errors">
-                            <div *ngIf="f.resultdate.errors.required" class="error">Result Date is required</div>
-                        </div>
-
-
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-
-
-
-        <div class="form-group">
-            <div class="input-group">
-                <div class="row">
-                    <div class="col-lg-6 col-sm-6 col-md-6">
+                    <div class="col-lg-4 col-sm-6 col-md-4">
                         <div>
                             <label for="numberofcopies">Total Copies</label>
                         </div>
@@ -160,17 +112,28 @@
 
                     </div>
 
-                    <div class="col-lg-6 col-sm-6 col-md-6">
+                    <div class="col-lg-4 col-sm-6 col-md-4">
                         <div>
                             <label for="resultdate">Assigned For Scanning</label>
                         </div>
                         <div>
-                            <input type="number" [readonly]="true" formControlName="assignedforscanning"
+                            <input type="number" [readonly]="true" formControlName="totalcopiesassignedforscanning"
                                 class="form-control"
                                 [ngClass]="{ 'is-invalid': submitted && f.assignedforscanning.errors }" />
                         </div>
 
                     </div>
+                    <div class="col-lg-4 col-sm-6 col-md-4">
+                            <div>
+                                <label for="resultdate">Assigned For Evaluation</label>
+                            </div>
+                            <div>
+                                <input type="number" [readonly]="true" formControlName="totalcopiesassignedforevaluation"
+                                    class="form-control"
+                                   />
+                            </div>
+    
+                        </div>
                 </div>
             </div>
         </div>
@@ -188,6 +151,8 @@
 
         <div class="form-group">
             <input type="hidden" formControlName="editmode" [(ngModel)]="mode" />
+            <input type="hidden" formControlName="scanningassignment" [(ngModel)]="scanningassignment" />
+            <input type="hidden" formControlName="evaluationassignment" [(ngModel)]="evaluationassignment" />
         </div>
 
         <div class="form-group">
@@ -196,37 +161,32 @@
                 src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
 
 
+                <span style="float:right"> <button type="button" class="btn btn-lg btn-outline-primary" (click)="open('SCANNER')" [disabled]="!f.subjectcode == ''">Assign For
+                        Scanning</button>
+                
+                </span>
+                <span style="width:20px;float:right;">&nbsp;</span>
+                <span style="float:right"> <button type="button" class="btn btn-lg btn-outline-primary" (click)="open('EVALUATOR')">Assign For
+                        Evaluation</button>
+                
+                </span>
         </div>
 
-
+    
 
 
 
     </form>
+
 </div>
 
 
-
+<!-- Popoup Window -->
 <ng-template #testcontent let-modal>
-    <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
-        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="modal-body">
-        Test
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
-    </div>
+<app-assign-scanner></app-assign-scanner>
 </ng-template>
 
+<!-- Popoup Window -->
 
-
-<span style="float:right"> <button class="btn btn-lg btn-outline-primary" (click)="open(testcontent)">Assign For
-        Scanning</button>
-
-</span>
 
 <div>{{closeResult}}</div>
