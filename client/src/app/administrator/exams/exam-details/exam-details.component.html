@@ -48,9 +48,9 @@
                         <label for="examdate">Exam Date</label>
                         <div class="input-group">
                             <input id="examdate" formControlName="examdate" class="form-control"
-                                placeholder="yyyy-mm-dd" name="dpexamdate" ngbDatepicker #dp="ngbDatepicker">
+                                placeholder="yyyy-mm-dd" name="dpexamdate" ngbDatepicker #dpexamdate="ngbDatepicker">
                             <div class="input-group-append">
-                                <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()"
+                                <button class="btn btn-outline-secondary calendar" (click)="dpexamdate.toggle()"
                                     type="button"></button>
                             </div>
                         </div>
@@ -68,9 +68,9 @@
                         <label for="resultdate">Result Date</label>
                         <div class="input-group">
                             <input id="resultdate" formControlName="resultdate" class="form-control"
-                                placeholder="yyyy-mm-dd" name="dpresultdate" ngbDatepicker #dp="ngbDatepicker">
+                                placeholder="yyyy-mm-dd" name="dpresultdate" ngbDatepicker #dpresultdate="ngbDatepicker">
                             <div class="input-group-append">
-                                <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()"
+                                <button class="btn btn-outline-secondary calendar" (click)="dpresultdate.toggle()"
                                     type="button"></button>
                             </div>
                         </div>
@@ -119,7 +119,7 @@
                         <div>
                             <input type="number" [readonly]="true" formControlName="totalcopiesassignedforscanning"
                                 class="form-control"
-                                [ngClass]="{ 'is-invalid': submitted && f.assignedforscanning.errors }" />
+                               />
                         </div>
 
                     </div>
@@ -138,10 +138,6 @@
             </div>
         </div>
 
-
-        <div class="form-group">
-            <input type="hidden" formControlName="editmode" [(ngModel)]="mode" />
-        </div>
 
         <div class="form-group">
             <label for="examyear">Comments</label>

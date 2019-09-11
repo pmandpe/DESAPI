@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+
 import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
@@ -20,7 +20,7 @@ import { EditSubjectComponent } from './master/edit-subject/edit-subject.compone
 import { ExamListComponent } from './administrator/exams/exam-list/exam-list.component';
 import { ExamDetailsComponent } from './administrator/exams/exam-details/exam-details.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import { AssignScannerComponent } from 'app/administrator/assign-scanner/assign-scanner.component';
+import { AssignScannerComponent } from './administrator/assign-scanner/assign-scanner.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ScannerDashboardComponent } from './scanner/scanner-dashboard/scanner-dashboard.component';
 import { EvaluatorDashboardComponent } from './evaluator/evaluator-dashboard/evaluator-dashboard.component';
@@ -62,7 +62,6 @@ const appRoutes: Routes = [
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
-    HttpModule,
     HttpClientModule, 
     AppRoutingModule,
     ReactiveFormsModule,

@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { get } from 'http';
+
 import { first } from 'rxjs/operators';
 import { MasterService } from '../../../services/master.service';
 import { AlertService } from '../../../services';
-import { ExamService } from 'app/services/exams.service';
-import { UtilService } from 'app/services/utilities.service';
+import { ExamService } from '../../../services/exams.service';
+import { UtilService } from '../../../services/utilities.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { AssignScannerComponent } from 'app/administrator/assign-scanner/assign-scanner.component';
+import { AssignScannerComponent } from '../../../administrator/assign-scanner/assign-scanner.component';
 
 @Component({
   selector: 'app-exam-details',
@@ -50,19 +50,21 @@ export class ExamDetailsComponent implements OnInit {
       scanningassignment: new FormControl([]) ,
       scannedcopies: new FormControl(0) ,
       evaluationassignment: new FormControl([]) ,
-      editmode: new FormControl(this._Activatedroute.snapshot.paramMap.get("mode"))
+      editmode: new FormControl("")
 
 
     });
     //this.mode = this.examForm.value.editmode ; 
-    var mode = this._Activatedroute.snapshot.paramMap.get("mode") ; 
+    this.mode = this._Activatedroute.snapshot.paramMap.get("mode") ; 
     this.uniquecode = this._Activatedroute.snapshot.paramMap.get("examcode");
+    
+  
 
     if (this.uniquecode) {
       this.showUniqueCode = false;
     }
 
-    if (mode != "NEW") {
+    if (this.mode != "NEW") {
       this.disableSubjectCode = true;
 
       this.examService.getExamDetails(this.uniquecode)
@@ -96,6 +98,7 @@ export class ExamDetailsComponent implements OnInit {
         });
 
     }
+   
   }
 
 
@@ -109,12 +112,15 @@ export class ExamDetailsComponent implements OnInit {
       return;
     }
     this.loading = true;
+    
+
     var params = this.examForm.value;
     var resultdateValue = this.examForm.value.resultdate.year.toString().padStart(2, '0') + "-" + this.examForm.value.resultdate.month.toString().padStart(2, '0') + "-" + this.examForm.value.resultdate.day.toString().padStart(2, '0');
     var examdateValue = this.examForm.value.examdate.year + "-" + this.examForm.value.examdate.month.toString().padStart(2, '0') + "-" + this.examForm.value.examdate.day.toString().padStart(2, '0');
     params.resultdate = resultdateValue;
     params.examdate = examdateValue;
-    this.examService.saveExam(this.examForm.value)
+  
+    this.examService.saveExam(params)
       .pipe(first())
       .subscribe(
       data => {

@@ -1,14 +1,22 @@
 <div class="row" style="margin-top:20px">
-    <div class="col-lg-3 col-sm-6 col-md-4">
+
+
+    <div class="col-lg-3 col-sm-6 col-md-4"  *ngFor="let dashboard of dashboardData">
         <div class="card border-primary mb-3" style="max-width: 18rem;">
-            <div class="card-header">Header</div>
+            <div class="card-header">{{dashboard.examname}}</div>
             <div class="card-body text-primary">
-                <h5 class="card-title">Primary card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                    card's content.</p>
+                <h5 class="card-title">{{dashboard.subjectcode}}</h5>
+                <p class="card-text">Assigned Copies : {{getAssignedCopies(dashboard.scanningassignment).assignedcopies}}</p>
+                <p class="card-text">Scanned Copies : {{(getAssignedCopies(dashboard.scanningassignment).scannedcopies ? getAssignedCopies(dashboard.scannedcopies).assignedcopies : 0)}}</p>
+                
             </div>
+            <div class="card-footer bg-transparent border-success"><a href="./scandocument" class="btn  btn-primary">Start Scanning</a></div>
         </div>
     </div>
+
+
+
+    <!--
     <div class="col-lg-3 col-sm-6 col-md-4">
         <div class="card border-primary mb-3" style="max-width: 18rem;">
             <div class="card-header">Header</div>
@@ -67,4 +75,6 @@
             </div>
         </div>
     </div>
+
+-->
 </div>

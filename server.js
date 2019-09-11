@@ -18,6 +18,7 @@ app.use('/users', require('./users/users.controller'));
 app.use('/api/v1/master', require('./api/master.controller'));
 app.use('/api/v1/lookup', require('./api/lookup.controller'));
 app.use('/api/v1/exams', require('./api/exam.controller'));
+app.use('/api/v1/scanner', require('./api/scanner/dashboard/dashboard.controller'));
 
 
 //app.use('/api/v1', (req, res) => res.send('Hello World!')) ;

@@ -38,6 +38,8 @@ async function saveExam(exam, userid) {
         addDoc.examcode = this.getUniqueCode(exam.examname);
         addDoc.createdby = userid;
         addDoc.createddate = new Date();
+        addDoc.scanningassignment = [] ;
+        addDoc.evaluationassignment = [] ;
         addDoc.status = "NEW";
         updateCount = await connectionService.addDocuments(addDoc, "examCollection");
     }

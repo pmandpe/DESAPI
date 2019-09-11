@@ -13,4 +13,9 @@ export class UtilService {
         var day = parseInt(dateValue.substr(8,2), 10) ;
         return {"year":year, "month": month, "day" : day} ;
     }
+
+    filterByString(data, s) {
+        return data.filter(e => e.id.includes(s) || e.taskname.includes(s))
+            .sort((a,b) => a.id.includes(s) && !b.id.includes(s) ? -1 : b.id.includes(s) && !a.id.includes(s) ? 1 :0);
+     }
 }

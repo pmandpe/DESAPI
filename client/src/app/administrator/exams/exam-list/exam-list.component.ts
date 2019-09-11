@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MasterService } from 'app/services/master.service';
-import { AlertService } from 'app/services';
-import { ExamService } from 'app/services/exams.service';
+import { MasterService } from '../../../services/master.service';
+import { AlertService } from '../../../services';
+import { ExamService } from '../../../services/exams.service';
 
 @Component({
   selector: 'app-exam-list',

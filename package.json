@@ -12,6 +12,7 @@
         "coupon-code": "^0.4.5",
         "express": "^4.16.3",
         "express-jwt": "^5.3.1",
+        "formidable": "^1.2.1",
         "jsonwebtoken": "^8.2.2",
         "mongodb": "^3.3.2",
         "mongoskin": "^2.1.0",

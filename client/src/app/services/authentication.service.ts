@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { User } from '../models/user';
-import { environment } from 'environments/environment';
-import { Role } from 'app/models/Role';
+import { environment } from '../../environments/environment';
+import { Role } from '../models/Role';
 
 
 
@@ -31,7 +31,7 @@ export class AuthenticationService {
             userObject  = JSON.parse(user) ;
             switch (userObject[0].role){
                 case Role.Admin:
-                    dashboardUrl = "/dashboard/scanner" ;
+                    dashboardUrl = "/dashboard/admin" ;
                     break ; 
                 case Role.Scanner:
                     dashboardUrl = "/dashboard/scanner" ;

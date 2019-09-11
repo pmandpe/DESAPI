@@ -1,10 +1,11 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { LookupService } from 'app/services/lookup.service';
-import { AlertService } from 'app/services';
-import { ExamService } from 'app/services/exams.service';
+import { LookupService } from '../../services/lookup.service';
+
+import { ExamService } from '../../services/exams.service';
 import { first } from 'rxjs/operators';
+import { AlertService } from '../../services';
 
 @Component({
   selector: 'app-assign-scanner',
