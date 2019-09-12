@@ -34,7 +34,10 @@ export class EditSubjectComponent implements OnInit {
       subjectname: ['', Validators.required],
       subjectclass: ['', Validators.required],
       examyear: ['', Validators.required],
-      editmode: new FormControl("")
+      editmode: new FormControl(""),
+      semester: new FormControl(""),
+      stream: new FormControl("")
+
 
     });
     this.mode = this._Activatedroute.snapshot.paramMap.get("mode");
@@ -52,6 +55,8 @@ export class EditSubjectComponent implements OnInit {
           this.subjectForm.patchValue({ subjectname: this.subjectdetails.subjectname });
           this.subjectForm.patchValue({ subjectclass: this.subjectdetails.subjectclass });
           this.subjectForm.patchValue({ examyear: this.subjectdetails.examyear });
+          this.subjectForm.patchValue({ semester: this.subjectdetails.semester });
+          this.subjectForm.patchValue({ stream: this.subjectdetails.stream });
           this.subjectForm.patchValue({ editmode: 'EDIT' });
         
           

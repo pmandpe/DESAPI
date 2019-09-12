@@ -14,7 +14,7 @@ import { AlertComponent } from './components';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { ErrorInterceptor, JwtInterceptor } from './helpers';
-import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+
 import { SubjectComponent } from './master/subject/subject.component';
 import { EditSubjectComponent } from './master/edit-subject/edit-subject.component';
 import { ExamListComponent } from './administrator/exams/exam-list/exam-list.component';
@@ -24,9 +24,15 @@ import { AssignScannerComponent } from './administrator/assign-scanner/assign-sc
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ScannerDashboardComponent } from './scanner/scanner-dashboard/scanner-dashboard.component';
 import { EvaluatorDashboardComponent } from './evaluator/evaluator-dashboard/evaluator-dashboard.component';
-import { ScannerModule } from './scanner/module/scanner.module';
-import { EvaluatorModule } from './evaluator/evaluator/evaluator.module';
+
 import { InlineEditComponent } from './components/inline-edit/inline-edit.component';
+import { AdminDashboardComponent } from './administrator/admin-dashboard/admin-dashboard.component';
+
+import { AdminMenuComponent } from './administrator/admin-menu/admin-menu.component';
+import { ContainerComponent } from './administrator/container/container.component';
+import { MarkingComponent } from './evaluator/marking/marking.component';
+import { EvalContainerComponent } from './evaluator/eval-container/eval-container.component';
+import { ScanDocumentComponent } from './scanner/scan-document/scan-document.component';
 
 const appRoutes: Routes = [
   {
@@ -50,13 +56,23 @@ const appRoutes: Routes = [
     LoginComponent,
     AlertComponent,
     DashboardComponent,
+    InlineEditComponent,
+    AdminMenuComponent,
     AdminDashboardComponent,
-    SubjectComponent,
-    EditSubjectComponent,
     ExamListComponent,
     ExamDetailsComponent,
+    SubjectComponent,
+    EditSubjectComponent,
+   AdminMenuComponent,
     AssignScannerComponent,
-    InlineEditComponent
+    ContainerComponent,
+    MarkingComponent,
+    EvalContainerComponent,
+    ScannerDashboardComponent,
+    AssignScannerComponent,
+    EvalContainerComponent,
+    EvaluatorDashboardComponent,
+    ScanDocumentComponent
   ],
   imports: [
     BrowserModule,
@@ -67,8 +83,9 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     MyMaterialModule,
     NgbModule,
-    ScannerModule,
-    EvaluatorModule
+   
+    
+    RouterModule
 
   ],
 

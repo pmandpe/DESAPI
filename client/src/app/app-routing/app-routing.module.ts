@@ -5,7 +5,7 @@ import { LoginComponent } from '../login/login.component';
 import { DashboardComponent } from '../dashboard/dashboard.component';
 import { AuthGuard } from '../guards';
 import { Role } from '../models/Role';
-import { AdminDashboardComponent } from '../admin-dashboard/admin-dashboard.component';
+
 import { SubjectComponent } from '../master/subject/subject.component';
 import { EditSubjectComponent } from '../master/edit-subject/edit-subject.component';
 import { ExamListComponent } from '../administrator/exams/exam-list/exam-list.component';
@@ -13,6 +13,11 @@ import { ExamDetailsComponent } from '../administrator/exams/exam-details/exam-d
 import { EvaluatorDashboardComponent } from '../evaluator/evaluator-dashboard/evaluator-dashboard.component';
 import { ScannerDashboardComponent } from '../scanner/scanner-dashboard/scanner-dashboard.component';
 import { ScanDocumentComponent } from '../scanner/scan-document/scan-document.component';
+import { AdminDashboardComponent } from '../administrator/admin-dashboard/admin-dashboard.component';
+import { ContainerComponent } from '../administrator/container/container.component';
+import { MarkingComponent } from '../evaluator/marking/marking.component';
+import { EvalContainerComponent } from '../evaluator/eval-container/eval-container.component';
+
 
 
 
@@ -25,33 +30,18 @@ const routes: Routes = [
     component: LoginComponent
   },
   {
-    path: 'dashboard',
-    component: DashboardComponent,
-
+    path: 'admin',
+    component: ContainerComponent,
+    data: { roles: [Role.Admin] },
+    canActivate: [AuthGuard],
     children: [
       {
-        path: 'admin',
-        canActivate: [AuthGuard],
-        component: AdminDashboardComponent,
-        data: { roles: [Role.Admin] },
+        path: 'dashboard',
+        component: AdminDashboardComponent
       },
       {
-        path: 'scanner',
-        canActivate: [AuthGuard],
-        component: ScannerDashboardComponent,
-        data: { roles: [Role.Scanner] },
-      },
-      {
-        path: 'scanner/scandocument',
-        canActivate: [AuthGuard],
-        component: ScanDocumentComponent,
-        data: { roles: [Role.Scanner] }
-      },
-      {
-        path: 'evaluator',
-        canActivate: [AuthGuard],
-        component: EvaluatorDashboardComponent,
-        data: { roles: [Role.Evaluator] },
+        path: 'exams',
+        component: ExamListComponent
       },
 
       {
@@ -62,17 +52,45 @@ const routes: Routes = [
         path: 'edit-subject/:mode/:subjectcode',
         component: EditSubjectComponent
       },
-      {
-        path: 'exams',
-        component: ExamListComponent
-      },
+
       {
         path: 'edit-exam/:mode/:examcode',
         component: ExamDetailsComponent
       }
     ]
+  },
+  {
+    path: 'scanner',
+    canActivate: [AuthGuard],
+    component: ScannerDashboardComponent,
+    data: { roles: [Role.Evaluator] },
+  },
+  {
+    path: 'scanner/scandocument',
+    canActivate: [AuthGuard],
+    component: ScanDocumentComponent,
+    data: { roles: [Role.Scanner] }
+  },
+  {
+    path: 'evaluator',
+    canActivate: [AuthGuard],
+    component: EvalContainerComponent,
+    data: { roles: [Role.Evaluator] },
+    children: [
+      {
+        path: 'dashboard',
+        component: EvaluatorDashboardComponent
+      },
+      {
+        path: 'marking',
+        component: MarkingComponent
+      }
+    ]
   }
-];
+
+]
+
+  ;
 
 
 @NgModule({

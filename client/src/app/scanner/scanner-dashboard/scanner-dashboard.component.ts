@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ScannerService } from '../../services/scanner.service';
-import { AlertService } from '../../services';
+import { AlertService, AuthenticationService } from '../../services';
 import { UtilService } from '../../services/utilities.service';
 
 @Component({
@@ -11,37 +11,34 @@ import { UtilService } from '../../services/utilities.service';
 export class ScannerDashboardComponent implements OnInit {
 
   dashboardData: any;
-  scanningAssignment : any ; 
+  scanningAssignment: any;
   constructor(
     private scannerService: ScannerService,
     private alertService: AlertService,
-  private utilityService: UtilService) { }
+    private utilityService: UtilService,
+    private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
 
-
-
-
-
     this.scannerService.getDashboard()
       .subscribe(
-      data => {
-        this.dashboardData = data;
-        // this.scanningAssignment = this.getScanningAssignment(data);
-      },
-      error => {
-        this.alertService.error(error);
-        //this.loading = false;
+        data => {
+          this.dashboardData = data;
+          // this.scanningAssignment = this.getScanningAssignment(data);
+        },
+        error => {
+          this.alertService.error(error);
+          //this.loading = false;
 
-      });
+        });
 
   }
 
-  getAssignedCopies(data){
-  
+  getAssignedCopies(data) {
+
     //scanAssignment = this.utilityService.filterByString(data, "neelesh") ;
-    var scanAssignment =  data.find(x => x.username == "neelesh");
-  return scanAssignment ; 
+    var scanAssignment = data.find(x => x.username == this.authenticationService.currentUserValue);
+    return scanAssignment;
   }
 
 }

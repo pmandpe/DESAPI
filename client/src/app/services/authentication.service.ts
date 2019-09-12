@@ -31,18 +31,19 @@ export class AuthenticationService {
             userObject  = JSON.parse(user) ;
             switch (userObject[0].role){
                 case Role.Admin:
-                    dashboardUrl = "/dashboard/admin" ;
+                    dashboardUrl = "/admin/dashboard" ;
                     break ; 
                 case Role.Scanner:
-                    dashboardUrl = "/dashboard/scanner" ;
+                    dashboardUrl = "/scanner/dashboard" ;
                     break ; 
                 case Role.Evaluator:
-                    dashboardUrl = "/dashboard/evaluator" ;
+                    dashboardUrl = "/evaluator/dashboard" ;
                     break ; 
 
             }
             
         }
+    
         return dashboardUrl ;
     }
 
