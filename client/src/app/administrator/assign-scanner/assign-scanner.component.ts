@@ -86,7 +86,7 @@ export class AssignScannerComponent implements OnInit {
       params.examcode = this.examCode;
       params.totalcopiesassignedforscanning = totalAssignedCopies;
       params.scanningassignment = scanningAssignment;
-      //console.log("Assigned Copies "+ JSON.stringify(scanningAssignment)) ;
+  
       this.examService.saveScanningAssignment(params)
         .pipe(first())
         .subscribe(
@@ -117,7 +117,7 @@ export class AssignScannerComponent implements OnInit {
       params.examcode = this.examCode;
       params.totalcopiesassignedforevaluation = totalAssignedCopies;
       params.evaluationassignment = evaluationassignment;
-      //console.log("Assigned Copies "+ JSON.stringify(scanningAssignment)) ;
+    
       this.examService.saveEvaluationAssignment(params)
         .pipe(first())
         .subscribe(

@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit {
             .pipe(first())
             .subscribe(
                 data => {
-                    console.log("Logged In User : " +JSON.stringify(data)) ;
+
                     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || this.authenticationService.getDashboardUrl();
                     this.router.navigate([this.returnUrl]);
                 },

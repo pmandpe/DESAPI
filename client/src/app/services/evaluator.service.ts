@@ -24,5 +24,25 @@ export class EvaluatorService {
             }))
 
     }
+
+    getMarkingDetails(examcode) {
+        return this.http.post<any>(environment.apiURL + `/api/v1/evaluator/marking`, {"examcode" : examcode})
+            .pipe(map((res: Response) => {
+
+                
+                return res ; 
+            }))
+
+    }
+    
+    getPdf() {
+        return this.http.post<any>(environment.apiURL + `/api/v1/evaluator/answerspdf`, {}, {responseType: 'blob' as 'json'})
+            .pipe(map((res: Response) => {
+
+                
+                return res ; 
+            }))
+
+    }
     
 }

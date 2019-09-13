@@ -160,7 +160,6 @@ export class ExamDetailsComponent implements OnInit {
     
     modalRef.result.then((result) => {
       if (result) {
-        //console.log("------------------------------"+ JSON.stringify(result));
         this.ngOnInit() ;
       }
     });

@@ -82,7 +82,7 @@ const routes: Routes = [
         component: EvaluatorDashboardComponent
       },
       {
-        path: 'marking',
+        path: 'marking/:examcode',
         component: MarkingComponent
       }
     ]

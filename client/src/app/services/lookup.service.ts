@@ -22,7 +22,6 @@ export class LookupService {
         return this.http.post<any>(environment.apiURL + `/api/v1/lookup/users`, {"usertype" : userType})
             .pipe(map((res: Response) => {
 
-                console.log(JSON.stringify(res));
                 return res ; 
             }))
 

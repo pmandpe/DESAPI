@@ -19,7 +19,7 @@ export class ExamListComponent implements OnInit {
 
       .subscribe(
         data => {
-          console.log(JSON.stringify(data));
+
           this.Exams = data;
 
         },

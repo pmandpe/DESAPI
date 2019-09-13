@@ -36,7 +36,7 @@ export class ExamService {
     saveExam(formData) {
         return this.http.post<any>(environment.apiURL + `/api/v1/exams/save`, formData)
             .pipe(map((res: Response) => {
-                console.log(JSON.stringify(res));
+
                 return res ; 
             }))
 
@@ -44,7 +44,7 @@ export class ExamService {
     saveScanningAssignment(scanningData) {
         return this.http.post<any>(environment.apiURL + `/api/v1/exams/scanningassignment/save`, scanningData)
             .pipe(map((res: Response) => {
-                console.log(JSON.stringify(res));
+
                 return res ; 
             }))
 
@@ -53,7 +53,7 @@ export class ExamService {
     saveEvaluationAssignment(evaluationData) {
         return this.http.post<any>(environment.apiURL + `/api/v1/exams/evaluationassignment/save`, evaluationData)
             .pipe(map((res: Response) => {
-                console.log(JSON.stringify(res));
+
                 return res ; 
             }))
 

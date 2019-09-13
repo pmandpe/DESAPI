@@ -33,6 +33,7 @@ import { ContainerComponent } from './administrator/container/container.componen
 import { MarkingComponent } from './evaluator/marking/marking.component';
 import { EvalContainerComponent } from './evaluator/eval-container/eval-container.component';
 import { ScanDocumentComponent } from './scanner/scan-document/scan-document.component';
+import {PdfViewerModule} from 'ng2-pdf-viewer'
 
 const appRoutes: Routes = [
   {
@@ -83,6 +84,7 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     MyMaterialModule,
     NgbModule,
+    PdfViewerModule,
    
     
     RouterModule

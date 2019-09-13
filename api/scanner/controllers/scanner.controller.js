@@ -9,7 +9,7 @@ var fs = require('fs');
 var app = express();
 const router = express.Router();
 
-const dashboardService = require('./dashboard.service')
+const dashboardService = require('../services/dashboard.service')
 const authorize = require('_helpers/authorize')
 const Role = require('_helpers/roles');
 

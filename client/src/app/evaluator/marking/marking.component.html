@@ -1,1 +1,23 @@
-<p>marking works!</p>
+<div class="des-container">
+
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 float-left">
+            <span><h3>Assigned Copies : {{examData.assignedcopies}}</h3></span>
+
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 float-right">
+                <span><h3>Evaluated Copies : {{examData.evaluatedcopies}}</h3></span>
+    
+            </div>
+    </div>
+    <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-3">
+                
+    
+            </div>
+            <div class="col-lg-9 col-md-9 col-sm-9">
+                    <pdf-viewer [show-borders]="true" [fit-to-page]="true" [src]="mypdf" [render-text]="true" style="display: block"></pdf-viewer>
+        
+                </div>
+        </div>
+</div>

@@ -20,7 +20,7 @@ export class SubjectComponent implements OnInit {
             
             .subscribe(
                 data => {
-                    console.log(JSON.stringify(data)) ;
+
                     this.Subjects = data ; 
                  
                 },

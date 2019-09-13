@@ -22,7 +22,6 @@ export class MasterService {
         return this.http.post<any>(environment.apiURL + `/api/v1/master/subject/get`, {})
             .pipe(map((res: Response) => {
 
-                console.log(JSON.stringify(res));
                 return res ; 
             }))
 
@@ -39,7 +38,7 @@ export class MasterService {
     saveSubject(formData) {
         return this.http.post<any>(environment.apiURL + `/api/v1/master/subject/save`, formData)
             .pipe(map((res: Response) => {
-                console.log(JSON.stringify(res));
+
                 return res ; 
             }))
 
