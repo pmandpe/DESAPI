@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Directive } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -9,6 +9,7 @@ import { ExamService } from '../../../services/exams.service';
 import { UtilService } from '../../../services/utilities.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { AssignScannerComponent } from '../../../administrator/assign-scanner/assign-scanner.component';
+import { ExamQuestionsComponent } from '../exam-questions/exam-questions.component';
 
 @Component({
   selector: 'app-exam-details',
@@ -20,6 +21,7 @@ export class ExamDetailsComponent implements OnInit {
   loading = false;
   submitted = false;
   returnUrl: string;
+  examQuestions: any;
   mode: string;
   uniquecode: string;
   examdetails: any;
@@ -33,6 +35,7 @@ export class ExamDetailsComponent implements OnInit {
     private examService: ExamService,
     private alertService: AlertService,
     private utilService: UtilService,
+
     private _Activatedroute: ActivatedRoute) { }
 
   ngOnInit() {
@@ -70,8 +73,10 @@ export class ExamDetailsComponent implements OnInit {
       this.examService.getExamDetails(this.uniquecode)
         .subscribe(
         data => {
-
+          
           this.examdetails = data[0];
+          this.examQuestions = this.examdetails.questions; 
+          console.log(JSON.stringify(this.examQuestions)) ;
           var exDate = this.utilService.getBrokenDate(this.examdetails.examdate);
           var reDate = this.utilService.getBrokenDate(this.examdetails.resultdate);
           
@@ -143,15 +148,6 @@ export class ExamDetailsComponent implements OnInit {
 
 
   open(openFor) {
-    // var modalRef: any ;
-    // modalRef = this.modalService.open(AssignScannerComponent).result.then((result) => {
-    //   this.closeResult = `Closed with: ${result}`;
-    // }, (reason) => {
-    //   this.closeResult = `Dismissed`;
-    // });
-
-    // modalRef.assignCopies = [{"subodh": 1000}, {"neelesh": 2000}]
-
 
     const modalRef = this.modalService.open(AssignScannerComponent,   { windowClass: 'scannerpopup'});
     modalRef.componentInstance.examFormValues =  this.examForm.value;

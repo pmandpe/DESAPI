@@ -10,16 +10,11 @@
 <div [hidden]="!showUniqueCode">
     <h4>{{uniquecode}}</h4>
 </div>
-<div class="">
+<div class="container-fluid">
     <form [formGroup]="examForm" (ngSubmit)="saveExam()" class="form-login">
         <div class="row">
             <div class="col-lg-6 col-sm-6 col-md-6">
                 <div class="form-group">
-
-
-
-
-
                     <label for="subjectcode">Subject Code</label>
                     <input type="text" formControlName="subjectcode" class="form-control"
                         [readonly]="disableSubjectCode"
@@ -40,10 +35,10 @@
                 </div>
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group ">
             <div>
                 <div class="row">
-                    <div class="col-lg-6 col-sm-6 col-md-6">
+                    <div class="col-lg-3 col-sm-6 col-md-3">
 
                         <label for="examdate">Exam Date</label>
                         <div class="input-group">
@@ -62,7 +57,7 @@
 
                     </div>
 
-                    <div class="col-lg-6 col-sm-6 col-md-6">
+                    <div class="col-lg-3 col-sm-6 col-md-3">
 
 
                         <label for="resultdate">Result Date</label>
@@ -82,21 +77,9 @@
 
 
                     </div>
-                </div>
-            </div>
-        </div>
 
 
-
-
-
-
-
-
-        <div class="form-group">
-            <div>
-                <div class="row">
-                    <div class="col-lg-4 col-sm-6 col-md-4">
+                    <div class="col-lg-2 col-sm-6 col-md-4">
                         <div>
                             <label for="numberofcopies">Total Copies</label>
                         </div>
@@ -112,7 +95,7 @@
 
                     </div>
 
-                    <div class="col-lg-4 col-sm-6 col-md-4">
+                    <div class="col-lg-2 col-sm-6 col-md-4">
                         <div>
                             <label for="resultdate">Assigned For Scanning</label>
                         </div>
@@ -123,7 +106,7 @@
                         </div>
 
                     </div>
-                    <div class="col-lg-4 col-sm-6 col-md-4">
+                    <div class="col-lg-2 col-sm-6 col-md-4">
                             <div>
                                 <label for="resultdate">Assigned For Evaluation</label>
                             </div>
@@ -137,6 +120,9 @@
                 </div>
             </div>
         </div>
+
+
+
 
 
         <div class="form-group">
@@ -167,22 +153,24 @@
                 
                 </span>
         </div>
-
-    
-
-
-
     </form>
 
 </div>
+<br>
 
+<app-exam-questions [examQuestions]="examQuestions"></app-exam-questions>
 
-<!-- Popoup Window -->
+<!-- Assigning Copies Popoup Window -->
 <ng-template #testcontent let-modal>
 <app-assign-scanner></app-assign-scanner>
 </ng-template>
 
 <!-- Popoup Window -->
+
+<!--Questions Window-->
+
+
+
 
 
 <div>{{closeResult}}</div>
