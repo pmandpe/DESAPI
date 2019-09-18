@@ -15,10 +15,11 @@ app.use(cors());
 
 // api routes
 app.use('/users', require('./users/users.controller'));
-app.use('/api/v1/master', require('./api/master.controller'));
-app.use('/api/v1/lookup', require('./api/lookup.controller'));
-app.use('/api/v1/exams', require('./api/exam.controller'));
-app.use('/api/v1/scanner', require('./api/scanner/dashboard/dashboard.controller'));
+app.use('/api/v1/master', require('./api/administrator/master.controller'));
+app.use('/api/v1/lookup', require('./api/administrator/lookup.controller'));
+app.use('/api/v1/exams', require('./api/administrator/exam.controller'));
+app.use('/api/v1/scanner', require('./api/scanner/controllers/scanner.controller'));
+app.use('/api/v1/evaluator', require('./api/evaluator/controllers/evaluation.controller'));
 
 
 //app.use('/api/v1', (req, res) => res.send('Hello World!')) ;

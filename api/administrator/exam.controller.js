@@ -13,6 +13,7 @@ router.post('/save', authorize(Role.Admin), saveExams);
 router.post('/details', authorize(Role.Admin), getExamsDetails);
 router.post('/scanningassignment/save', authorize(Role.Admin), saveScanningAssignment);
 router.post('/evaluationassignment/save', authorize(Role.Admin), saveEvaluationAssignment);
+router.post('/question/save', authorize(Role.Admin), saveQuestion);
 
 
 module.exports = router;
@@ -46,6 +47,13 @@ async function saveEvaluationAssignment(req, res, next) {
 
 async function getExamsDetails(req, res, next) {
     var examdetails = await examService.getExamDetails(req.body.examcode);
+    res.json(examdetails);
+}
+
+
+async function saveQuestion(req, res, next) {
+    var examdetails = await examService.getExamDetails(req.body.examcode);
+    var returnValue = await examService.saveQuestion(examdetails[0], req.body.questions, req.username) ;
     res.json(examdetails);
 }
 

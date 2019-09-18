@@ -12,7 +12,8 @@ module.exports = {
     getExamDetails,
     getUniqueCode,
     saveScanningAssignment,
-    saveEvaluationAssignment
+    saveEvaluationAssignment,
+    saveQuestion
 };
 
 async function saveExam(exam, userid) {
@@ -125,6 +126,22 @@ async function saveEvaluationAssignment(evaluationData, userid) {
         $set: addDoc
     };
 
+    updateCount = await connectionService.updateDocument(uniqueIdQuery, setQuery, "examCollection");
+    if (updateCount == 11000) {//its a duplicate error
+        return { "updateCount": updateCount, "error": "This subject code already exist. Please try a different one." };
+    }
+}
+
+
+
+
+async function saveQuestion(examDetails, questions, userid) {
+    var uniqueIdQuery = { "examcode": examDetails.examcode }
+    var updateCount = 0;
+    
+    var setQuery = {
+        $set: { "questions" : questions,  "modifiedby" : userid, "modifieddate" : new Date()}
+    };
     updateCount = await connectionService.updateDocument(uniqueIdQuery, setQuery, "examCollection");
     if (updateCount == 11000) {//its a duplicate error
         return { "updateCount": updateCount, "error": "This subject code already exist. Please try a different one." };

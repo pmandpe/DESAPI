@@ -84,3 +84,11 @@ button.calendar, button.calendar:active {
     bottom: 0;
     right: 0;
   }
+
+  label{
+    font-weight:600;
+    margin-top: 0.5em;
+    margin-bottom: 0.1em;
+
+  }
+  

@@ -17,6 +17,7 @@ import { AdminDashboardComponent } from '../administrator/admin-dashboard/admin-
 import { ContainerComponent } from '../administrator/container/container.component';
 import { MarkingComponent } from '../evaluator/marking/marking.component';
 import { EvalContainerComponent } from '../evaluator/eval-container/eval-container.component';
+import { ExamQuestionDetailsComponent } from '../administrator/exams/exam-question-details/exam-question-details.component';
 
 
 
@@ -56,6 +57,12 @@ const routes: Routes = [
       {
         path: 'edit-exam/:mode/:examcode',
         component: ExamDetailsComponent
+      },
+      
+
+      {
+        path: 'exam-question-details/:mode/:questionno',
+        component: ExamQuestionDetailsComponent
       }
     ]
   },

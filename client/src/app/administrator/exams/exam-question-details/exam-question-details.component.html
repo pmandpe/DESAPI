@@ -1,1 +1,95 @@
-<p>exam-question-details works!</p>
+<div class="modal-header">
+    <h3 class="modal-title" style="width:200px;" id="modal-basic-title">Edit Question</h3>
+    <div class="container-fluid">
+        <span class="float-right">
+
+            <button type="button" class="btn btn-primary" (click)="save(examQuestion.questionno)">
+                Save
+            </button>
+            &nbsp;&nbsp;
+            <button type="button" class="btn btn-danger" (click)="activeModal.close()">
+                Close
+            </button>
+        </span>
+    </div>
+</div>
+<div class="modal-body">
+    <alert></alert>
+
+
+    <div class="container-fluid">
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-2 col-lg-4">
+
+                    <label for="questionno">Question #</label>
+                    <input type="input" [disabled]="true" class="form-control" [(ngModel)]="examQuestion.questionno" />
+                </div>
+
+                <div class="col-sm-2 col-lg-4">
+                    <label for="questiontype">Question Type</label>
+                    <input type="input" class="form-control" [(ngModel)]="examQuestion.questiontype" />
+                </div>
+
+                <div class="col-sm-2 col-lg-4">
+                    <label for="questionno">Total Marks</label>
+                    <input type="input" class="form-control" [(ngModel)]="examQuestion.totalmarks" />
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-lg-12">
+
+                    <label for="questiontext">Question</label>
+                    <textarea type="input" class="form-control" [(ngModel)]="examQuestion.questiontext">
+                    </textarea>
+                </div>
+                <div class="col-sm-12 col-lg-12">
+                    <label for="questiontext">Ideal Answer</label>
+                    <textarea type="input" class="form-control" [(ngModel)]="examQuestion.idealanswer">
+                        </textarea>
+                </div>
+            </div>
+            <br>
+            <h3> Sub Questions</h3>
+            <div  style=" width: 100%;">
+                <div class="container-fluid border"  style="overflow: auto; max-height:400px;">
+                    <div *ngIf="examQuestion.sections && examQuestion.sections.length > 0" class="table table-striped">
+
+                        <div class="row shadow p-3 mb-5 bg-white rounded" *ngFor="let section of examQuestion.sections">
+
+                            <div class="col-sm-4 col-lg-4">
+                                <label for="subquestionid">Sub Question Id</label>
+                                <input type="input" class="form-control" [(ngModel)]="section.subquestionid" />
+                            </div>
+                            <div class="col-sm-4 col-lg-4">
+                                <label for="subquestionmarks">Sub Question Type</label>
+                                <input type="input" class="form-control" [(ngModel)]="section.subquestiontype" />
+                            </div>
+                            <div class="col-sm-4 col-lg-4">
+                                <label for="questiontext">Sub Question Marks</label>
+                                <input type="input" class="form-control" [(ngModel)]="section.subquestionmarks" />
+                            </div>
+
+                            <div class="col-sm-6 col-lg-6">
+                                <label for="questiontext">Sub Question</label>
+                                <textarea type="input" class="form-control" [(ngModel)]="section.subquestiontext">
+                        </textarea>
+                            </div>
+                            <div class="col-sm-6 col-lg-6">
+                                <label for="questiontext">Ideal Answer</label>
+                                <textarea type="input" class="form-control" [(ngModel)]="section.idealanswer">
+                            </textarea>
+                            </div>
+
+                        </div>
+
+                        
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>

@@ -35,6 +35,7 @@ import { EvalContainerComponent } from './evaluator/eval-container/eval-containe
 import { ScanDocumentComponent } from './scanner/scan-document/scan-document.component';
 import {PdfViewerModule} from 'ng2-pdf-viewer'
 import { ExamQuestionsComponent } from './administrator/exams/exam-questions/exam-questions.component';
+import { ExamQuestionDetailsComponent } from './administrator/exams/exam-question-details/exam-question-details.component';
 
 const appRoutes: Routes = [
   {
@@ -75,7 +76,8 @@ const appRoutes: Routes = [
     EvalContainerComponent,
     EvaluatorDashboardComponent,
     ScanDocumentComponent,
-    ExamQuestionsComponent
+    ExamQuestionsComponent,
+    ExamQuestionDetailsComponent
   ],
   imports: [
     BrowserModule,

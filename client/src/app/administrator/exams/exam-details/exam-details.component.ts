@@ -23,7 +23,7 @@ export class ExamDetailsComponent implements OnInit {
   returnUrl: string;
   examQuestions: any;
   mode: string;
-  uniquecode: string;
+  examcode: string;
   examdetails: any;
   disableSubjectCode = false;
   showUniqueCode = false;
@@ -59,24 +59,24 @@ export class ExamDetailsComponent implements OnInit {
     });
     //this.mode = this.examForm.value.editmode ; 
     this.mode = this._Activatedroute.snapshot.paramMap.get("mode") ; 
-    this.uniquecode = this._Activatedroute.snapshot.paramMap.get("examcode");
+    this.examcode = this._Activatedroute.snapshot.paramMap.get("examcode");
     
   
 
-    if (this.uniquecode) {
+    if (this.examcode) {
       this.showUniqueCode = false;
     }
 
     if (this.mode != "NEW") {
       this.disableSubjectCode = true;
 
-      this.examService.getExamDetails(this.uniquecode)
+      this.examService.getExamDetails(this.examcode)
         .subscribe(
         data => {
           
           this.examdetails = data[0];
           this.examQuestions = this.examdetails.questions; 
-          console.log(JSON.stringify(this.examQuestions)) ;
+         
           var exDate = this.utilService.getBrokenDate(this.examdetails.examdate);
           var reDate = this.utilService.getBrokenDate(this.examdetails.resultdate);
           
@@ -151,7 +151,7 @@ export class ExamDetailsComponent implements OnInit {
 
     const modalRef = this.modalService.open(AssignScannerComponent,   { windowClass: 'scannerpopup'});
     modalRef.componentInstance.examFormValues =  this.examForm.value;
-    modalRef.componentInstance.examCode = this.uniquecode ; 
+    modalRef.componentInstance.examCode = this.examcode ; 
     modalRef.componentInstance.userType = openFor ;
     
     modalRef.result.then((result) => {

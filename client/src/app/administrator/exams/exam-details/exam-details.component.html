@@ -8,7 +8,7 @@
 </div>
 
 <div [hidden]="!showUniqueCode">
-    <h4>{{uniquecode}}</h4>
+    <h4>{{examcode}}</h4>
 </div>
 <div class="container-fluid">
     <form [formGroup]="examForm" (ngSubmit)="saveExam()" class="form-login">
@@ -16,9 +16,8 @@
             <div class="col-lg-6 col-sm-6 col-md-6">
                 <div class="form-group">
                     <label for="subjectcode">Subject Code</label>
-                    <input type="text" formControlName="subjectcode" class="form-control"
-                        [readonly]="disableSubjectCode"
-                        [ngClass]="{ 'is-invalid': submitted && f.subjectcode.errors }" />
+                    <input type="text" formControlName="subjectcode" class="form-control" [readonly]="disableSubjectCode" [ngClass]="{ 'is-invalid': submitted && f.subjectcode.errors }"
+                    />
                     <div *ngIf="submitted && f.subjectcode.errors" class="invalid-feedback">
                         <div *ngIf="f.subjectcode.errors.required">Subject Code is required</div>
                     </div>
@@ -27,8 +26,8 @@
             <div class="col-lg-6 col-sm-6 col-md-6">
                 <div class="form-group">
                     <label for="subjectname">Exam Name</label>
-                    <input type="input" formControlName="examname" class="form-control"
-                        [ngClass]="{ 'is-invalid': submitted && f.examname.errors }" />
+                    <input type="input" formControlName="examname" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.examname.errors }"
+                    />
                     <div *ngIf="submitted && f.examname.errors" class="invalid-feedback">
                         <div *ngIf="f.examname.errors.required">Exam Name is required</div>
                     </div>
@@ -42,11 +41,10 @@
 
                         <label for="examdate">Exam Date</label>
                         <div class="input-group">
-                            <input id="examdate" formControlName="examdate" class="form-control"
-                                placeholder="yyyy-mm-dd" name="dpexamdate" ngbDatepicker #dpexamdate="ngbDatepicker">
+                            <input id="examdate" formControlName="examdate" class="form-control" placeholder="yyyy-mm-dd" name="dpexamdate" ngbDatepicker
+                                #dpexamdate="ngbDatepicker">
                             <div class="input-group-append">
-                                <button class="btn btn-outline-secondary calendar" (click)="dpexamdate.toggle()"
-                                    type="button"></button>
+                                <button class="btn btn-outline-secondary calendar" (click)="dpexamdate.toggle()" type="button"></button>
                             </div>
                         </div>
 
@@ -62,11 +60,10 @@
 
                         <label for="resultdate">Result Date</label>
                         <div class="input-group">
-                            <input id="resultdate" formControlName="resultdate" class="form-control"
-                                placeholder="yyyy-mm-dd" name="dpresultdate" ngbDatepicker #dpresultdate="ngbDatepicker">
+                            <input id="resultdate" formControlName="resultdate" class="form-control" placeholder="yyyy-mm-dd" name="dpresultdate" ngbDatepicker
+                                #dpresultdate="ngbDatepicker">
                             <div class="input-group-append">
-                                <button class="btn btn-outline-secondary calendar" (click)="dpresultdate.toggle()"
-                                    type="button"></button>
+                                <button class="btn btn-outline-secondary calendar" (click)="dpresultdate.toggle()" type="button"></button>
                             </div>
                         </div>
 
@@ -84,8 +81,8 @@
                             <label for="numberofcopies">Total Copies</label>
                         </div>
                         <div>
-                            <input type="number" formControlName="numberofcopies" class="form-control"
-                                [ngClass]="{ 'is-invalid': submitted && f.numberofcopies.errors }" />
+                            <input type="number" formControlName="numberofcopies" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.numberofcopies.errors }"
+                            />
                             <div *ngIf="submitted && f.numberofcopies.errors">
                                 <div *ngIf="f.resultdate.errors.required" class="error">Result Date is required</div>
                             </div>
@@ -100,23 +97,19 @@
                             <label for="resultdate">Assigned For Scanning</label>
                         </div>
                         <div>
-                            <input type="number" [readonly]="true" formControlName="totalcopiesassignedforscanning"
-                                class="form-control"
-                               />
+                            <input type="number" [readonly]="true" formControlName="totalcopiesassignedforscanning" class="form-control" />
                         </div>
 
                     </div>
                     <div class="col-lg-2 col-sm-6 col-md-4">
-                            <div>
-                                <label for="resultdate">Assigned For Evaluation</label>
-                            </div>
-                            <div>
-                                <input type="number" [readonly]="true" formControlName="totalcopiesassignedforevaluation"
-                                    class="form-control"
-                                   />
-                            </div>
-    
+                        <div>
+                            <label for="resultdate">Assigned For Evaluation</label>
                         </div>
+                        <div>
+                            <input type="number" [readonly]="true" formControlName="totalcopiesassignedforevaluation" class="form-control" />
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -127,8 +120,8 @@
 
         <div class="form-group">
             <label for="examyear">Comments</label>
-            <input type="input" formControlName="comments" class="form-control"
-                [ngClass]="{ 'is-invalid': submitted && f.comments.errors }" />
+            <input type="input" formControlName="comments" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.comments.errors }"
+            />
         </div>
 
         <div class="form-group">
@@ -139,37 +132,40 @@
 
         <div class="form-group">
             <button [disabled]="loading" class="btn btn-primary">Save Exam</button>
-            <img *ngIf="loading"
-                src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+
+            <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+            />
 
 
-                <span style="float:right"> <button type="button" class="btn btn-lg btn-outline-primary" (click)="open('SCANNER')" 
-                    [disabled]="!(uniquecode && uniquecode.length > 2)">Assign For Scanning</button>
-                
-                </span>
-                <span style="width:20px;float:right;">&nbsp;</span>
-                <span style="float:right"> <button type="button" class="btn btn-lg btn-outline-primary" (click)="open('EVALUATOR')" [disabled]="!(uniquecode && uniquecode.length > 2)">Assign For
-                        Evaluation</button>
-                
-                </span>
+            <span style="float:right">
+                <button type="button" class="btn btn-lg btn-outline-primary" (click)="open('SCANNER')" [disabled]="!(uniquecode && uniquecode.length > 2)">Assign For Scanning</button>
+
+            </span>
+            <span style="width:20px;float:right;">&nbsp;</span>
+            <span style="float:right">
+                <button type="button" class="btn btn-lg btn-outline-primary" (click)="open('EVALUATOR')" [disabled]="!(uniquecode && uniquecode.length > 2)">Assign For Evaluation
+                </button>
+
+            </span>
         </div>
     </form>
 
 </div>
 <br>
+<div class="container-fluid">
+    <div *ngIf="mode=='EDIT'">
+        <app-exam-questions [examQuestions]="examQuestions" [examcode]="examcode"></app-exam-questions>
+    </div>
+    <!-- Assigning Copies Popoup Window -->
+    <ng-template #testcontent let-modal>
+        <app-assign-scanner></app-assign-scanner>
+    </ng-template>
 
-<app-exam-questions [examQuestions]="examQuestions"></app-exam-questions>
+    <!-- Popoup Window -->
 
-<!-- Assigning Copies Popoup Window -->
-<ng-template #testcontent let-modal>
-<app-assign-scanner></app-assign-scanner>
-</ng-template>
+    <!--Questions Window-->
 
-<!-- Popoup Window -->
-
-<!--Questions Window-->
-
-
+</div>
 
 
 

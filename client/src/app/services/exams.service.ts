@@ -59,5 +59,14 @@ export class ExamService {
 
     }
 
+    saveQuestion(questionData) {
+        return this.http.post<any>(environment.apiURL + `/api/v1/exams/question/save`, questionData)
+            .pipe(map((res: Response) => {
+
+                return res ; 
+            }))
+
+    }
+
 
 }
