@@ -1,5 +1,6 @@
 const config = require('config.json');
 const utilities = require('utils/utilities.service')
+var fs = require('fs-extra')
 
 var connectionService = require('utils/connection.service')
 var Q = require('q');
@@ -128,10 +129,31 @@ async function saveEvaluationAssignment(evaluationData, userid) {
 
     updateCount = await connectionService.updateDocument(uniqueIdQuery, setQuery, "examCollection");
     if (updateCount == 11000) {//its a duplicate error
-        return { "updateCount": updateCount, "error": "This subject code already exist. Please try a different one." };
+        return { "updateCount": updateCount, "error": "Error in assigning for scanning." };
+    }
+    else{
+        //cut and paste copies from scanned folder to evaulator's folder.
+        var copyFiles = await copyAssignedCopiesToUserFolder(userid, evaluationData.examcode)
     }
 }
 
+
+async function copyAssignedCopiesToUserFolder(userid, examcode){
+    var dir = config.fileLocation + userid  ;
+    console.log(dir) ;
+    if (!fs.existsSync(dir)){
+        fs.mkdirSync(dir) ; // make the parent directory
+        fs.mkdirSync(dir + "/scanned") ; // keep all the assigned scanned copies here
+        fs.mkdirSync(dir + "/evaluated") ; // keep all the evaluated copies here.
+        try{
+        var filesCopied = await fs.copy(config.fileLocation + "/" + examcode + "/" + userid, dir + "/scanned") ;
+        }
+        catch(error){
+            console.error("Error in copying files from exam folder to scanned folder")
+        }
+
+    }
+}
 
 
 

@@ -52,7 +52,10 @@
                 </div>
             </div>
             <br>
-            <h3> Sub Questions</h3>
+            <span class="float-left"><h3> Sub Questions</h3></span>
+            <span class="float-right"><h3> 
+                <button class="btn btn-primary" (click)="addNewSubQuestion()">Add Sub Question</button>
+            </h3></span>
             <div  style=" width: 100%;">
                 <div class="container-fluid border"  style="overflow: auto; max-height:400px;">
                     <div *ngIf="examQuestion.sections && examQuestion.sections.length > 0" class="table table-striped">
@@ -64,7 +67,7 @@
                                 <input type="input" class="form-control" [(ngModel)]="section.subquestionid" />
                             </div>
                             <div class="col-sm-4 col-lg-4">
-                                <label for="subquestionmarks">Sub Question Type</label>
+                                <label for="subquestiontype">Sub Question Type</label>
                                 <input type="input" class="form-control" [(ngModel)]="section.subquestiontype" />
                             </div>
                             <div class="col-sm-4 col-lg-4">

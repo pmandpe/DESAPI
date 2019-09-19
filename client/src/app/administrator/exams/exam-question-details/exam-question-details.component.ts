@@ -4,6 +4,7 @@ import { ExamService } from '../../../services/exams.service';
 import { first } from 'rxjs/operators';
 import { AlertService } from '../../../services';
 import { UtilService } from '../../../services/utilities.service';
+import { FormBuilder, FormArray } from '@angular/forms';
 
 @Component({
   selector: 'app-exam-question-details',
@@ -15,14 +16,28 @@ export class ExamQuestionDetailsComponent implements OnInit {
   @Input() examQuestions;
   @Input() examcode;
   @Input() mode;
+
+
   loading: any;
-  constructor(public activeModal: NgbActiveModal, private examService: ExamService, private alertService: AlertService, private utilService: UtilService) { }
+  constructor(public activeModal: NgbActiveModal, private examService: ExamService, private _fb: FormBuilder, private alertService: AlertService, private utilService: UtilService) { }
 
   ngOnInit() {
-    if (!this.examQuestions){ //In case its a new question, the examQuestions will come as undefined
-      this.examQuestions = [] ;
-      this.examQuestion = this.getNewQuestion() ; 
+    if (!this.examQuestions) { //In case its a new question, the examQuestions will come as undefined
+      this.examQuestions = [];
+      this.examQuestion = this.getNewQuestion();
     }
+   
+  }
+
+ 
+  
+
+  addNewSubQuestion() {
+    if (!this.examQuestion.sections){
+      this.examQuestion.sections =[] ;
+    }
+    this.examQuestion.sections.push(this.getNewSubQuestion());
+    //this.formArr.push(this.initItemRows()) ;
   }
 
   save(questionNo) {
@@ -41,12 +56,12 @@ export class ExamQuestionDetailsComponent implements OnInit {
       });
     }
     else { //If mode is NEW
-      var highestQuestionNo = this.utilService.getMax(this.examQuestions, "questionno") ;
-      if (!highestQuestionNo){
+      var highestQuestionNo = this.utilService.getMax(this.examQuestions, "questionno");
+      if (!highestQuestionNo) {
         highestQuestionNo = "0";
       }
-      this.examQuestion.questionno = parseInt(highestQuestionNo) + 1 ;
-      this.examQuestions.push(this.examQuestion) ;
+      this.examQuestion.questionno = parseInt(highestQuestionNo) + 1;
+      this.examQuestions.push(this.examQuestion);
 
     }
 
@@ -55,19 +70,19 @@ export class ExamQuestionDetailsComponent implements OnInit {
     var params = {
       "questions": this.examQuestions,
       "examcode": this.examcode,
-      "mode": this.mode 
+      "mode": this.mode
     }
     this.examService.saveQuestion(params)
       .pipe(first())
       .subscribe(
-      data => {
-        this.loading = false;
-        this.alertService.success("Data Saved Successfully");
-      },
-      error => {
-        this.alertService.error(error);
-        this.loading = false;
-      });
+        data => {
+          this.loading = false;
+          this.alertService.success("Data Saved Successfully");
+        },
+        error => {
+          this.alertService.error(error);
+          this.loading = false;
+        });
 
   }
 
@@ -80,7 +95,18 @@ export class ExamQuestionDetailsComponent implements OnInit {
       "questiontype": "",
       "sections": []
     }
-    return newQuestion ; 
+    return newQuestion;
+  }
+
+  getNewSubQuestion() {
+    var newQuestion = {
+      "subquestionid": 0,
+      "subquestiontext": "",
+      "totalmarks": "",
+      "idealanswer": "",
+      "subquestiontype": ""
+     }
+    return newQuestion;
   }
 
 
