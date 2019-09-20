@@ -7,6 +7,7 @@ import { environment } from '../../environments/environment';
 
 
 
+
 @Injectable({ providedIn: 'root' })
 export class EvaluatorService {
 
@@ -15,6 +16,8 @@ export class EvaluatorService {
 
     }
 
+
+    
 
 
     getDashboard() {
@@ -40,6 +43,15 @@ export class EvaluatorService {
             .pipe(map((res: Response) => {
 
                 
+                return res ; 
+            }))
+
+    }
+
+
+    getQuestions(examcode) {
+        return this.http.post<any>(environment.apiURL + `/api/v1/evaluator/questions`, {"examcode": examcode})
+            .pipe(map((res: Response) => {
                 return res ; 
             }))
 

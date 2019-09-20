@@ -25,6 +25,7 @@ export class MarkingComponent implements OnInit {
     .subscribe(
       data => {
         this.examData = data;
+        
 
       },
       error => {

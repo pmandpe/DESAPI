@@ -17,7 +17,8 @@ const Role = require('_helpers/roles');
 // routes
 router.post('/marking', authorize(Role.Evaluator), getEvaluationData);
 router.post('/dashboard', authorize(Role.Evaluator), getDashboardData);
-router.post('/answerspdf', authorize(Role.Evaluator), getAnswersPDF);
+router.post('/answerspdf', authorize(Role.Evaluator), getAnswersPdf);
+router.post('/questions', authorize(Role.Evaluator), getQuestions);
 
 module.exports = router;
 
@@ -42,9 +43,26 @@ async function getEvaluationData(req, res, next) {
 }
 
 
-async function getAnswersPDF(req, res, next){
-   
+async function getAnswersPdf(req, res, next){
+    var username = req.username;
+    var examCode = req.body.examcode ; 
+    var data = await evaluationService.getAnswersPdf(examCode, username) ;
+    res.contentType('application/pdf') ;
+    res.send(data);
+    
 }
+
+
+async function getQuestions(req, res, next) {
+    var username = req.username;
+    var examCode = req.body.examcode ; 
+    var questions = await evaluationService.getQuestions(username, examCode) ;
+
+   
+
+    res.json(questions);
+}
+
 
 
 
