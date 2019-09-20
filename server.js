@@ -5,6 +5,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const jwt = require('_helpers/jwt');
 const errorHandler = require('_helpers/error-handler');
+var db ; 
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -30,6 +31,7 @@ global.db_connections = [] ;
 global.des_server = ''
 // start server
 const port = process.env.NODE_ENV === 'production' ? 80 : 4000;
+require("utils/mongo-pool").initPool();
 const server = app.listen(port, function () {
     console.log('Server listening on port ' + port);
 });

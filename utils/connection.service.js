@@ -2,6 +2,7 @@ var config = require('config.json');
 var mongodb = require('mongodb');
 var service = {};
 var Q = require('q');
+var MongoPool = require("utils/mongo-pool");
 
 service.getConnection = getConnection;
 service.getDocuments = getDocuments;
@@ -12,7 +13,8 @@ service.updateDocument = updateDocument;
 module.exports = service
 
 async function getConnection() {
-
+    var deferred = Q.defer();
+    /*
     let url = 'mongodb://'
     var deferred = Q.defer();
     if (config.auth_user) {
@@ -26,35 +28,20 @@ async function getConnection() {
     //const uri = "mongodb://localhost:27017";
 
 
-    mongodb.MongoClient.connect(uri, { useNewUrlParser: true }, function (err, database) {
+    mongodb.MongoClient.connect(uri, { useNewUrlParser: true, poolSize:10 }, function (err, database) {
         if (err) {
             deferred.reject(err.name + ':' + err.message);
         }
 
         global.db_connections.push({ "appServer": "mongo", "appServerAddress": "mongodb", "appDB": config.database, "connection": database });
         deferred.resolve(database);
-
-        if (database && global.db_connections.length > 0) {
-            database.on('close', () => {
-                if (closeConnection(database)) {
-                    console.log('Connection is  closed');
-                }
-            });
-            database.on('error', () => {
-                if (closeConnection(database)) {
-                    console.log('Connection is  closed');
-                }
-            });
-            database.on('timeout', () => {
-                if (closeConnection(database)) {
-                    console.log('Connection is  closed');
-                }
-            });
-
-        }
-
     })
 
+    return deferred.promise;
+    */
+    MongoPool.getInstance(function (db){
+        deferred.resolve(db);
+    });
     return deferred.promise;
 }
 
@@ -146,7 +133,7 @@ async function updateDocument(whereClause, setQuery, collectionName) {
         return err.code;
     }
     finally {
-        this.closeConnection(connectionObject);
+       // this.closeConnection(connectionObject);
     }
     return -1;
 

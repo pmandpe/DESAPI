@@ -25,6 +25,8 @@ export class AssignScannerComponent implements OnInit {
 
   ngOnInit() {
 
+    console.log(JSON.stringify(this.examFormValues));
+
     this.lookupService.getAssignees(this.userType)
       .subscribe(
       data => {
@@ -86,7 +88,7 @@ export class AssignScannerComponent implements OnInit {
       params.examcode = this.examCode;
       params.totalcopiesassignedforscanning = totalAssignedCopies;
       params.scanningassignment = scanningAssignment;
-  
+
       this.examService.saveScanningAssignment(params)
         .pipe(first())
         .subscribe(
@@ -105,10 +107,8 @@ export class AssignScannerComponent implements OnInit {
 
   saveEvaluationData(totalAssignedCopies, evaluationassignment) {
     // Evaluation cannot be done without scanning so number of copies in evaluation cannot be greater than scanned copies
-     if (totalAssignedCopies > this.examFormValues.scannedcopies) {
+    if (totalAssignedCopies > this.examFormValues.scannedcopies) {
       this.alertService.error("Copies assigned for evaluation cannot be more than total scanned copies.");
-     
-
     }
     else {
 
@@ -117,7 +117,7 @@ export class AssignScannerComponent implements OnInit {
       params.examcode = this.examCode;
       params.totalcopiesassignedforevaluation = totalAssignedCopies;
       params.evaluationassignment = evaluationassignment;
-    
+
       this.examService.saveEvaluationAssignment(params)
         .pipe(first())
         .subscribe(

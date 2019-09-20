@@ -40,13 +40,13 @@ async function saveExam(exam, userid) {
         addDoc.examcode = this.getUniqueCode(exam.examname);
         addDoc.createdby = userid;
         addDoc.createddate = new Date();
-        addDoc.scanningassignment = [] ;
-        addDoc.evaluationassignment = [] ;
+        addDoc.scanningassignment = [];
+        addDoc.evaluationassignment = [];
         addDoc.status = "NEW";
         updateCount = await connectionService.addDocuments(addDoc, "examCollection");
     }
     if (exam.editmode == 'EDIT') {
-        updateCount = await connectionService.updateDocument(uniqueIdQuery, setQuery, "subjectCollection");
+        updateCount = await connectionService.updateDocument(uniqueIdQuery, setQuery, "examCollection");
     }
     if (updateCount == 11000) {//its a duplicate error
         return { "updateCount": updateCount, "error": "This subject code already exist. Please try a different one." };
@@ -116,6 +116,7 @@ async function saveScanningAssignment(scanningData, userid) {
 
 async function saveEvaluationAssignment(evaluationData, userid) {
     var uniqueIdQuery = { "examcode": evaluationData.examcode }
+
     var addDoc = {
         "evaluationassignment": evaluationData.evaluationassignment,
         "totalcopiesassignedforevaluation": evaluationData.totalcopiesassignedforevaluation,
@@ -131,28 +132,56 @@ async function saveEvaluationAssignment(evaluationData, userid) {
     if (updateCount == 11000) {//its a duplicate error
         return { "updateCount": updateCount, "error": "Error in assigning for scanning." };
     }
-    else{
+    else {
         //cut and paste copies from scanned folder to evaulator's folder.
-        var copyFiles = await copyAssignedCopiesToUserFolder(userid, evaluationData.examcode)
+        evaluationData.evaluationassignment.forEach(function (assignment) {
+            var copyFiles = copyAssignedCopiesToUserFolder(assignment.username, evaluationData.examcode)
+        });
+
     }
 }
 
 
-async function copyAssignedCopiesToUserFolder(userid, examcode){
-    var dir = config.fileLocation + userid  ;
-    console.log(dir) ;
-    if (!fs.existsSync(dir)){
-        fs.mkdirSync(dir) ; // make the parent directory
-        fs.mkdirSync(dir + "/scanned") ; // keep all the assigned scanned copies here
-        fs.mkdirSync(dir + "/evaluated") ; // keep all the evaluated copies here.
-        try{
-        var filesCopied = await fs.copy(config.fileLocation + "/" + examcode + "/" + userid, dir + "/scanned") ;
+async function copyAssignedCopiesToUserFolder(username, examcode) {
+    var sourceDir = config.fileLocation + "scannedcopies"+ config.filePathSeparator + examcode;
+    
+
+    var fileList = [];
+    var fileRead = await fs.readdir(sourceDir, (err, files) => {
+        files.forEach(file => {
+            fileList.push(file);
+        });
+/*
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir); // make the parent directory
+            //fs.mkdirSync(dir + "\\assigned"); // keep all the assigned scanned copies here
+            //fs.mkdirSync(dir + "\\evaluated"); // keep all the evaluated copies here.
         }
-        catch(error){
+        */
+
+        
+        var destinationDir = config.fileLocation + config.filePathSeparator +  "evaluatedcopies" + config.filePathSeparator + examcode + config.filePathSeparator + username + config.filePathSeparator + "assigned" + config.filePathSeparator ;
+        try {
+            var numberOfFilesToBeAssigned = 3;
+            var assignedCopies = 0;
+            fileList.forEach(function (fileName) {
+                var filesCopied = fs.move(sourceDir + config.filePathSeparator + fileName, destinationDir + config.filePathSeparator  + fileName); 
+                assignedCopies++;
+                if (assignedCopies == numberOfFilesToBeAssigned) {
+                    return true;
+                }
+            })
+
+        }
+        catch (error) {
             console.error("Error in copying files from exam folder to scanned folder")
         }
 
-    }
+
+
+    });
+
+
 }
 
 
@@ -160,9 +189,9 @@ async function copyAssignedCopiesToUserFolder(userid, examcode){
 async function saveQuestion(examDetails, questions, userid) {
     var uniqueIdQuery = { "examcode": examDetails.examcode }
     var updateCount = 0;
-    
+
     var setQuery = {
-        $set: { "questions" : questions,  "modifiedby" : userid, "modifieddate" : new Date()}
+        $set: { "questions": questions, "modifiedby": userid, "modifieddate": new Date() }
     };
     updateCount = await connectionService.updateDocument(uniqueIdQuery, setQuery, "examCollection");
     if (updateCount == 11000) {//its a duplicate error

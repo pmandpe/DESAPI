@@ -1,8 +1,9 @@
 <div class="modal-header">
   <h4 class="modal-title" id="modal-basic-title">Assign To {{(userType == "SCANNER"? "Scanner" : "Evaluator")}}</h4>
-  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+  <!--<button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
-  </button>
+  </button>-->
+  <span class="float-right">Total Scanned Copies : {{examFormValues.scannedcopies}}</span>
 </div>
 <div class="modal-body">
   <alert></alert>

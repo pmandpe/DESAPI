@@ -120,6 +120,7 @@ export class ExamDetailsComponent implements OnInit {
     
 
     var params = this.examForm.value;
+    params.examcode = this.examcode ;
     var resultdateValue = this.examForm.value.resultdate.year.toString().padStart(2, '0') + "-" + this.examForm.value.resultdate.month.toString().padStart(2, '0') + "-" + this.examForm.value.resultdate.day.toString().padStart(2, '0');
     var examdateValue = this.examForm.value.examdate.year + "-" + this.examForm.value.examdate.month.toString().padStart(2, '0') + "-" + this.examForm.value.examdate.day.toString().padStart(2, '0');
     params.resultdate = resultdateValue;
@@ -170,13 +171,4 @@ export class ExamDetailsComponent implements OnInit {
       return `with: ${reason}`;
     }
   }
-
-
-
-
-
-
-
-
-
 }

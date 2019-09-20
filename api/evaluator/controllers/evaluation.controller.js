@@ -43,11 +43,7 @@ async function getEvaluationData(req, res, next) {
 
 
 async function getAnswersPDF(req, res, next){
-    var filePath = "/Users/potomac/Desktop/PM/Backup/DES/pdfsample.pdf" ;
-    fs.readFile(filePath, function(err, data){
-        res.contentType('application/pdf') ;
-        res.send(data);
-    })
+   
 }
 
 
