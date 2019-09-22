@@ -79,9 +79,7 @@ export class ScanDocumentComponent implements OnInit {
     this.DWObject.IfSSL = false; // Set whether SSL is used
     this.DWObject.HTTPPort = location.port == "" ? 80 : 4000;
     var authToken = this.authenctationService.getHeaderToken() ;
-
     this.DWObject.SetHTTPHeader("Authorization" , authToken.Authorization) ; 
-   
     this.DWObject.SetHTTPFormField("examcode", this.examcode);
     //this.DWObject.SetHTTPFormField("DocumentType", "Invoice");
 

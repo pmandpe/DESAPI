@@ -1,6 +1,7 @@
 const config = require('config.json');
 var formidable = require('formidable');
 var fs = require('fs-extra');
+const PDF2Pic = require("pdf2pic");
 var connectionService = require('utils/connection.service')
 var examService = require("../../administrator/exam.service")
 var Q = require('q');
@@ -56,6 +57,7 @@ async function readWriteFile(fields, files, username){
     // save file from temp dir to new dir
     var newPath = config.fileLocation + "/mypdf.pdf";
     var returnValue =  await  fs.writeFile(newPath, data) ;
+    var converToImage = await convertPdfToImage() ; 
     //addAnswer(fields, username) ;
     return true ; 
 
@@ -71,6 +73,20 @@ async function addAnswer(fields, username) {
     addAnswerData.filepath =  ""; 
     addAnswerData.qrcode = ""; 
     console.log(JSON.stringify(addAnswerData)) ;
+}
 
+async function convertPdfToImage(){
+    
+const pdf2pic = new PDF2Pic({
+    density: 100,           // output pixels per inch
+    savename: "untitled",   // output file name
+    savedir: config.fileLocation + "/images/",    // output file location
+    format: "png",          // output file format
+    size: "600x600"         // output size in pixels
+  });
 
+  pdf2pic.convertBulk(config.fileLocation + "mypdf.pdf", -1).then((resolve) => {
+    console.log("image converter successfully!");
+    return resolve;
+  });
 }
