@@ -18,6 +18,7 @@ import { ContainerComponent } from '../administrator/container/container.compone
 import { MarkingComponent } from '../evaluator/marking/marking.component';
 import { EvalContainerComponent } from '../evaluator/eval-container/eval-container.component';
 import { ExamQuestionDetailsComponent } from '../administrator/exams/exam-question-details/exam-question-details.component';
+import { ScannerContainerComponent } from '../scanner/scanner-container/scanner-container.component';
 
 
 
@@ -69,14 +70,18 @@ const routes: Routes = [
   {
     path: 'scanner',
     canActivate: [AuthGuard],
-    component: ScannerDashboardComponent,
-    data: { roles: [Role.Evaluator] },
-  },
-  {
-    path: 'scanner/scandocument',
-    canActivate: [AuthGuard],
-    component: ScanDocumentComponent,
-    data: { roles: [Role.Scanner] }
+    component: ScannerContainerComponent,
+    data: { roles: [Role.Scanner] },
+    children: [
+      {
+        path: 'dashboard',
+        component: ScannerDashboardComponent
+      },
+      {
+        path: 'scandocument/:examcode',
+        component: ScanDocumentComponent
+      }
+    ]
   },
   {
     path: 'evaluator',

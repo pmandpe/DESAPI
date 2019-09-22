@@ -3,12 +3,12 @@
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-6 float-left">
                 <br>
-            <span><h3>Assigned Copies : {{examData.assignedcopies}}</h3></span>
+            <span><h4>Assigned Copies : {{examData.assignedcopies}}</h4></span>
 
         </div>
         <div class="col-lg-6 col-md-6 col-sm-6 float-right" style="text-align: right">
                 <br>
-                <span><h3>Evaluated Copies : {{examData.evaluatedcopies}}</h3></span>
+                <span><h4>Evaluated Copies : {{examData.evaluatedcopies}}</h4></span>
     
             </div>
     </div>
@@ -17,8 +17,10 @@
                 <app-answer-marking></app-answer-marking>
             </div>
             <div class="col-lg-8 col-md-8 col-sm-6">
-                    <br><br>
-                <pdf-viewer [show-borders]="true" [fit-to-page]="true" [src]="mypdf" [render-text]="true" style="display: block"></pdf-viewer>        
+                    <br>
+                    <div style="overflow-y: auto; max-height:80vh;margin-top:-10px">
+                <pdf-viewer [show-borders]="true"  [src]="mypdf" [render-text]="true" style="overflow-y:hidden"></pdf-viewer>        
+            </div>
             </div>
         </div>
 </div>

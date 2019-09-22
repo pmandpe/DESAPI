@@ -35,7 +35,7 @@ export class MarkingComponent implements OnInit {
       });
 
 
-      this.evaluatorService.getPdf()
+      this.evaluatorService.getPdf(this.examCode)
       .subscribe(
         data => {
           this.mypdf = URL.createObjectURL(data);  

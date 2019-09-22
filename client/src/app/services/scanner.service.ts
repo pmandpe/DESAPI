@@ -25,4 +25,12 @@ export class ScannerService {
 
     }
     
+    getScannerSummary(examcode) {
+        return this.http.post<any>(environment.apiURL + `/api/v1/scanner/summary`, {"examcode" : examcode})
+            .pipe(map((res: Response) => {
+                return res ; 
+            }))
+
+    }
+
 }

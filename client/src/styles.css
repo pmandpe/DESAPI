@@ -9,8 +9,17 @@
     padding: 35px;
     }
 
+html,body{
+  height:100%;
+}
 
+.center-container{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
+  }
   .scannerpopup > .modal-dialog {
     max-width: 1490px !important;
     min-width: 971px !important;   
@@ -91,4 +100,42 @@ button.calendar, button.calendar:active {
     margin-bottom: 0.1em;
 
   }
+  .sub-header{
+    font-size:12px;
+    color:#707070;
+    text-align:center;
+  }
+  .center-text{
+
+  }
+  .main-header{
+    font-size:13px;
+    color:#707070;
+    text-align:center;
+  }
+
+  th{
+    color:#707070;
+    font-size:14px ; 
+  }
+  .pdfViewer{
+    overflow-y:hidden !important ; 
+  }
+
+  .pdfViewer .page{
+    width:95% !important ;
+    
+  }
+  .thin-row{
+    line-height: 25px;
+   min-height: 25px;
+   height: 25px;
+  }
+
+  .is-green{
+    background-color:rgb(181, 253, 181) ;
+  }
   
+  .is-red{
+    background-color:rgb(242, 175, 127)
+  }

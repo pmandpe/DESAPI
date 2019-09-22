@@ -69,4 +69,22 @@ export class AuthenticationService {
         localStorage.removeItem('currentUser');
         this.currentUserSubject.next(null);
     }
+
+    interceptToken(request){
+        const currentUser = this.currentUserValue;
+        const isLoggedIn = currentUser && currentUser.token;
+        const isApiUrl = request.url.startsWith(environment.apiURL);
+        if (isLoggedIn && isApiUrl) {
+            request = request.clone({
+                setHeaders: this.getHeaderToken()
+            });
+        }
+        return request ; 
+    }
+
+    getHeaderToken(){
+        return {
+            Authorization: `Bearer ${this.currentUserValue.token}`
+        }
+    }
 }

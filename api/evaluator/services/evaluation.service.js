@@ -33,8 +33,10 @@ async function getQuestions(username, examcode) {
 
 
 async function getAnswersPdf(examcode, username) {
-    var filePath = "/Users/potomac/Desktop/PM/Backup/DES/pdfsample.pdf";
-    //var filePath = config.fileLocation +"/evaluatedcopies/" +examcode + "/" + username + "/assigned/" + fileName  ;
+    var fileName = "serverStartup.pdf" ;
+    //var filePath = "/Users/potomac/Desktop/PM/Backup/DES/pdfsample.pdf";
+    var filePath = config.fileLocation +"/evaluatedcopies/" +examcode + "/" + username + "/assigned/" + fileName  ;
     var fileData = await fs.readFile(filePath);
     return fileData;
 }
+

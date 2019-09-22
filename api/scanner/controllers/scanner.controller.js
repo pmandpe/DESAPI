@@ -2,11 +2,12 @@
 const expressJwt = require('express-jwt');
 const jwt = require('jsonwebtoken');
 const config = require('config.json');
-var formidable = require('formidable');
+
 var util = require('util');
 var express = require('express');
 var fs = require('fs');
 var app = express();
+var scanningService = require("../services/scanning.service") ;
 const router = express.Router();
 
 const dashboardService = require('../services/dashboard.service')
@@ -15,6 +16,8 @@ const Role = require('_helpers/roles');
 
 // routes
 router.post('/dashboard', authorize(Role.Scanner), getDashboardData);
+router.post('/summary', authorize(Role.Scanner), getUserScanningSummary); 
+router.post('/uploadscan', authorize(Role.Scanner), uploadScannedDocument); 
 
 module.exports = router;
 
@@ -26,18 +29,15 @@ async function getDashboardData(req, res, next) {
 }
 
 async function uploadScannedDocument(req, res, next) {
+    var returnValue = await scanningService.uploadDocument(req) ;
+    res.end() ; 
+    
 
-    var form = new formidable.IncomingForm();
-    form.parse(req, function (err, fields, files) {
-        fs.readFile(files.RemoteFile.path, function (err, data) {
-            // save file from temp dir to new dir
-            var newPath = __dirname + "/UploadedImages/" + fields['filename'];
-            fs.writeFile(newPath, data, function (err) {
-                if (err) throw err;
-                console.log('file saved');
-                res.end();
-            });
-        });
-    });
+}
 
+async function getUserScanningSummary(req, res, next){
+    var username = req.username ; 
+    var examcode = req.body.examcode ;
+    var userScanningSummary  = await scanningService.getUserScanningSummary(username, examcode) ;
+    res.json(userScanningSummary);
 }

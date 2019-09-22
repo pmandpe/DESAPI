@@ -38,8 +38,8 @@ export class EvaluatorService {
 
     }
     
-    getPdf() {
-        return this.http.post<any>(environment.apiURL + `/api/v1/evaluator/answerspdf`, {}, {responseType: 'blob' as 'json'})
+    getPdf(examcode) {
+        return this.http.post<any>(environment.apiURL + `/api/v1/evaluator/answerspdf`, {"examcode":examcode}, {responseType: 'blob' as 'json'})
             .pipe(map((res: Response) => {
 
                 
