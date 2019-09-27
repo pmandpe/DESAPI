@@ -24,4 +24,24 @@ export class UtilService {
         }
         return max[prop];
     }
+
+    getTopMenus(page) {
+        var menus = [];
+        switch (page) {
+            case "SUBJECTS":
+                menus.push({ "label": "Subject List", "link": "/admin/subject" });
+                menus.push({ "label": "Add New Subject", "link": "/admin/edit-subject/NEW/0" });
+                break;
+            case "EXAMS":
+                menus.push({ "label": "Exam List", "link": "/admin/exams" });
+                menus.push({ "label": "Add New Exams", "link": "/admin/edit-exam/NEW/0" });
+                break;
+
+
+        }
+        return menus ; 
+
+
+
+    }
 }

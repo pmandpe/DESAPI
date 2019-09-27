@@ -51,16 +51,18 @@ async function uploadDocument(req) {
     var fields = parsedItems[0];
     var files = parsedItems[1];
     //convert the uploaded file to PDF. This is used only for Virtual scanner purpose
-    var returnValue = await readWriteFile(fields, files, username, fields.examcode);
-    return returnValue;
+    var barcode = await getBarcode(fields, files, username, fields.examcode);
+
+    //get the barcode from image
+     return barcode ;
 }
 
-async function readWriteFile(fields, files, username, examcode) {
+async function getBarcode(fields, files, username, examcode) {
 
     var data = await fs.readFile(files.RemoteFile.path);
     var answerCode = "ANS-" + utils.generateUniqueCode();
     var dirPath = config.fileLocation + "scannedcopies" + config.filePathSeparator + examcode + config.filePathSeparator;
-    var filePath = dirPath + answerCode + ".pdf";
+    var pdfFilePath = dirPath + answerCode + ".pdf";
 
     if (!fs.existsSync(dirPath)) {
         fs.mkdirSync(dirPath); // make the parent directory
@@ -69,24 +71,78 @@ async function readWriteFile(fields, files, username, examcode) {
     }
     // save file from temp dir to new dir
    
-
-    var returnValue = await fs.writeFile(filePath, data);
+    //-- convert pdf to image file because barcode/qrcode cant be read directly from pdf file.
+    var returnValue = await fs.writeFile(pdfFilePath, data);
     //var converToImage = await convertPdfToImage(answerCode, dirPath, filePath);
-    var barcode = await getBarcode(answerCode, dirPath, filePath)
-    //addAnswer(fields, username);
-    return true;
+
+    //--read barcode from converted image
+    var barcode = await readBarcode(answerCode, dirPath, pdfFilePath)
+    
+    //var session = await connectionService.getSession() ; 
+    
+    try {
+       //var transact =  session.sessionObject.startTransaction( { readConcern: { level: "snapshot" }, writeConcern: { w: "majority" } } );
+       var answerUpdateCount = await addAnswer(fields, username, barcode, pdfFilePath, answerCode);
+       console.log("Answer Added : " + answerUpdateCount) ;
+       if (answerUpdateCount > 0){
+            var updateScanningNumberCount = await updateScanningNumbers(fields.examcode, username) ;
+            if (updateScanningNumberCount >0) {
+                return "Y" ;
+            }
+            else{
+                //-- delete the recently added answer since the transaction is not complete
+            }
+       }
+    
+        return "N" ;
+
+      } catch (err) {
+        console.log("Error in updating answers : " + err) ;
+        return "N" ;
+      }
+      finally{
+          //session.sesssio.endSession() ; 
+      }
+
+
+    return barcode ;
 }
 
-async function addAnswer(fields, username) {
+async function addAnswer(fields, username, qrcode, pdfFilePath, answerCode) {
     var addAnswerData = {};
+    addAnswerData.answercode = answerCode ; 
     addAnswerData.examcode = fields.examcode;
     addAnswerData.scandate = new Date();
     addAnswerData.scannedby = username;
     addAnswerData.answers = [];
-    addAnswerData.isassigned = "";
-    addAnswerData.filepath = "";
-    addAnswerData.qrcode = "";
-    console.log(JSON.stringify(addAnswerData));
+    addAnswerData.isassigned = "N";
+    addAnswerData.pdfFilepath = pdfFilePath;
+    addAnswerData.qrcode = qrcode;
+
+    var uniqueIdQuery = {answercode: answerCode} ;
+    var setQuery = {$set: addAnswerData} ;
+    //console.log(JSON.stringify(addAnswerData));
+    updateCount = await connectionService.upsertDocument(uniqueIdQuery, setQuery, "answersCollection");
+    if (updateCount == 11000) {//its a duplicate error
+        return { "updateCount": updateCount, "error": "This subject code already exist. Please try a different one." };
+    }
+    return updateCount ; 
+
+}
+
+
+async function updateScanningNumbers(examcode, username){
+    var examDetails = await examService.getExamDetails(examcode) ;
+    var scanningAssignment = examDetails[0].scanningassignment.filter(function(assignment) {
+        return assignment.username == username;
+    });
+    var assignedCopies = scanningAssignment[0].assignedcopies ; 
+    var scannedCopiesSoFar = scanningAssignment[0].scannedcopies ; 
+
+    var whereClause = { "examcode" : examcode, "scanningassignment.username": username } ;
+    var setQuery = { "$set": { "scanningassignment.$.scannedcopies": (scannedCopiesSoFar + 1),"scanningassignment.$.assignedcopies": (assignedCopies - 1),  "scannedcopies": (examDetails[0].scannedcopies + 1) } }
+    var updateCount = await connectionService.updateDocument(whereClause, setQuery, "examCollection") ;
+    console.log(JSON.stringify(scanningAssignment)) ;
 }
 
 async function convertPdfToImage(answerCode, dirPath, filePath) {
@@ -100,8 +156,6 @@ async function convertPdfToImage(answerCode, dirPath, filePath) {
     });
     var imageFile = saveDirectory + answerCode + "_1.png";
     var returnValue = await pdf2pic.convertBulk(filePath, -1).then((resolve) => {
-        console.log("image converter successfully!");
-        
         return resolve;
     });
 
@@ -109,8 +163,8 @@ async function convertPdfToImage(answerCode, dirPath, filePath) {
     return true ;    
 }
 
-async function getBarcode(answerCode, dirPath, filePath, imageFile) {
-    
+async function readBarcode(answerCode, dirPath, filePath, imageFile) {
+    var imageFile =  dirPath + "images" + config.filePathSeparator + answerCode + "_1.png";
     var convertToPdf =await  convertPdfToImage(answerCode, dirPath, filePath) ;
     var buffer = fs.readFileSync(imageFile);
     var image = await Jimp.read(buffer) ;
@@ -130,5 +184,4 @@ async function getBarcode(answerCode, dirPath, filePath, imageFile) {
     */
 
     return qr.result.result ;
-
 }

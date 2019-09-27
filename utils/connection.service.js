@@ -9,6 +9,8 @@ service.getDocuments = getDocuments;
 service.addDocuments = addDocuments;
 service.upsertDocument = upsertDocument;
 service.updateDocument = updateDocument;
+service.getSession = getSession;
+service.upsertDocumentInTransaction = upsertDocumentInTransaction ;
 
 module.exports = service
 
@@ -105,18 +107,15 @@ async function upsertDocument(uniqueIdQuery, setQuery, collectionName) {
     try {
         connectionObject = await this.getConnection();
         var collection = connectionObject.db(config.database).collection(collectionName);
-        var docs = await collection.updateOne(uniqueIdQuery, setQuery, { upsert: true });
-        return 1;
+        var upsertValue = await collection.updateOne(uniqueIdQuery, setQuery, { upsert: true });
+        
+        return upsertValue.upsertedCount ; 
     }
     catch (err) {
         console.log("Error occured in inserting : " + err);
-        return err.code;
     }
-    finally {
-        //this.closeConnection(connectionObject);
-    }
-    return -1;
 
+    return -1;
 
 }
 
@@ -134,6 +133,58 @@ async function updateDocument(whereClause, setQuery, collectionName) {
     }
     finally {
        // this.closeConnection(connectionObject);
+    }
+    return -1;
+
+
+}
+
+async function getSession(){
+    var connectionObject = await this.getConnection() ;
+    const session = connectionObject.startSession( { readPreference: { mode: "primary" } } );; 
+    return {"sessionObject": session, "connectionObject": connectionObject} ; 
+}
+
+
+
+async function updateDocumentInSession(whereClause, setQuery, collectionName, session) {
+    var connectionObject;
+    try {
+        connectionObject = await this.getConnection();
+        var collection = connectionObject.db(config.database).collection(collectionName);
+        var docs = await collection.updateOne(whereClause, setQuery, {session}); 
+        return 1;
+    }
+    catch (err) {
+        console.log("Error occured in inserting : " + err);
+        return err.code;
+    }
+    finally {
+       // this.closeConnection(connectionObject);
+    }
+    return -1;
+
+
+}
+
+
+
+async function upsertDocumentInTransaction(uniqueIdQuery, setQuery, collectionName, session) {
+    var connectionObject;
+    try {
+        connectionObject = session.connectionObject ; 
+        var sessionObject = session.sessionObject ; 
+        var database = session.connectionObject.db(config.database) ;
+        var collection = database.collection(collectionName);
+        var docs = await collection.updateOne(uniqueIdQuery, setQuery, { upsert: true }, {session: session.sessionObject}); 
+        return 1;
+    }
+    catch (err) {
+        console.log("Error occured in inserting : " + err);
+        return err.code;
+    }
+    finally {
+        //this.closeConnection(connectionObject);
     }
     return -1;
 

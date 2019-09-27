@@ -38,6 +38,9 @@ import { ExamQuestionsComponent } from './administrator/exams/exam-questions/exa
 import { ExamQuestionDetailsComponent } from './administrator/exams/exam-question-details/exam-question-details.component';
 import { AnswerMarkingComponent } from './evaluator/answer-marking/answer-marking.component';
 import { ScannerContainerComponent } from './scanner/scanner-container/scanner-container.component';
+import { SubjectMenuComponent } from './master/subject-menu/subject-menu.component';
+import { ExamMenuComponent } from './adminitrator/exams/exam-menu/exam-menu.component';
+import { TopMenuComponent } from './components/top-menu/top-menu.component';
 
 const appRoutes: Routes = [
   {
@@ -67,6 +70,7 @@ const appRoutes: Routes = [
     ExamListComponent,
     ExamDetailsComponent,
     SubjectComponent,
+    SubjectMenuComponent,
     EditSubjectComponent,
    AdminMenuComponent,
     AssignScannerComponent,
@@ -81,7 +85,9 @@ const appRoutes: Routes = [
     ExamQuestionsComponent,
     ExamQuestionDetailsComponent,
     AnswerMarkingComponent,
-    ScannerContainerComponent
+    ScannerContainerComponent,
+    ExamMenuComponent,
+    TopMenuComponent
   ],
   imports: [
     BrowserModule,

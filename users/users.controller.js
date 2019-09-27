@@ -11,8 +11,12 @@ module.exports = router;
 
 async function authenticate(req, res, next) {
     var user = await userService.authenticate(req.body);
-    
-    res.json(user) ;
+    if (user && user.token){
+        res.json(user) ;
+    }
+    else{
+        res.json({"status":400, "message": "Invalid Userid / Password"}) ;
+    }
 }
 
 function getAll(req, res, next) {

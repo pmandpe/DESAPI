@@ -3,14 +3,17 @@
     /* width: 500px; */
     @import url('../node_modules/bootstrap/dist/css/bootstrap.min.css');
   .loginbox  {
-    margin: auto;
-    margin-top: 101px;
+    
+    margin-top: 101px !important;
     border: 1px solid #d0d0d0;
     padding: 35px;
+    width:450px;
+    background-color: #dddddd ;
     }
 
 html,body{
   height:100%;
+  background-color:rgb(236, 236, 236);  
 }
 
 .center-container{
@@ -18,6 +21,7 @@ html,body{
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top:25px ; 
 
   }
   .scannerpopup > .modal-dialog {
@@ -25,9 +29,7 @@ html,body{
     min-width: 971px !important;   
     width: 95% !important;
 }
-    body{
-        background-color:#fafeff;
-    }
+
 
     .error{
         color:#dc3545 ; 
@@ -70,6 +72,10 @@ button.calendar, button.calendar:active {
     -ms-transform: rotate(180deg);
   }
   
+  th{
+    background-color:#87a99d ;
+    color:#fff !important ; 
+  }
   /* Filtering table demo */
   ngbd-table-filtering span.ngb-highlight {
     background-color: yellow;
@@ -114,10 +120,6 @@ button.calendar, button.calendar:active {
     text-align:center;
   }
 
-  th{
-    color:#707070;
-    font-size:14px ; 
-  }
   .pdfViewer{
     overflow-y:hidden !important ; 
   }
@@ -139,3 +141,157 @@ button.calendar, button.calendar:active {
   .is-red{
     background-color:rgb(242, 175, 127)
   }
+
+  .container-fluid{
+    background-color:rgb(236, 236, 236);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /*
+    DEMO STYLE
+*/
+
+
+a,
+a:hover,
+a:focus {
+    color: inherit;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.navbar {
+    padding: 15px 10px;
+    background: #fff;
+    border: none;
+    border-radius: 0;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-btn {
+    box-shadow: none;
+    outline: none !important;
+    border: none;
+}
+
+.line {
+    width: 100%;
+    height: 1px;
+    border-bottom: 1px dashed #ddd;
+    margin: 40px 0;
+}
+
+/* ---------------------------------------------------
+    SIDEBAR STYLE
+----------------------------------------------------- */
+
+
+#sidebar {
+    min-width: 250px;
+    max-width: 250px;
+    background: #6388ad;
+    color: #fff;
+    transition: all 0.3s;
+}
+
+#sidebar.active {
+    margin-left: -250px;
+}
+
+#sidebar .sidebar-header {
+    padding: 20px;
+    background: #6388ad;
+}
+
+#sidebar ul.components {
+    padding: 20px 0;
+    border-bottom: 1px solid #6388ad;
+}
+
+#sidebar ul p {
+    color: #fff;
+    padding: 10px;
+}
+
+#sidebar ul li a {
+    padding: 10px;
+    font-size: 1.1em;
+    display: block;
+}
+
+#sidebar ul li a:hover {
+    color: #6388ad;
+    background: #fff;
+}
+
+.active-class
+{
+    color: #fff;
+    background-color: #ececec !important;
+    border: none;
+    color: #6388ad ;
+    border-right: none !important; 
+}
+
+.active-class-top-menu
+{
+    color: #fff;
+    background-color: #ececec !important;
+    color: #6388ad ;
+    border-bottom: none !important; 
+}
+
+a[data-toggle="collapse"] {
+    position: relative;
+}
+
+.list-group-item{
+  border-bottom:2px solid #6388ad ;
+  border-right: 1px solid darkgray ; 
+}
+
+.header-menu{
+  border: 1px solid darkgray;
+  padding-left: 13px;
+  background-color: #fff;
+  color: #6388ad;
+  padding-right: 13px;
+  padding-bottom: 4px;
+  padding-top: 3px;
+  cursor: pointer ; 
+
+}
+
+.bg-primary{
+  background-color: #6388ad  !important ;
+}
+
+.btn-primary{
+  background-color: #6388ad  !important ;
+}
+
+.alert-danger{
+  background-color: #ed6d6d !important ; 
+  color: #fff ; 
+}
+
+.container{
+  margin-top:25px ; 
+}
+
+.edit-box{
+  margin-top:15px; border:1px solid darkgray ;
+}

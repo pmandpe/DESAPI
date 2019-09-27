@@ -55,9 +55,14 @@ export class LoginComponent implements OnInit {
             .pipe(first())
             .subscribe(
                 data => {
-
-                    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || this.authenticationService.getDashboardUrl();
-                    this.router.navigate([this.returnUrl]);
+                    if (data.status && data.status == 400) { //Invalid user id password
+                        this.alertService.error(data.message) ;
+                        this.loading = false ; 
+                    }
+                    else{
+                        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || this.authenticationService.getDashboardUrl();
+                        this.router.navigate([this.returnUrl]);
+                    }
                 },
                 error => {
                     this.alertService.error(error);

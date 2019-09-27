@@ -3,7 +3,8 @@ const cc = require('coupon-code') ;
 
 module.exports = {
     generateUniqueCode,
-    getMax
+    getMax,
+    filterArray 
 };
 
 
@@ -19,4 +20,13 @@ function getMax(arr, prop) {
             max = arr[i];
     }
     return max;
+}
+
+function filterArray (arrayToFilter, criteria){
+    var filteredArray =  arrayToFilter.filter(function(item) {
+        return criteria ;
+    });
+
+    return filteredArray ;
+    
 }

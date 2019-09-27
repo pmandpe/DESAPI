@@ -29,7 +29,7 @@ export class AuthenticationService {
         var dashboardUrl = "/login" ;
         if (user){
             userObject  = JSON.parse(user) ;
-            switch (userObject[0].role){
+            switch (userObject.role){
                 case Role.Admin:
                     dashboardUrl = "/admin/dashboard" ;
                     break ; 

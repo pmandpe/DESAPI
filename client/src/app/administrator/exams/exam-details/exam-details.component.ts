@@ -40,7 +40,7 @@ export class ExamDetailsComponent implements OnInit {
 
   ngOnInit() {
 
-
+    
     this.examForm = this.formBuilder.group({
       examname: ['', Validators.required],
       subjectcode: ['', Validators.required],

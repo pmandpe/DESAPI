@@ -1,0 +1,7 @@
+<div class="d-flex justify-content-center">
+        <div style="margin-right:40px; margin-top:15px;">
+            <span class="header-menu"  style="z-index:10000" *ngFor="let menu of menus"  (click)="listClick($event, menu)"   [ngClass]="{'active-class-top-menu': selectedMenu == menu}">
+                {{menu.label}}
+            </span>
+        </div>
+    </div>

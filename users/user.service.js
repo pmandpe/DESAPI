@@ -23,12 +23,16 @@ async function authenticate({ username, password }) {
 
     var user = await connectionService.getDocuments(query, "userCollection") ; 
     if (user) {
-        const token = jwt.sign({ sub: user[0].id, role: user[0].role , username:user[0].username},  config.secret);
-        const { password, ...userWithoutPassword } = user;
-        return {
-            ...userWithoutPassword,
-            token
-        };
+        if (user.length > 0){
+            const token = jwt.sign({ sub: user[0].id, role: user[0].role , username:user[0].username},  config.secret);
+            const { password, ...userWithoutPassword } = user;
+            return {
+                "username" : user[0].username,
+                "token": token,
+                "role":user[0].role
+            };
+        }
+        return [] ;
     }
    
 

@@ -1,9 +1,9 @@
-
+<!--<div class="container">
         <div class="panel-group" id="accordion">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        Main Menu
+                        
                     </h4>
                 </div>
                 <div id="collapse1">
@@ -21,3 +21,13 @@
                 </div>
             </div>
         </div>
+</div>
+-->
+<div class="col-sm-12 col-md-12 sidebar" style="padding-left:0px">
+    <ul class="nav nav-sidebar list-group">
+        <li class="list-group-item" *ngFor="let menu of menus"  (click)="listClick($event, menu)"   [ngClass]="{'active-class': selectedMenu == menu}">
+                <a  [routerLink]="[menu.link]">{{menu.label}}</a>
+                <span style="float:right" [style.color]="selectedMenu == menu ? '#448fe0' : '#fff'"> <i class="fa fa-lg fa-angle-right"></i> </span>
+        </li>
+    </ul>
+</div>

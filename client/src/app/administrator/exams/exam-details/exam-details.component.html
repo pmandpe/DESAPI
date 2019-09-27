@@ -1,16 +1,10 @@
-<div class="row">
-    <div class="col-lg-6 col-sm-6 col-md-6">
-        <h3>Add / Edit Exams</h3>
-    </div>
-    <div class="col-lg-6 col-sm-6 col-md-6" style="text-align:right">
-        <a [routerLink]="['/dashboard/exams']" class="btn primary"> Back </a>
-    </div>
-</div>
+<app-exam-menu></app-exam-menu>
+
 
 <div [hidden]="!showUniqueCode">
     <h4>{{examcode}}</h4>
 </div>
-<div class="container-fluid">
+<div class="container edit-box">
     <form [formGroup]="examForm" (ngSubmit)="saveExam()" class="form-login">
         <div class="row">
             <div class="col-lg-6 col-sm-6 col-md-6">
@@ -94,7 +88,7 @@
 
                     <div class="col-lg-2 col-sm-6 col-md-4">
                         <div>
-                            <label for="resultdate">Assigned For Scanning</label>
+                            <label for="resultdate">Assigned To Scan</label>
                         </div>
                         <div>
                             <input type="number" [readonly]="true" formControlName="totalcopiesassignedforscanning" class="form-control" />
@@ -103,7 +97,7 @@
                     </div>
                     <div class="col-lg-2 col-sm-6 col-md-4">
                         <div>
-                            <label for="resultdate">Assigned For Evaluation</label>
+                            <label for="resultdate">Assigned To</label>
                         </div>
                         <div>
                             <input type="number" [readonly]="true" formControlName="totalcopiesassignedforevaluation" class="form-control" />
@@ -131,19 +125,19 @@
         </div>
 
         <div class="form-group">
-            <button [disabled]="loading" class="btn btn-primary">Save Exam</button>
+            <button [disabled]="loading" class="btn btn-success">Save Exam</button>
 
             <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
             />
 
 
             <span style="float:right">
-                <button type="button" class="btn btn-lg btn-outline-primary" (click)="open('SCANNER')" [disabled]="!(examcode && examcode.length > 2)">Assign For Scanning</button>
+                <button type="button" class="btn btn-primary" (click)="open('SCANNER')" [disabled]="!(examcode && examcode.length > 2)">Assign For Scanning</button>
 
             </span>
             <span style="width:20px;float:right;">&nbsp;</span>
             <span style="float:right">
-                <button type="button" class="btn btn-lg btn-outline-primary" (click)="open('EVALUATOR')" [disabled]="!(examcode && examcode.length > 2)">Assign For Evaluation
+                <button type="button" class="btn btn-primary" (click)="open('EVALUATOR')" [disabled]="!(examcode && examcode.length > 2)">Assign For Evaluation
                 </button>
 
             </span>

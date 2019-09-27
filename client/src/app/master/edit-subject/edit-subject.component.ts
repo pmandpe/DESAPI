@@ -96,9 +96,16 @@ saveSubject() {
     .subscribe(
     data => {
       this.loading = false;
-      this.alertService.success("Data Saved Successfully") ;
-      this.subjectForm.patchValue({ editmode: 'EDIT' });
-      this.disableSubjectCode = true;
+      var responseData : any ;
+      responseData = data ; 
+      if (responseData.updateCount == 11000 || responseData.updateCount < 0){ //duplicate or saving exception
+        this.alertService.error("Update Failed : " + responseData.error) ;
+      }
+      else{
+        this.alertService.success("Data Saved Successfully") ;
+        this.subjectForm.patchValue({ editmode: 'EDIT' });
+        this.disableSubjectCode = true;
+      }
     },
     error => {
       this.alertService.error(error);
