@@ -107,7 +107,7 @@ export class AssignScannerComponent implements OnInit {
     // Evaluation cannot be done without scanning so number of copies in evaluation cannot be greater than scanned copies
     if (totalAssignedCopies > ( this.examFormValues.totalscannedcopies - this.examFormValues.totalevaluatedcopies )) {
       this.alertService.error("Copies assigned for evaluation cannot be more than (total scanned copies - already evaluated copies). Copies already evaluated cannot be assigned for evaluation");
-      return ; 
+      
     }
     else {
 

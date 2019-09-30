@@ -26,7 +26,7 @@ export class AuthenticationService {
     public getDashboardUrl(){
         var user = localStorage.getItem('currentUser') ;
         var userObject = {"role":""} ;
-        var dashboardUrl = "/login" ;
+        var dashboardUrl = "/" ;
         if (user){
             userObject  = JSON.parse(user) ;
             switch (userObject.role){

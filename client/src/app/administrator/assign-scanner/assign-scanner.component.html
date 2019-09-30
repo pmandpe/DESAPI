@@ -3,12 +3,30 @@
   <!--<button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
   </button>-->
-  <div class="float-right">
+  <div class="float-right" *ngIf="userType == 'SCANNER'">
     <table class="table table-bordered">
-        <td>Total Copies : <strong>{{examFormValues.numberofcopies}}</strong></td>
+      <td>Total Copies : <strong>{{examFormValues.numberofcopies}}</strong></td>
+      <td>Assigned For Scanning : <strong>{{ (examFormValues.totalcopiesassignedforscanning) }}</strong></td>
       <td>Scanned : <strong>{{examFormValues.totalscannedcopies}}</strong></td>
-      <td>Evaluated : <strong>{{examFormValues.totalevaluatedcopies}}</strong></td>
+      <td>To be assigned :
+        <strong>{{ (examFormValues.numberofcopies - ( examFormValues.totalcopiesassignedforscanning + examFormValues.totalscannedcopies))}}</strong>
+      </td>
+
+    </table>
+  </div>
+
+  <div class="float-right" *ngIf="userType == 'EVALUATOR'">
+    <table class="table table-bordered">
+      <td>Total Copies : <strong>{{examFormValues.numberofcopies}}</strong></td>
       
+      <td>Scanned : <strong>{{examFormValues.totalscannedcopies}}</strong></td>
+      <td>Assigned for Evaluation : <strong>{{examFormValues.totalcopiesassignedforevaluation}}</strong></td>
+      <td>Evaluated : <strong>{{(examFormValues.totalevaluatedcopies ? examFormValues.totalevaluatedcopies : 0)}}</strong></td>
+      
+      <td>To be assigned :
+        <strong>{{ (examFormValues.totalscannedcopies - examFormValues.totalcopiesassignedforevaluation)}}</strong>
+      </td>
+
     </table>
   </div>
 
@@ -47,11 +65,12 @@
           <td>
 
             <div class="input-group">
-              <input class="form-control" placeholder="yyyy-mm-dd" ngbDatepicker #dpresultdate="ngbDatepicker" [(ngModel)]="user.targetdate"
-              />
+              <input class="form-control" placeholder="yyyy-mm-dd" ngbDatepicker #dpresultdate="ngbDatepicker"
+                [(ngModel)]="user.targetdate" />
 
               <div class="input-group-append">
-                <button class="btn btn-outline-secondary calendar" (click)="dpresultdate.toggle()" type="button"></button>
+                <button class="btn btn-outline-secondary calendar" (click)="dpresultdate.toggle()"
+                  type="button"></button>
               </div>
             </div>
           </td>
