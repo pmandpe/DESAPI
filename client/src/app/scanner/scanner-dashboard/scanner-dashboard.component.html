@@ -1,24 +1,27 @@
 <div class="container">
-<div class="row" style="margin-top:20px">
+    <div class="row" style="margin-top:20px">
 
 
-    <div class="col-lg-3 col-sm-6 col-md-4"  *ngFor="let dashboard of dashboardData">
-        <div class="card border-primary mb-3" style="max-width: 18rem;">
-            <div class="card-header">{{dashboard.examname}}</div>
-            <div class="card-body text-primary">
+        <div class="col-lg-3 col-sm-6 col-md-4" *ngFor="let dashboard of dashboardData">
+            <div class="card border-primary mb-3" style="max-width: 18rem;">
+                <div class="card-header">{{dashboard.examname}}</div>
+                <div class="card-body text-primary">
                     <h6 class="card-subtitle mb-2 text-muted">Subject Code : {{dashboard.subjectcode}}</h6>
-                                <p class="card-text">Assigned Copies : {{getAssignedCopies(dashboard.scanningassignment).assignedcopies}}</p>
-                <p class="card-text">Scanned Copies : {{(getAssignedCopies(dashboard.scanningassignment).scannedcopies ? getAssignedCopies(dashboard.scannedcopies).assignedcopies : 0)}}</p>
-                
+                    <p class="card-text">Assigned Copies : {{getAssignedCopies(dashboard.scanningassignment).assignedcopies}}</p>
+                    <p class="card-text">Scanned Copies : {{(getAssignedCopies(dashboard.scanningassignment).totalscannedcopies ? getAssignedCopies(dashboard.scannedcopies).assignedcopies
+                        : 0)}}</p>
+
+                </div>
+                <div class="card-footer bg-transparent border-success">
+                    <a [routerLink]="['../scandocument', dashboard.examcode]" class="btn btn-success">Start Scanning</a>
+                </div>
             </div>
-            <div class="card-footer bg-transparent border-success"><a [routerLink]="['../scandocument', dashboard.examcode]" class="btn btn-primary">Start Scanning</a></div>
         </div>
-    </div>
-    
 
 
 
-    <!--
+
+        <!--
     <div class="col-lg-3 col-sm-6 col-md-4">
         <div class="card border-primary mb-3" style="max-width: 18rem;">
             <div class="card-header">Header</div>
@@ -79,5 +82,5 @@
     </div>
 
 -->
-</div>
+    </div>
 </div>

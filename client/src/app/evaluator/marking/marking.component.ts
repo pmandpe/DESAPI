@@ -13,6 +13,7 @@ export class MarkingComponent implements OnInit {
   private examCode: string ; 
   private examData : {} ; 
   private mypdf : string ; 
+  
 
   constructor(private evaluatorService: EvaluatorService, private _Activatedroute: ActivatedRoute, private alertService: AlertService) { 
 
@@ -20,6 +21,7 @@ export class MarkingComponent implements OnInit {
   }
 
   ngOnInit() {
+    
     this.examCode = this._Activatedroute.snapshot.paramMap.get("examcode");
     this.evaluatorService.getMarkingDetails(this.examCode)
     .subscribe(

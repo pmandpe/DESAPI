@@ -18,9 +18,12 @@ async function getAllSubjects() {
 
 async function getAllUsers(userType) {
     var query = {"role": userType};
-    var columnList = { username: 1, firstname: 1, emailid: 1, scanningoffice:1 }
-    var sacnnerList = await connectionService.getDocuments(query, "userCollection");
-    return sacnnerList ;
+    var columnList = { username: 1, firstname: 1, emailid: 1, scanningoffice:1, targetdate: 1, assigneddate:1  }
+    var scannerlist = await connectionService.getDocuments(query, "userCollection");
+
+    //-- add additional fields for saving to scanning assignment
+    
+    return scannerlist ;
 }
 
 

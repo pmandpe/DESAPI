@@ -4,23 +4,23 @@
         <div class="col-sm-6 col-lg-3 col-md-3">
                 <table class="table table-bordered" style="width:100%;margin-top:15px;">
                         <tr>
-                                <th width="40%">Exam Code</th>
+                                <td width="40%">Exam Code</td>
                                 <td  width="60%">{{examcode}}</td>
                             </tr>
                     <tr>
-                            <th width="40%">Assigned Copies</th>
+                            <td width="40%">Assigned Copies</td>
                             <td  width="60%">{{scannerSummaryData.assignedcopies}}</td>
                         </tr>
                         <tr>
-                            <th>Scanned Copies</th>
+                            <td>Scanned Copies</td>
                             <td>{{scannerSummaryData.scannedcopies}}</td>
                         </tr>
                         <tr>
-                                <th>Assigned Date</th>
+                                <td>Assigned Date</td>
                                 <td>{{scannerSummaryData.assigneddate}}</td>
                             </tr>
                         <tr>
-                            <th>Target Date</th>
+                            <td>Target Date</td>
                             <td>{{scannerSummaryData.targetdate}}</td>
                         </tr>
                     </table>
@@ -31,9 +31,9 @@
                     <div style="margin:10px">
                         <h5>{{message}}</h5>
                         <div>
-                                <span><button class="btn btn-primary" (click)="acquireImage()">Scan Document</button></span>
+                                <span><button class="btn btn-primary" (click)="acquireImage()" [disabled]="disableAllButtons">Scan Document</button></span>
                             <span>&nbsp;</span>
-                            <span><button class="btn btn-success" (click)="uploadDocument()">Submit Document</button></span>
+                            <span><button class="btn btn-success" (click)="uploadDocument()"  [disabled]="disableAllButtons">Submit Document</button></span>
                         </div>
                     </div>
                     

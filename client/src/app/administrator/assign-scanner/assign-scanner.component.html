@@ -3,7 +3,15 @@
   <!--<button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
   </button>-->
-  <span class="float-right">Total Scanned Copies : {{examFormValues.scannedcopies}}</span>
+  <div class="float-right">
+    <table class="table table-bordered">
+        <td>Total Copies : <strong>{{examFormValues.numberofcopies}}</strong></td>
+      <td>Scanned : <strong>{{examFormValues.totalscannedcopies}}</strong></td>
+      <td>Evaluated : <strong>{{examFormValues.totalevaluatedcopies}}</strong></td>
+      
+    </table>
+  </div>
+
 </div>
 <div class="modal-body">
   <alert></alert>
@@ -17,9 +25,10 @@
           <th>Contact Person</th>
           <th>Phone</th>
           <th>Email Id</th>
-          <th># Assigned for {{(userType == "SCANNER"? "Scanning" : "Evaluation")}}</th>
+          <th>Pending Scanning</th>
+          <th>Copies Scanned</th>
+          <th>Target Date</th>
 
-          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -28,8 +37,23 @@
           <td>{{user.scanningoffice.contactperson}}</td>
           <td>{{user.scanningoffice.phone}}</td>
           <td>{{user.emailid}}</td>
+
           <td>
             <app-inline-edit [(ngModel)]="user.assignedcopies" type="text"> </app-inline-edit>
+          </td>
+
+
+          <td>{{user.scannedcopies}}</td>
+          <td>
+
+            <div class="input-group">
+              <input class="form-control" placeholder="yyyy-mm-dd" ngbDatepicker #dpresultdate="ngbDatepicker" [(ngModel)]="user.targetdate"
+              />
+
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary calendar" (click)="dpresultdate.toggle()" type="button"></button>
+              </div>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -37,30 +61,29 @@
   </div>
 
   <div *ngIf="userType == 'EVALUATOR'">
-      <table class="table table table-hover table-striped">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email Id</th>
-            <th>Phone</th>
-            
-            <th># of copies assigned</th>
-  
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let user of Users">
-            <td>{{user.name}}</td>
-            <td>{{user.emailid}}</td>
-            <td>{{user.phone}}</td>
-            <td>
-              <app-inline-edit [(ngModel)]="user.assignedcopies" type="text"> </app-inline-edit>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <table class="table table table-hover table-striped">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email Id</th>
+          <th>Phone</th>
+          <th>Copies Assigned</th>
+          <th>Copies Evaluated</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of Users">
+          <td>{{user.name}}</td>
+          <td>{{user.emailid}}</td>
+          <td>{{user.phone}}</td>
+          <td>
+            <app-inline-edit [(ngModel)]="user.assignedcopies" type="text"> </app-inline-edit>
+          </td>
+          <td>{{user.evaluatedcopies}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
 
 
@@ -69,6 +92,6 @@
 
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-outline-dark" (click)="save()">Save</button>
-  <button type="button" class="btn btn-outline-dark" (click)="cancel()">Cancel</button>
+  <button type="button" class="btn btn-success" (click)="save()">Save</button>
+  <button type="button" class="btn btn-danger" (click)="cancel()">Close</button>
 </div>

@@ -1,33 +1,34 @@
-<div class="container-fluid">
-    <div class="float-right">
-        <button class="btn btn-primary" (click)="openQuestion(-1)">Add New Question</button>
+<div class="container edit-box">
+    <div class="" style="margin-top:10px;margin-bottom:10px">
+        <span class="float-right">
+            <button class="btn btn-primary" (click)="openQuestion(-1)">Add New Question</button>
+        </span>
+        <span class="float-left">
+            <h4>Exam Questions</h4>
+        </span>
     </div>
-    <br>
-    <h4>Exam Questions</h4>
-    <table class="table table table-hover table-striped">
-        <thead>
-            <tr>
-                <th>Question #</th>
-                <th>Total Marks</th>
-                <th>Question Type</th>
-                <th>Edit</th>
+    <div style="margin-top:55px;">
+        <table class="table table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>Question #</th>
+                    <th>Total Marks</th>
+                    <th>Question Type</th>
+                    <th>Edit</th>
 
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let examQuestion of examQuestions">
-                <td>{{examQuestion.questionno}}</td>
-                <td>{{examQuestion.totalmarks}}</td>
-                <td>{{examQuestion.questiontype}}</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let examQuestion of examQuestions">
+                    <td>{{examQuestion.questionno}}</td>
+                    <td>{{examQuestion.totalmarks}}</td>
+                    <td>{{examQuestion.questiontype}}</td>
 
-                <td>
-                    <a href="javascript:void(0)" (click)="openQuestion(examQuestion.questionno)">View/Edit Question</a>
-                </td>
-
-
-
-
-            </tr>
-        </tbody>
-    </table>
+                    <td>
+                        <a href="javascript:void(0)" (click)="openQuestion(examQuestion.questionno)"><i class="fa fa-edit"></i></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

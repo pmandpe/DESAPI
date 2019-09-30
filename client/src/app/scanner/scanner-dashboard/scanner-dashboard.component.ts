@@ -35,7 +35,7 @@ export class ScannerDashboardComponent implements OnInit {
   }
 
   getAssignedCopies(data) {
-    var username = this.authenticationService.currentUserValue[0].username ;
+    var username = this.authenticationService.currentUserValue.username ;
     if (!username || username == ""){
       this.alertService.error("Your session has expired, please login again.") ;
       return ; 

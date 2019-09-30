@@ -1,26 +1,29 @@
 <div class="container-fluid">
 
     <div class="row">
-        <div class="col-lg-6 col-md-6 col-sm-6 float-left">
-                <br>
-            <span><h4>Assigned Copies : {{examData.assignedcopies}}</h4></span>
+        <div class="col-lg-6 col-md-6 col-sm-5 float-left p-2">
 
+            <span>
+                <h4>Assigned Copies : {{examData.assignedcopies}}</h4>
+            </span>
+            <span>
+                <h4>Checked Copies : {{examData.evaluatedcopies}}</h4>
+            </span>
         </div>
-        <div class="col-lg-6 col-md-6 col-sm-6 float-right" style="text-align: right">
-                <br>
-                <span><h4>Evaluated Copies : {{examData.evaluatedcopies}}</h4></span>
-    
-            </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-6 float-right p-2" style="text-align:right">
+            <button class="btn btn-success"> Check Copy</button>
+        </div>
     </div>
     <div class="row">
-            <div class="col-lg-4 col-md-4 col-sm-6">
-                <app-answer-marking></app-answer-marking>
-            </div>
-            <div class="col-lg-8 col-md-8 col-sm-6">
-                    <br>
-                    <div style="overflow-y: auto; max-height:80vh;margin-top:-10px">
-                <pdf-viewer [show-borders]="true"  [src]="mypdf" [render-text]="true" style="overflow-y:hidden"></pdf-viewer>        
-            </div>
+        <div class="col-lg-4 col-md-4 col-sm-6">
+            <app-answer-marking></app-answer-marking>
+        </div>
+        <div class="col-lg-8 col-md-8 col-sm-6">
+            <br>
+            <div style="overflow-y: auto; max-height:80vh;margin-top:-10px">
+                <pdf-viewer [show-borders]="true" [src]="mypdf" [render-text]="true" style="overflow-y:hidden"></pdf-viewer>
             </div>
         </div>
+    </div>
 </div>

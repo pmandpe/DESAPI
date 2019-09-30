@@ -21,7 +21,9 @@ export class ScanDocumentComponent implements OnInit {
   examcode: any;
   message: string;
   scannerSummaryData: any;
+  disableAllButtons: any ; 
   ngOnInit() {
+    this.disableAllButtons = false ; 
     this.message = "Please place your documents in the scanner and click the 'Scan Document' button";
     this.examcode = this._Activatedroute.snapshot.paramMap.get("examcode");
 
@@ -45,6 +47,10 @@ export class ScanDocumentComponent implements OnInit {
       .subscribe(
       data => {
         this.scannerSummaryData = data;
+        //-- disable buttons if nothing to scan
+        if (this.scannerSummaryData.assignedcopies == 0){
+          this.disableAllButtons = true ; 
+        }
       },
       error => {
         this.alertService.error(error);

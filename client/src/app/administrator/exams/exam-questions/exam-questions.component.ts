@@ -21,7 +21,7 @@ export class ExamQuestionsComponent implements OnInit {
     private utilService: UtilService) { }
 
   ngOnInit() {
-
+    
   }
 
   openQuestion(questionNo) {

@@ -7,7 +7,7 @@
 <div class="container edit-box">
     <form [formGroup]="examForm" (ngSubmit)="saveExam()" class="form-login">
         <div class="row">
-            <div class="col-lg-6 col-sm-6 col-md-6">
+            <div class="col-lg-3 col-sm-6 col-md-3">
                 <div class="form-group">
                     <label for="subjectcode">Subject Code</label>
                     <input type="text" formControlName="subjectcode" class="form-control" [readonly]="disableSubjectCode" [ngClass]="{ 'is-invalid': submitted && f.subjectcode.errors }"
@@ -17,7 +17,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 col-sm-6 col-md-6">
+            <div class="col-lg-3 col-sm-6 col-md-3">
                 <div class="form-group">
                     <label for="subjectname">Exam Name</label>
                     <input type="input" formControlName="examname" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.examname.errors }"
@@ -27,29 +27,24 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="form-group ">
-            <div>
-                <div class="row">
-                    <div class="col-lg-3 col-sm-6 col-md-3">
+            <div class="col-lg-3 col-sm-6 col-md-3">
 
-                        <label for="examdate">Exam Date</label>
-                        <div class="input-group">
-                            <input id="examdate" formControlName="examdate" class="form-control" placeholder="yyyy-mm-dd" name="dpexamdate" ngbDatepicker
-                                #dpexamdate="ngbDatepicker">
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary calendar" (click)="dpexamdate.toggle()" type="button"></button>
-                            </div>
+                    <label for="examdate">Exam Date</label>
+                    <div class="input-group">
+                        <input id="examdate" formControlName="examdate" class="form-control" placeholder="yyyy-mm-dd" name="dpexamdate" ngbDatepicker
+                            #dpexamdate="ngbDatepicker">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary calendar" (click)="dpexamdate.toggle()" type="button"></button>
                         </div>
-
-                        <div *ngIf="submitted && f.examdate.errors">
-                            <div *ngIf="f.examdate.errors.required" class="error">Exam Date is required</div>
-                        </div>
-
-
                     </div>
 
-                    <div class="col-lg-3 col-sm-6 col-md-3">
+                    <div *ngIf="submitted && f.examdate.errors">
+                        <div *ngIf="f.examdate.errors.required" class="error">Exam Date is required</div>
+                    </div>
+
+
+                </div>
+                <div class="col-lg-3 col-sm-6 col-md-3">
 
 
                         <label for="resultdate">Result Date</label>
@@ -69,6 +64,12 @@
 
                     </div>
 
+        </div>
+        <div class="form-group ">
+            <div>
+                <div class="row">
+
+
 
                     <div class="col-lg-2 col-sm-6 col-md-4">
                         <div>
@@ -78,7 +79,7 @@
                             <input type="number" formControlName="numberofcopies" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.numberofcopies.errors }"
                             />
                             <div *ngIf="submitted && f.numberofcopies.errors">
-                                <div *ngIf="f.resultdate.errors.required" class="error">Result Date is required</div>
+                                <div *ngIf="f.numberofcopies.errors.required" class="error">Number of Copies is required</div>
                             </div>
 
                         </div>
@@ -97,26 +98,57 @@
                     </div>
                     <div class="col-lg-2 col-sm-6 col-md-4">
                         <div>
-                            <label for="resultdate">Assigned To</label>
+                            <label for="resultdate">Assigned To Evaluate</label>
                         </div>
                         <div>
                             <input type="number" [readonly]="true" formControlName="totalcopiesassignedforevaluation" class="form-control" />
                         </div>
 
                     </div>
+                    <div class="col-lg-3 col-sm-6 col-md-4">
+                            <div>
+                                <label for="resultdate">Scanned</label>
+                            </div>
+                            <div>
+                                <input type="number" [readonly]="true" formControlName="totalscannedcopies" class="form-control" />
+                            </div>
+    
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-md-4">
+                            <div>
+                                <label for="resultdate">Evaluated</label>
+                            </div>
+                            <div>
+                                <input type="number" [readonly]="true" formControlName="totalevaluatedcopies" class="form-control" />
+                            </div>
+    
+                        </div>
+
                 </div>
             </div>
         </div>
 
 
+        <div class="form-group ">
+                <div>
+                    <div class="row">
+                        
+    
+                        <div class="col-lg-12 col-sm-12 col-md-12">
+                                <label for="comments">Comments</label>
+                                <input type="input" formControlName="comments" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.comments.errors }"
+                                />
+                            
+                            </div>
+
+
+                    </div>
+                </div>
+            </div>
 
 
 
-        <div class="form-group">
-            <label for="examyear">Comments</label>
-            <input type="input" formControlName="comments" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.comments.errors }"
-            />
-        </div>
+
 
         <div class="form-group">
             <input type="hidden" formControlName="editmode" [(ngModel)]="mode" />

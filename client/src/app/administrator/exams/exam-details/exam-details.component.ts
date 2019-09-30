@@ -10,6 +10,7 @@ import { UtilService } from '../../../services/utilities.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { AssignScannerComponent } from '../../../administrator/assign-scanner/assign-scanner.component';
 import { ExamQuestionsComponent } from '../exam-questions/exam-questions.component';
+import { __core_private_testing_placeholder__ } from '@angular/core/testing';
 
 @Component({
   selector: 'app-exam-details',
@@ -51,7 +52,8 @@ export class ExamDetailsComponent implements OnInit {
       totalcopiesassignedforscanning: new FormControl(0),
       totalcopiesassignedforevaluation: new FormControl(0),
       scanningassignment: new FormControl([]) ,
-      scannedcopies: new FormControl(0) ,
+      totalscannedcopies: new FormControl(0) ,
+      totalevaluatedcopies: new FormControl(0) ,
       evaluationassignment: new FormControl([]) ,
       editmode: new FormControl("")
 
@@ -90,7 +92,8 @@ export class ExamDetailsComponent implements OnInit {
           this.examForm.patchValue({ comments: this.examdetails.comments });
           this.examForm.patchValue({scanningassignment: this.examdetails.scanningassignment})
           this.examForm.patchValue({evaluationassignment: this.examdetails.evaluationassignment}) ;
-          this.examForm.patchValue({scannedcopies: this.examdetails.scannedcopies})
+          this.examForm.patchValue({totalscannedcopies: this.examdetails.totalscannedcopies}) ;
+          this.examForm.patchValue({totalevaluatedcopies: this.examdetails.totalevaluatedcopies}) ;
 
 
 
@@ -125,6 +128,12 @@ export class ExamDetailsComponent implements OnInit {
     var examdateValue = this.examForm.value.examdate.year + "-" + this.examForm.value.examdate.month.toString().padStart(2, '0') + "-" + this.examForm.value.examdate.day.toString().padStart(2, '0');
     params.resultdate = resultdateValue;
     params.examdate = examdateValue;
+
+    if (this.examForm.value.numberofcopies < this.examForm.value.totalcopiesassignedforscanning){
+      this.alertService.error("Total Number of copies cannot be less than already assigned for scanning") ;
+      this.loading = false ; 
+      return ;
+    }
   
     this.examService.saveExam(params)
       .pipe(first())
@@ -157,18 +166,9 @@ export class ExamDetailsComponent implements OnInit {
     
     modalRef.result.then((result) => {
       if (result) {
-        this.ngOnInit() ;
+        //this.ngOnInit() ;
       }
     });
   }
 
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
-  }
 }

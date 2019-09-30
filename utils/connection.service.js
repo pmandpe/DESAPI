@@ -62,12 +62,15 @@ function closeConnection(connectionObject) {
 }
 
 
-async function getDocuments(query, collectionName, columnList) {
+async function getDocuments(query, collectionName, columnList, limit) {
     var connectionObject;
     try {
+        if (!limit) {
+            limit = 0 ;
+        }
         connectionObject = await this.getConnection();
         var collection = connectionObject.db(config.database).collection(collectionName);
-        var docs = await collection.find(query, columnList).toArray();
+        var docs = await collection.find(query, columnList).limit(limit).toArray();
         return docs;
     }
     catch (err) {

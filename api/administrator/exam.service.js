@@ -27,7 +27,7 @@ async function saveExam(exam, userid) {
         "examdate": exam.examdate,
         "resultdate": exam.resultdate,
         "numberofcopies": exam.numberofcopies,
-        "scannedcopies": exam.scannedcopies,
+        "scannedcopies": exam.totalscannedcopies,
         "modified_date": new Date(),
         "modified_by": userid,
         "comments": exam.comments
@@ -128,44 +128,74 @@ async function saveEvaluationAssignment(evaluationData, userid) {
         $set: addDoc
     };
 
+    //-- get the answer data against which we have to save the evaluation data
+
+
     updateCount = await connectionService.updateDocument(uniqueIdQuery, setQuery, "examCollection");
     if (updateCount == 11000) {//its a duplicate error
         return { "updateCount": updateCount, "error": "Error in assigning for scanning." };
     }
     else {
+
+        //update data in answers collection
+
+
         //cut and paste copies from scanned folder to evaulator's folder.
-        evaluationData.evaluationassignment.forEach(function (assignment) {
-            var copyFiles = copyAssignedCopiesToUserFolder(assignment.username, evaluationData.examcode)
+        evaluationData.evaluationassignment.forEach(async function (assignment) {
+            var answersToUpdate = await getAnswersForEvaluation(evaluationData.examcode, assignment.assignedcopies);
+            var copyFiles = await copyAssignedCopiesToUserFolder(assignment.username, evaluationData.examcode);
+            //-- once files are copied, update the answers collection with username to whom copies are assigned for evaluation
+            //-- and set the flag isAssigned to 'Y'
+            var updateCount = await updateAnswersForEvaluation(answersToUpdate, assignment.username);
+            if (updateCount < 0) {
+                return -1;
+            }
         });
 
     }
 }
 
+async function updateAnswersForEvaluation(answersToUpdate, username) {
+    var updateCount = await answersToUpdate.forEach(async function (answer) {
+        var answerCode = answer.answercode;
+        var uniqueIdQuery = { "answercode": answerCode };
+        var setQuery = { $set: { "assignedto": username, "isassigned": "Y" } };
+        var updateCount = await connectionService.updateDocument(uniqueIdQuery, setQuery, "answersCollection");
+        return updateCount;
+    });
+    return updateCount ;
+}
+
+async function getAnswersForEvaluation(examcode, numberofanswersassigned) {
+    //first get all the answers with LIMIT as number of copies to be evaluated for this exam code and not assigned for evaluation yet
+    var query = { "examcode": examcode, "isassigned": "N" };
+
+    var answersTobeUpdated = await connectionService.getDocuments(query, "answersCollection", {}, numberofanswersassigned);
+    return answersTobeUpdated
+}
 
 async function copyAssignedCopiesToUserFolder(username, examcode) {
-    var sourceDir = config.fileLocation + "scannedcopies"+ config.filePathSeparator + examcode;
-    
-
+    var sourceDir = config.fileLocation + "scannedcopies" + config.filePathSeparator + examcode;
     var fileList = [];
     var fileRead = await fs.readdir(sourceDir, (err, files) => {
         files.forEach(file => {
             fileList.push(file);
         });
-/*
-        if (!fs.existsSync(dir)) {
-            fs.mkdirSync(dir); // make the parent directory
-            //fs.mkdirSync(dir + "\\assigned"); // keep all the assigned scanned copies here
-            //fs.mkdirSync(dir + "\\evaluated"); // keep all the evaluated copies here.
-        }
-        */
+        /*
+                if (!fs.existsSync(dir)) {
+                    fs.mkdirSync(dir); // make the parent directory
+                    //fs.mkdirSync(dir + "\\assigned"); // keep all the assigned scanned copies here
+                    //fs.mkdirSync(dir + "\\evaluated"); // keep all the evaluated copies here.
+                }
+                */
 
-        
-        var destinationDir = config.fileLocation + config.filePathSeparator +  "evaluatedcopies" + config.filePathSeparator + examcode + config.filePathSeparator + username + config.filePathSeparator + "assigned" + config.filePathSeparator ;
+
+        var destinationDir = config.fileLocation + config.filePathSeparator + "evaluatedcopies" + config.filePathSeparator + examcode + config.filePathSeparator + username + config.filePathSeparator + "assigned" + config.filePathSeparator;
         try {
             var numberOfFilesToBeAssigned = 3;
             var assignedCopies = 0;
             fileList.forEach(function (fileName) {
-                var filesCopied = fs.move(sourceDir + config.filePathSeparator + fileName, destinationDir + config.filePathSeparator  + fileName); 
+                var filesCopied = fs.move(sourceDir + config.filePathSeparator + fileName, destinationDir + config.filePathSeparator + fileName);
                 assignedCopies++;
                 if (assignedCopies == numberOfFilesToBeAssigned) {
                     return true;

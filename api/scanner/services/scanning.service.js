@@ -29,7 +29,8 @@ async function getUserScanningSummary(username, examcode) {
         if (scanningSummary.username == username) {
             userScanningSummary = scanningSummary;
         }
-    })
+    }) ;
+    userScanningSummary.scannedcopies = (userScanningSummary.scannedcopies ? userScanningSummary.scannedcopies : 0 ) ;
     return userScanningSummary;
 }
 
@@ -137,12 +138,20 @@ async function updateScanningNumbers(examcode, username){
         return assignment.username == username;
     });
     var assignedCopies = scanningAssignment[0].assignedcopies ; 
-    var scannedCopiesSoFar = scanningAssignment[0].scannedcopies ; 
+    var scannedCopiesSoFar = ( scanningAssignment[0].scannedcopies ? scanningAssignment[0].scannedcopies : 0); 
+
+    
 
     var whereClause = { "examcode" : examcode, "scanningassignment.username": username } ;
-    var setQuery = { "$set": { "scanningassignment.$.scannedcopies": (scannedCopiesSoFar + 1),"scanningassignment.$.assignedcopies": (assignedCopies - 1),  "scannedcopies": (examDetails[0].scannedcopies + 1) } }
+    var setQuery = { 
+        "$set": { 
+            "scanningassignment.$.scannedcopies": (scannedCopiesSoFar + 1),
+            "scanningassignment.$.assignedcopies": (assignedCopies - 1), 
+            "totalscannedcopies": (examDetails[0].totalscannedcopies + 1) 
+        }
+    }
     var updateCount = await connectionService.updateDocument(whereClause, setQuery, "examCollection") ;
-    console.log(JSON.stringify(scanningAssignment)) ;
+    
 }
 
 async function convertPdfToImage(answerCode, dirPath, filePath) {

@@ -6,6 +6,7 @@ import { LookupService } from '../../services/lookup.service';
 import { ExamService } from '../../services/exams.service';
 import { first } from 'rxjs/operators';
 import { AlertService } from '../../services';
+import { UtilService } from '../../services/utilities.service';
 
 @Component({
   selector: 'app-assign-scanner',
@@ -21,12 +22,9 @@ export class AssignScannerComponent implements OnInit {
   @Input() public userType;
 
 
-  constructor(public activeModal: NgbActiveModal, private lookupService: LookupService, private alertService: AlertService, private examService: ExamService) { }
+  constructor(public activeModal: NgbActiveModal, private lookupService: LookupService, private alertService: AlertService, private examService: ExamService, private utilService: UtilService) { }
 
   ngOnInit() {
-
-    console.log(JSON.stringify(this.examFormValues));
-
     this.lookupService.getAssignees(this.userType)
       .subscribe(
       data => {
@@ -54,12 +52,15 @@ export class AssignScannerComponent implements OnInit {
     this.Users.forEach(element => {
       if (element.assignedcopies > 0) {
         totalAssignedCopies += parseInt(element.assignedcopies, 10);
+        var assignedCopies = parseInt(element.assignedcopies) ;
+        var evaluatedCopies = parseInt(element.evaluatedcopies)  ;
+        var scannedCopies = parseInt(element.scannedcopies)  ;
         if (this.userType == "SCANNER") {
-          scanningAssignment.push({ "username": element.username, "scanningoffice": element.scanningoffice, "assignedcopies": element.assignedcopies, "evaluatedcopies": (element.scannedcopies ? element.scannedcopies : 0) });
+          scanningAssignment.push({ "username": element.username, "scanningoffice": element.scanningoffice,"targetdate":this.utilService.getJoinedDate(element.targetdate), "assigneddate":new Date(),  "assignedcopies": assignedCopies, "scannedcopies": scannedCopies, "evaluatedcopies": (evaluatedCopies ? evaluatedCopies : 0) });
         }
         else {
           // For Evaluator
-          evaluationassignment.push({ "username": element.username, "assignedcopies": parseInt(element.assignedcopies), "evaluatedcopies": (element.evaluatedcopies ? element.evaluatedcopiesL : 0) });
+          evaluationassignment.push({ "username": element.username, "assignedcopies": assignedCopies, "evaluatedcopies": (evaluatedCopies ? evaluatedCopies : 0) });
         }
       }
     });
@@ -77,8 +78,8 @@ export class AssignScannerComponent implements OnInit {
 
 
   saveScanningData(totalAssignedCopies, scanningAssignment) {
-    if (totalAssignedCopies > this.examFormValues.numberofcopies) {
-      this.alertService.error("Copies assigned for scanning cannot be more than total copies.");
+    if (totalAssignedCopies > (this.examFormValues.numberofcopies - this.examFormValues.totalscannedcopies)) {
+      this.alertService.error("Copies assigned for scanning cannot be more than (Total Copies - Already Scanned Copies).");
 
     }
     else {
@@ -93,10 +94,7 @@ export class AssignScannerComponent implements OnInit {
         .pipe(first())
         .subscribe(
         data => {
-
           this.alertService.success("Data Saved Successfully");
-          this.cancel();
-
         },
         error => {
           this.alertService.error(error);
@@ -107,8 +105,9 @@ export class AssignScannerComponent implements OnInit {
 
   saveEvaluationData(totalAssignedCopies, evaluationassignment) {
     // Evaluation cannot be done without scanning so number of copies in evaluation cannot be greater than scanned copies
-    if (totalAssignedCopies > this.examFormValues.scannedcopies) {
-      this.alertService.error("Copies assigned for evaluation cannot be more than total scanned copies.");
+    if (totalAssignedCopies > ( this.examFormValues.totalscannedcopies - this.examFormValues.totalevaluatedcopies )) {
+      this.alertService.error("Copies assigned for evaluation cannot be more than (total scanned copies - already evaluated copies). Copies already evaluated cannot be assigned for evaluation");
+      return ; 
     }
     else {
 
@@ -144,6 +143,9 @@ export class AssignScannerComponent implements OnInit {
       });
       if (assignee) {
         element.assignedcopies = (assignee.assignedcopies ? assignee.assignedcopies : 0);
+        element.scannedcopies = (assignee.scannedcopies ? assignee.scannedcopies : 0);
+        element.targetdate = (assignee.targetdate ? this.utilService.getBrokenDate(assignee.targetdate) : "");
+        element.assigneddate = (assignee.assigneddate ? assignee.assigneddate : "");
       }
       else {
         element.assignedcopies = 0;
@@ -160,6 +162,7 @@ export class AssignScannerComponent implements OnInit {
       });
       if (assignee) {
         element.assignedcopies = (assignee.assignedcopies ? assignee.assignedcopies : 0);
+        element.evaluatedcopies = (assignee.evaluatedcopies ? assignee.evaluatedcopies : 0);
       }
       else {
         element.assignedcopies = 0;

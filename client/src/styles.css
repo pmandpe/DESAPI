@@ -142,10 +142,6 @@ button.calendar, button.calendar:active {
     background-color:rgb(242, 175, 127)
   }
 
-  .container-fluid{
-    background-color:rgb(236, 236, 236);
-  }
-
 
 
 
@@ -281,8 +277,11 @@ a[data-toggle="collapse"] {
 
 .btn-primary{
   background-color: #6388ad  !important ;
+  border-color:#6388ad
 }
-
+.border-primary{
+  border-color:#6388ad !important ; 
+}
 .alert-danger{
   background-color: #ed6d6d !important ; 
   color: #fff ; 
@@ -294,4 +293,12 @@ a[data-toggle="collapse"] {
 
 .edit-box{
   margin-top:15px; border:1px solid darkgray ;
+}
+
+.table-bordered {
+  border-color:1px solid darkgray !important;
+}
+
+.table-bordered td {
+  border: 1px solid #a0a0a0;
 }

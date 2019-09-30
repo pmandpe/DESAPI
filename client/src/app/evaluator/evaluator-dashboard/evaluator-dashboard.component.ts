@@ -30,7 +30,7 @@ export class EvaluatorDashboardComponent implements OnInit {
   getAssignedCopies(data) {
 
     //scanAssignment = this.utilityService.filterByString(data, "neelesh") ;
-    var scanAssignment = data.find(x => x.username == this.authenticationService.currentUserValue[0].username);
+    var scanAssignment = data.find(x => x.username == this.authenticationService.currentUserValue.username);
     return scanAssignment;
   }
 

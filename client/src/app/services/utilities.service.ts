@@ -10,6 +10,13 @@ export class UtilService {
         return { "year": year, "month": month, "day": day };
     }
 
+    getJoinedDate(dateValue: any) {
+        if (!dateValue || dateValue == {}){
+            return "" ;
+        }
+        return dateValue.year + "-" + this.padLeft(dateValue.month,'0', 2) + "-" + this.padLeft(dateValue.day,'0', 2)   ;
+    }
+
     filterByString(data, s) {
         return data.filter(e => e.id.includes(s) || e.taskname.includes(s))
             .sort((a, b) => a.id.includes(s) && !b.id.includes(s) ? -1 : b.id.includes(s) && !a.id.includes(s) ? 1 : 0);
@@ -18,6 +25,9 @@ export class UtilService {
     //--get the maximum value of a property in json array
     getMax(arr, prop) {
         var max;
+        if (!arr || arr.length == 0){
+            return 0 ;
+        }
         for (var i = 0; i < arr.length; i++) {
             if (!max || parseInt(arr[i][prop]) > parseInt(max[prop]))
                 max = arr[i];
@@ -43,5 +53,8 @@ export class UtilService {
 
 
 
+    }
+    padLeft(text:string, padChar:string, size:number): string {
+        return (String(padChar).repeat(size) + text).substr( (size * -1), size) ;
     }
 }
