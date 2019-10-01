@@ -6,9 +6,9 @@ var Q = require('q');
 
 
 module.exports = {
-    getEvaluationData,
-    getAnswersPdf,
-    getQuestions
+    getQuestions,
+    getMarkingDetails,
+    getAnswersPdf
 };
 
 async function getEvaluationData(username, examcode) {
@@ -19,6 +19,12 @@ async function getEvaluationData(username, examcode) {
     var examDetails = await connectionService.getDocuments(query, "examCollection");
     var markingDetails = examDetails[0].evaluationassignment.find(x => x.username == username)
     return markingDetails;
+}
+
+async function getMarkingDetails(username, examcode){
+    var evaluationAssignment = await getEvaluationData(username, examcode) ;
+    var answerData = await getAnswerData(username, examcode) ;
+    return {"evaluationassignment" : evaluationAssignment, "answerdata": answerData} ;
 }
 
 
@@ -32,11 +38,21 @@ async function getQuestions(username, examcode) {
 }
 
 
-async function getAnswersPdf(examcode, username) {
-    var fileName = "serverStartup.pdf" ;
+async function getAnswersPdf(examcode, username, answercode) {
     //var filePath = "/Users/potomac/Desktop/PM/Backup/DES/pdfsample.pdf";
-    var filePath = config.fileLocation +"/evaluatedcopies/" +examcode + "/" + username + "/assigned/" + fileName  ;
+    //-- path is like <root>\evaluatedcopies\<examcode>\<username>\assigned\<answercode>.pdf
+    var filePath = config.fileLocation + "evaluatedcopies" + config.filePathSeparator + examcode +  config.filePathSeparator + username + config.filePathSeparator + "assigned" +config.filePathSeparator +  answercode + ".pdf"  ;
     var fileData = await fs.readFile(filePath);
     return fileData;
 }
 
+
+async function getAnswerData(username, examcode) {
+
+    var query = {
+        "assignedto": username,
+        "examcode": examcode 
+    };
+    var answerDetails = await connectionService.getDocuments(query, "answersCollection", {}, 1);
+    return answerDetails;
+}

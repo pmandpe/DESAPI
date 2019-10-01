@@ -84,6 +84,9 @@ async function getDocuments(query, collectionName, columnList, limit) {
 }
 
 
+
+
+
 async function addDocuments(query, collectionName) {
     var connectionObject;
     try {
