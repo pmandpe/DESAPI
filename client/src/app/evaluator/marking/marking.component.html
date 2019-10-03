@@ -4,19 +4,23 @@
         <div class="col-lg-6 col-md-6 col-sm-5 float-left p-2">
 
             <span>
-                <h4>Assigned Copies : {{examData.assignedcopies}}</h4>
+                <h4>Assigned Copies : {{(assignment.assignedcopies?assignment.assignedcopies:0)}}</h4>
             </span>
             <span>
-                <h4>Checked Copies : {{examData.evaluatedcopies}}</h4>
+                <h4>Checked Copies : {{(assignment.evaluatedcopies?assignment.evaluatedcopies:0)}}</h4>
             </span>
         </div>
-
+    
+    
         <div class="col-lg-6 col-md-6 col-sm-6 float-right p-2" style="text-align:right">
             <button class="btn btn-success" (click)="getAnswerDetails()"> Check Copy</button>
+    
         </div>
     </div>
     <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-6">
+               <span class="float-right">Answer Code: {{(evaluationData.answerdata[0].answercode)}}<strong></strong></span>
+               <span class="float-left">Total Marks: <strong> {{(assignment.totalExamMarks)}}</strong></span>
             <app-answer-marking></app-answer-marking>
         </div>
         <div class="col-lg-8 col-md-8 col-sm-6">

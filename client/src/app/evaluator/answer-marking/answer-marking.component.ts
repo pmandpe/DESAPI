@@ -15,7 +15,8 @@ export class AnswerMarkingComponent implements OnInit {
   examCode: string;
   questionData: any;
   answerData: any;
-  totalMarks: any;
+  totalObtainedMarks: any;
+  totalExamMarks : any ;
   json: any ;
   ngOnInit() {
     this.examCode = this._Activatedroute.snapshot.paramMap.get("examcode");
@@ -23,6 +24,7 @@ export class AnswerMarkingComponent implements OnInit {
       .subscribe(
       data => {
         this.questionData = data;
+        
         //this.answerData = {"questionno":"", "totalmarks":0, "marksobtained":0, "sections": []} ;
         this.setInitialAnswerData(data, this.questionData);
 
@@ -61,7 +63,7 @@ export class AnswerMarkingComponent implements OnInit {
         })
       }
     })
-    this.totalMarks = totalmarks;
+    this.totalObtainedMarks = totalmarks;
   }
 
   getJsonData(){

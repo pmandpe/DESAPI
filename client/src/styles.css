@@ -302,3 +302,33 @@ a[data-toggle="collapse"] {
 .table-bordered td {
   border: 1px solid #a0a0a0;
 }
+
+.green-text{
+  color:green ;
+    height: 30px;
+    width: 30px;
+    background-color:rgb(181, 253, 181) ;
+    border-radius: 50%;
+    display: inline-block;
+    font-weight:bold ; 
+    text-align: center;
+    padding-top: 2px;
+    position: absolute;
+    margin-left: 5px;
+    margin-top: -2px;
+}
+
+.red-text{
+  color: red;
+  height: 30px;
+  width: 30px;
+  background-color: #fdcccc;
+  border-radius: 50%;
+  display: inline-block;
+  text-align: center;
+  padding-top: 2px;
+  font-weight:bold ; 
+  position: absolute;
+  margin-left: 5px;
+  margin-top: -2px;
+}

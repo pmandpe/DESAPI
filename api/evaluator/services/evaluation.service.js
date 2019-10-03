@@ -8,7 +8,8 @@ var Q = require('q');
 module.exports = {
     getQuestions,
     getMarkingDetails,
-    getAnswersPdf
+    getAnswersPdf,
+    getEvaluationData
 };
 
 async function getEvaluationData(username, examcode) {
@@ -18,6 +19,7 @@ async function getEvaluationData(username, examcode) {
     };
     var examDetails = await connectionService.getDocuments(query, "examCollection");
     var markingDetails = examDetails[0].evaluationassignment.find(x => x.username == username)
+    markingDetails.totalExamMarks = examDetails[0].totalexammarks ; 
     return markingDetails;
 }
 

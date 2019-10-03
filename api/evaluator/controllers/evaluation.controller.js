@@ -19,8 +19,10 @@ router.post('/marking', authorize(Role.Evaluator), getAnswersMarking);
 router.post('/dashboard', authorize(Role.Evaluator), getDashboardData);
 router.post('/answerspdf', authorize(Role.Evaluator), getAnswersPdf);
 router.post('/questions', authorize(Role.Evaluator), getQuestions);
+router.post('/evaluationdata', authorize(Role.Evaluator), getEvaluationData);
 
 module.exports = router;
+
 
 
 //-- for dashboard data of evaluator
@@ -66,6 +68,12 @@ async function getQuestions(req, res, next) {
 }
 
 
+async function getEvaluationData(req, res, next) {
+    var username = req.username;
+    var examCode = req.body.examcode ; 
+    var questions = await evaluationService.getEvaluationData(username, examCode) ;
+    res.json(questions);
+}
 
 
 

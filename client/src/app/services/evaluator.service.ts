@@ -17,6 +17,13 @@ export class EvaluatorService {
     }
 
 
+    getEvaluationData(examcode) {
+        return this.http.post<any>(environment.apiURL + `/api/v1/evaluator/evaluationdata`, {"examcode" : examcode})
+            .pipe(map((res: Response) => {
+                return res ; 
+            }))
+
+    }
     
 
 
@@ -31,15 +38,13 @@ export class EvaluatorService {
     getMarkingDetails(examcode) {
         return this.http.post<any>(environment.apiURL + `/api/v1/evaluator/marking`, {"examcode" : examcode})
             .pipe(map((res: Response) => {
-
-                
                 return res ; 
             }))
 
     }
     
     getPdf(examcode, answercode) {
-        return this.http.post(environment.apiURL + `/api/v1/evaluator/answerspdf`, {responseType: 'blob' as 'json'})
+        return this.http.post(environment.apiURL + `/api/v1/evaluator/answerspdf`, {"examcode":examcode, "answercode": answercode},{responseType: 'blob' as 'json'})
             .pipe(map((res: Response) => {
                 return res ; 
             }))
