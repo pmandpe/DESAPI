@@ -2,18 +2,24 @@
     <div class="row" style="margin-top:20px">
 
 
-        <div class="col-lg-3 col-sm-6 col-md-4" *ngFor="let dashboard of dashboardData">
-            <div class="card border-primary mb-3" style="max-width: 18rem;">
+        <div class="col-lg-4 col-sm-6 col-md-6" *ngFor="let dashboard of dashboardData">
+            <div class="card border-primary mb-3">
                 <div class="card-header">{{dashboard.examname}}</div>
                 <div class="card-body text-primary">
                     <h6 class="card-subtitle mb-2 text-muted">Subject Code : {{dashboard.subjectcode}}</h6>
-                    <p class="card-text">Assigned Copies : {{getAssignedCopies(dashboard.scanningassignment).assignedcopies}}</p>
-                    <p class="card-text">Scanned Copies : {{(getAssignedCopies(dashboard.scanningassignment).totalscannedcopies ? getAssignedCopies(dashboard.scannedcopies).assignedcopies
-                        : 0)}}</p>
+                    <div class="row">
+                        <div class="col-lg-8 col-md-8 col-sm-8">Assigned Copies</div>
+                        <div class="col-lg-4 col-md-4 col-sm-4"><strong>{{dashboard.scanningassignment[0].assignedcopies}}</strong></div>
+                    </div>
+                    <div class="row">
+                            <div class="col-lg-8 col-md-8 col-sm-8">Scanned Copies</div>
+                            <div class="col-lg-4 col-md-4 col-sm-4"><strong>{{dashboard.scanningassignment[0].scannedcopies}}</strong></div>
+                        </div>
+    
 
                 </div>
                 <div class="card-footer bg-transparent border-success">
-                    <a [routerLink]="['../scandocument', dashboard.examcode]" class="btn btn-success">Start Scanning</a>
+                    <a [routerLink]="['../scandocument', dashboard.examcode]" class="btn btn-success" >Start Scanning</a>
                 </div>
             </div>
         </div>

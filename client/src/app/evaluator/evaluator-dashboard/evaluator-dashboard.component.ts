@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EvaluatorService } from '../../services/evaluator.service';
 import { AlertService, AuthenticationService } from '../../services';
+import { UtilService } from '../../services/utilities.service';
 
 @Component({
   selector: 'app-evaluator-dashboard',
@@ -9,7 +10,7 @@ import { AlertService, AuthenticationService } from '../../services';
 })
 export class EvaluatorDashboardComponent implements OnInit {
 
-  constructor(private evaluatorService: EvaluatorService, private authenticationService: AuthenticationService, private alertService: AlertService) { }
+  constructor(private evaluatorService: EvaluatorService, private authenticationService: AuthenticationService, private alertService: AlertService, private utilityService: UtilService) { }
   dashboardData : any ; 
   ngOnInit() {
 
@@ -28,10 +29,15 @@ export class EvaluatorDashboardComponent implements OnInit {
 
 
   getAssignedCopies(data) {
+    var username = this.authenticationService.currentUserValue.username ;
+    var assignee = data.find(function (x) {
+      var returnValue = x.username == username
+      return (returnValue ? x : null);
+    });
+    //var scanAssignment = this.utilityService.filterByString(data, username )
 
-    //scanAssignment = this.utilityService.filterByString(data, "neelesh") ;
-    var scanAssignment = data.find(x => x.username == this.authenticationService.currentUserValue.username);
-    return scanAssignment;
+    
+    return assignee;
   }
 
 }

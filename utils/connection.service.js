@@ -70,7 +70,7 @@ async function getDocuments(query, collectionName, columnList, limit) {
         }
         connectionObject = await this.getConnection();
         var collection = connectionObject.db(config.database).collection(collectionName);
-        var docs = await collection.find(query, columnList).limit(limit).toArray();
+        var docs = await collection.find(query, {"projection": columnList}).limit(limit).toArray();
         return docs;
     }
     catch (err) {

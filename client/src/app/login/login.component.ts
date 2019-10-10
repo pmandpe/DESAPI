@@ -7,7 +7,8 @@ import { AlertService } from '../services';
 
 
 
-@Component({templateUrl: 'login.component.html'})
+@Component(
+    {templateUrl: 'login.component.html'})
 export class LoginComponent implements OnInit {
     loginForm: FormGroup;
     loading = false;
@@ -18,8 +19,8 @@ export class LoginComponent implements OnInit {
         private formBuilder: FormBuilder,
         private route: ActivatedRoute,
         private router: Router,
-        private authenticationService: AuthenticationService,
-        private alertService: AlertService
+        private alertService: AlertService,
+        private authenticationService: AuthenticationService
     ) {
         // redirect to home if already logged in
         this.dashboardUrl = this.authenticationService.getDashboardUrl() ; 
@@ -56,8 +57,8 @@ export class LoginComponent implements OnInit {
             .subscribe(
                 data => {
                     if (data.status && data.status == 400) { //Invalid user id password
-                        this.alertService.error(data.message) ;
-                        this.loading = false ; 
+                       this.alertService.error(data.message) ;
+                       this.loading = false ; 
                     }
                     else{
                         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || this.authenticationService.getDashboardUrl();

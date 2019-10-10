@@ -83,8 +83,19 @@ export class AuthenticationService {
     }
 
     getHeaderToken(){
+        if (!this.currentUserValue){
+            return null ; 
+        }
         return {
             Authorization: `Bearer ${this.currentUserValue.token}`
         }
+    }
+
+    isLoggedIn(){
+        var token = this.getHeaderToken() ; 
+        if (token){
+            return true ; 
+        }
+        return false ; 
     }
 }

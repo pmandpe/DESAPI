@@ -30,7 +30,9 @@ async function saveExam(exam, userid) {
         "scannedcopies": exam.totalscannedcopies,
         "modified_date": new Date(),
         "modified_by": userid,
-        "comments": exam.comments
+        "comments": exam.comments,
+        "class": exam.class,
+        "semester": exam.semester
     }
     var updateCount = 0;
     var setQuery = {
@@ -65,15 +67,21 @@ async function getAllExams() {
 }
 
 
-async function getExamDetails(examcode) {
+async function getExamDetails(examcode, columnList) {
+
+    if (!columnList){
+        columnList = {} ;
+    }
 
     var query = {
         "examcode": examcode
     };
 
-    var examDetails = await connectionService.getDocuments(query, "examCollection");
+    var examDetails = await connectionService.getDocuments(query, "examCollection", columnList);
     return examDetails;
 }
+
+
 
 
 
@@ -228,3 +236,4 @@ async function saveQuestion(examDetails, questions, userid) {
         return { "updateCount": updateCount, "error": "This subject code already exist. Please try a different one." };
     }
 }
+

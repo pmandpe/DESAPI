@@ -42,25 +42,27 @@ export class AssignScannerComponent implements OnInit {
   }
 
   cancel() {
-    this.activeModal.close();
+    this.activeModal.close('Closed'); 
   }
 
   save() {
     var scanningAssignment = [];
     var evaluationassignment = [];
     var totalAssignedCopies = 0;
+    var additionalCopies = 0  ;
     this.Users.forEach(element => {
       if (element.assignedcopies > 0) {
         totalAssignedCopies += parseInt(element.assignedcopies, 10);
         var assignedCopies = parseInt(element.assignedcopies) ;
         var evaluatedCopies = parseInt(element.evaluatedcopies)  ;
         var scannedCopies = parseInt(element.scannedcopies)  ;
+        additionalCopies = parseInt(element.additionalcopies)  ;
         if (this.userType == "SCANNER") {
           scanningAssignment.push({ "username": element.username, "scanningoffice": element.scanningoffice,"targetdate":this.utilService.getJoinedDate(element.targetdate), "assigneddate":new Date(),  "assignedcopies": assignedCopies, "scannedcopies": scannedCopies, "evaluatedcopies": (evaluatedCopies ? evaluatedCopies : 0) });
         }
         else {
           // For Evaluator
-          evaluationassignment.push({ "username": element.username, "assignedcopies": assignedCopies, "evaluatedcopies": (evaluatedCopies ? evaluatedCopies : 0) });
+          evaluationassignment.push({ "username": element.username, "additionalcopies": additionalCopies,  "assignedcopies": assignedCopies, "evaluatedcopies": (evaluatedCopies ? evaluatedCopies : 0) });
         }
       }
     });
@@ -69,7 +71,7 @@ export class AssignScannerComponent implements OnInit {
       this.saveScanningData(totalAssignedCopies, scanningAssignment);
     }
     else {
-      this.saveEvaluationData(totalAssignedCopies, evaluationassignment);
+      this.saveEvaluationData(additionalCopies, evaluationassignment);
     }
     //Copies assigned for scanning cannot be more than total copies
 
@@ -78,7 +80,8 @@ export class AssignScannerComponent implements OnInit {
 
 
   saveScanningData(totalAssignedCopies, scanningAssignment) {
-    if (totalAssignedCopies > (this.examFormValues.numberofcopies - this.examFormValues.totalscannedcopies)) {
+    var scannedCopies = (this.examFormValues.totalscannedcopies ? this.examFormValues.totalscannedcopies : 0) ;
+    if (totalAssignedCopies > (this.examFormValues.numberofcopies - scannedCopies)) {
       this.alertService.error("Copies assigned for scanning cannot be more than (Total Copies - Already Scanned Copies).");
 
     }
@@ -103,19 +106,34 @@ export class AssignScannerComponent implements OnInit {
     }
   }
 
-  saveEvaluationData(totalAssignedCopies, evaluationassignment) {
+
+  addAdditionalCopies(newValue, assignment){
+    if (newValue){
+      try{
+        var additionalCopies = parseInt(newValue) ;
+        assignment.assignedcopies += additionalCopies ;
+      }
+      catch(ex){
+        this.alertService.error("Additional copies should be a number") ;
+      }
+    }
+  }
+  
+  
+  saveEvaluationData(additionalCopies, evaluationassignment) {
     // Evaluation cannot be done without scanning so number of copies in evaluation cannot be greater than scanned copies
-    if (totalAssignedCopies > ( this.examFormValues.totalscannedcopies - this.examFormValues.totalevaluatedcopies )) {
+    if (additionalCopies > ( this.examFormValues.totalscannedcopies - this.examFormValues.totalcopiesassignedforevaluation) ){
       this.alertService.error("Copies assigned for evaluation cannot be more than (total scanned copies - already evaluated copies). Copies already evaluated cannot be assigned for evaluation");
       
     }
     else {
 
-      var params = { "examcode": "", "evaluationassignment": [], "totalcopiesassignedforevaluation": 0 };
+      var params = { "examcode": "", "evaluationassignment": [], "totalcopiesassignedforevaluation": 0 , "additionalcopies": 0};
 
       params.examcode = this.examCode;
-      params.totalcopiesassignedforevaluation = totalAssignedCopies;
+      params.totalcopiesassignedforevaluation = this.examFormValues.totalcopiesassignedforevaluation + (additionalCopies ? parseInt(additionalCopies) : 0);
       params.evaluationassignment = evaluationassignment;
+      params.additionalcopies = (additionalCopies ? parseInt(additionalCopies) : 0) ;
 
       this.examService.saveEvaluationAssignment(params)
         .pipe(first())
@@ -160,9 +178,11 @@ export class AssignScannerComponent implements OnInit {
         var returnValue = x.username == element.username;
         return (returnValue ? x : null);
       });
+      element.additionalcopies = 0 ;
       if (assignee) {
         element.assignedcopies = (assignee.assignedcopies ? assignee.assignedcopies : 0);
         element.evaluatedcopies = (assignee.evaluatedcopies ? assignee.evaluatedcopies : 0);
+        
       }
       else {
         element.assignedcopies = 0;

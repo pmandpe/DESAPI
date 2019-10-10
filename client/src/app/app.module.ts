@@ -39,8 +39,12 @@ import { ExamQuestionDetailsComponent } from './administrator/exams/exam-questio
 import { AnswerMarkingComponent } from './evaluator/answer-marking/answer-marking.component';
 import { ScannerContainerComponent } from './scanner/scanner-container/scanner-container.component';
 import { SubjectMenuComponent } from './master/subject-menu/subject-menu.component';
-import { ExamMenuComponent } from './adminitrator/exams/exam-menu/exam-menu.component';
+
 import { TopMenuComponent } from './components/top-menu/top-menu.component';
+import { ConfirmationDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
+import { ConfirmationDialogService } from './services/confirm-dialog.service';
+import { ExamMenuComponent } from './administrator/exams/exam-menu/exam-menu.component';
+
 
 const appRoutes: Routes = [
   {
@@ -87,7 +91,9 @@ const appRoutes: Routes = [
     AnswerMarkingComponent,
     ScannerContainerComponent,
     ExamMenuComponent,
-    TopMenuComponent
+    TopMenuComponent,
+    ConfirmationDialogComponent
+    
   ],
   imports: [
     BrowserModule,
@@ -107,14 +113,17 @@ const appRoutes: Routes = [
 
   
   providers: [
-
+    
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    NgbActiveModal
+    NgbActiveModal,
+    ConfirmationDialogService
   ],
   bootstrap: [AppComponent],
   entryComponents: [
-    AssignScannerComponent
+    AssignScannerComponent,
+    ConfirmationDialogComponent
+
   ]
 })
 export class AppModule { }

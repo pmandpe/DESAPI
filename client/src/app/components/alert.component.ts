@@ -9,13 +9,15 @@ import { AlertService } from '../services';
     templateUrl: 'alert.component.html'
 })
 
+
 export class AlertComponent implements OnInit, OnDestroy {
     private subscription: Subscription;
     message: any;
-
+    hideAlert: boolean ;
     constructor(private alertService: AlertService) { }
 
     ngOnInit() {
+        this.hideAlert = false ;
         this.subscription = this.alertService.getMessage().subscribe(message => { 
             this.message = message; 
         });
@@ -23,5 +25,9 @@ export class AlertComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
+    }
+    removeAlert(alert){
+        this.message = "" ;
+        this.hideAlert = true ;
     }
 }

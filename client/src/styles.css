@@ -164,14 +164,14 @@ button.calendar, button.calendar:active {
 a,
 a:hover,
 a:focus {
-    color: inherit;
-    text-decoration: none;
+    color: #0a35f3;
+    text-decoration: underline;
     transition: all 0.3s;
 }
 
 .navbar {
     padding: 15px 10px;
-    background: #fff;
+    background: rgb(10, 53, 243);
     border: none;
     border-radius: 0;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);

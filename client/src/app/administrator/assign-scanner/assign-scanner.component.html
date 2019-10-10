@@ -65,7 +65,7 @@
           <td>
 
             <div class="input-group">
-              <input class="form-control" placeholder="yyyy-mm-dd" ngbDatepicker #dpresultdate="ngbDatepicker"
+              <input class="form-control" placeholder="yyyy-mm-dd" ngbDatepicker #dpresultdate="ngbDatepicker" [readonly]="true"
                 [(ngModel)]="user.targetdate" />
 
               <div class="input-group-append">
@@ -87,16 +87,19 @@
           <th>Email Id</th>
           <th>Phone</th>
           <th>Copies Assigned</th>
+          <th>Add Copies</th>
           <th>Copies Evaluated</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let user of Users">
+          
           <td>{{user.name}}</td>
           <td>{{user.emailid}}</td>
           <td>{{user.phone}}</td>
+          <td>{{user.assignedcopies}}</td>
           <td>
-            <app-inline-edit [(ngModel)]="user.assignedcopies" type="text"> </app-inline-edit>
+            <app-inline-edit [(ngModel)]="user.additionalcopies" (input)="addAdditionalCopies($event.target.value, user)"> </app-inline-edit>
           </td>
           <td>{{user.evaluatedcopies}}</td>
         </tr>

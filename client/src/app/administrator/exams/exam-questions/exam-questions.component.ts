@@ -20,6 +20,8 @@ export class ExamQuestionsComponent implements OnInit {
     private alertService: AlertService,
     private utilService: UtilService) { }
 
+   
+
   ngOnInit() {
     
   }
@@ -40,8 +42,9 @@ export class ExamQuestionsComponent implements OnInit {
 
 
 
-
-    const modalRef = this.modalService.open(ExamQuestionDetailsComponent, { windowClass: 'scannerpopup' });
+    //const modalRef = this.modalService.open(ExamQuestionDetailsComponent);
+    
+    var modalRef = this.modalService.open(ExamQuestionDetailsComponent, { windowClass: 'scannerpopup' });
     modalRef.componentInstance.examQuestion = question;
     modalRef.componentInstance.examQuestions = this.examQuestions;
     modalRef.componentInstance.mode = editMode;
@@ -49,9 +52,10 @@ export class ExamQuestionsComponent implements OnInit {
 
 
     modalRef.result.then((result) => {
-      if (result) {
-        this.ngOnInit();
+      if (result){
+        this.examQuestions = result ; 
       }
+        
     });
   }
 

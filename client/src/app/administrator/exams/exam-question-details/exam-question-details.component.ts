@@ -1,10 +1,12 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ExamService } from '../../../services/exams.service';
 import { first } from 'rxjs/operators';
 import { AlertService } from '../../../services';
 import { UtilService } from '../../../services/utilities.service';
 import { FormBuilder, FormArray } from '@angular/forms';
+import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+
 
 @Component({
   selector: 'app-exam-question-details',
@@ -17,11 +19,13 @@ export class ExamQuestionDetailsComponent implements OnInit {
   @Input() examcode;
   @Input() mode;
 
-
+  
   loading: any;
-  constructor(public activeModal: NgbActiveModal, private examService: ExamService, private _fb: FormBuilder, private alertService: AlertService, private utilService: UtilService) { }
-
+  dataSaved: boolean ; 
+  constructor( public activeModal: NgbActiveModal, private examService: ExamService, private _fb: FormBuilder, private alertService: AlertService, private utilService: UtilService) { }
+  
   ngOnInit() {
+    this.dataSaved = false ; 
     if (!this.examQuestions) { //In case its a new question, the examQuestions will come as undefined
       this.examQuestions = [];
       this.examQuestion = this.getNewQuestion();
@@ -29,8 +33,10 @@ export class ExamQuestionDetailsComponent implements OnInit {
    
   }
 
+  closeModal() {
+    this.activeModal.close(this.examQuestions);
+  }
  
-  
 
   addNewSubQuestion() {
     if (!this.examQuestion.sections){
@@ -78,6 +84,7 @@ export class ExamQuestionDetailsComponent implements OnInit {
         data => {
           this.loading = false;
           this.alertService.success("Data Saved Successfully");
+          this.dataSaved = true ; 
         },
         error => {
           this.alertService.error(error);

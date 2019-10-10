@@ -1,46 +1,71 @@
 
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-6 col-lg-3 col-md-3">
-                <table class="table table-bordered" style="width:100%;margin-top:15px;">
-                        <tr>
-                                <td width="40%">Exam Code</td>
-                                <td  width="60%">{{examcode}}</td>
-                            </tr>
-                    <tr>
-                            <td width="40%">Assigned Copies</td>
-                            <td  width="60%">{{scannerSummaryData.assignedcopies}}</td>
-                        </tr>
-                        <tr>
-                            <td>Scanned Copies</td>
-                            <td>{{scannerSummaryData.scannedcopies}}</td>
-                        </tr>
-                        <tr>
-                                <td>Assigned Date</td>
-                                <td>{{scannerSummaryData.assigneddate}}</td>
-                            </tr>
-                        <tr>
-                            <td>Target Date</td>
-                            <td>{{scannerSummaryData.targetdate}}</td>
-                        </tr>
-                    </table>
-        </div>
-        
-
-        <div class="col-sm-6 col-lg-9 col-md-9">
-                    <div style="margin:10px">
-                        <h5>{{message}}</h5>
-                        <div>
-                                <span><button class="btn btn-primary" (click)="acquireImage()" [disabled]="disableAllButtons">Scan Document</button></span>
-                            <span>&nbsp;</span>
-                            <span><button class="btn btn-success" (click)="uploadDocument()"  [disabled]="disableAllButtons">Submit Document</button></span>
-                        </div>
-                    </div>
-                    
-                    <div id="dwtcontrolContainer" style="margin:10px;"></div>
-        </div>
-
-
-
+    <alert></alert>
+    <div class="float-right">
+        <a [routerLink]="['/scanner/dashboard']">Dashboard</a>
     </div>
+    <div>
+        <div class="row">
+            <div class="col-sm-6 col-lg-3 col-md-3">
+                <table class="table table-bordered" style="width:100%;margin-top:20px;">
+                    <tr>
+                        <td width="40%">Exam Code</td>
+                        <td width="60%">{{examcode}}</td>
+                    </tr>
+                    <tr>
+                        <td width="40%">Assigned Copies</td>
+                        <td width="60%">{{scannerSummaryData.assignedcopies}}</td>
+                    </tr>
+                    <tr>
+                        <td>Scanned Copies</td>
+                        <td>{{scannerSummaryData.scannedcopies}}</td>
+                    </tr>
+                    <tr>
+                        <td>Assigned Date</td>
+                        <td>{{scannerSummaryData.assigneddate}}</td>
+                    </tr>
+                    <tr>
+                        <td>Target Date</td>
+                        <td>{{scannerSummaryData.targetdate}}</td>
+                    </tr>
+                </table>
+            </div>
+
+
+            <div class="col-sm-6 col-lg-9 col-md-9" [hidden]="scannerSummaryData.assignedcopies == scannerSummaryData.scannedcopies">
+                <div style="margin:20px">
+                    <h5>{{message}}</h5>
+                    <div>
+                        <span>
+                            <button class="btn btn-primary" (click)="acquireImage()" [disabled]="disableAllButtons">Scan Document</button>
+                        </span>
+                        <span>&nbsp;</span>
+                        <span>
+                            <button class="btn btn-success" (click)="uploadDocument()" [disabled]="disableAllButtons">Submit Document</button>
+                        </span>
+                        
+                    </div>
+                </div>
+
+                <div id="dwtcontrolContainer" style="margin:10px;"></div>
+            </div>
+            <div class="col-sm-6 col-lg-9 col-md-9 card" style="margin-top:20px ; display: table; height: 200px; overflow: hidden;" [hidden]="scannerSummaryData.assignedcopies != scannerSummaryData.scannedcopies">
+                <div style="display: table-cell; vertical-align: middle;">
+                    <div style="text-align:center">
+                        <h4>All Documents for this Exam assigned to you are already scanned.
+                            <p>Go back to
+                                <a [routerLink]="['/scanner/dashboard']">Dashboard</a>
+                            </p>
+                        </h4>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </div>
+
 </div>

@@ -22,30 +22,18 @@ export class ScannerDashboardComponent implements OnInit {
 
     this.scannerService.getDashboard()
       .subscribe(
-        data => {
-          this.dashboardData = data;
-          // this.scanningAssignment = this.getScanningAssignment(data);
-        },
-        error => {
-          this.alertService.error(error);
-          //this.loading = false;
+      data => {
+        this.dashboardData = data;
+        // this.scanningAssignment = this.getScanningAssignment(data);
+      },
+      error => {
+        this.alertService.error(error);
+        //this.loading = false;
 
-        });
+      });
 
   }
 
-  getAssignedCopies(data) {
-    var username = this.authenticationService.currentUserValue.username ;
-    if (!username || username == ""){
-      this.alertService.error("Your session has expired, please login again.") ;
-      return ; 
-    }
-    //scanAssignment = this.utilityService.filterByString(data, "neelesh") ;
-    var scanAssignment = data.find(function(x) {
-      return x.username == username ;
-    });
-    return scanAssignment;
-  }
 
 }
 

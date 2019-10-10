@@ -133,6 +133,9 @@ async function addAnswer(fields, username, qrcode, pdfFilePath, answerCode) {
 
 
 async function updateScanningNumbers(examcode, username){
+    var columnList = {
+        "scanningassignment": 1,
+    }
     var examDetails = await examService.getExamDetails(examcode) ;
     var scanningAssignment = examDetails[0].scanningassignment.filter(function(assignment) {
         return assignment.username == username;
@@ -147,7 +150,7 @@ async function updateScanningNumbers(examcode, username){
         "$set": { 
             "scanningassignment.$.scannedcopies": (scannedCopiesSoFar + 1),
             "scanningassignment.$.assignedcopies": (assignedCopies - 1), 
-            "totalscannedcopies": (examDetails[0].totalscannedcopies + 1) 
+            "totalscannedcopies": ((examDetails[0].totalscannedcopies ? examDetails[0].totalscannedcopies : 0) + 1) 
         }
     }
     var updateCount = await connectionService.updateDocument(whereClause, setQuery, "examCollection") ;

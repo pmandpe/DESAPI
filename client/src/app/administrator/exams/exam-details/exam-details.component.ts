@@ -55,7 +55,9 @@ export class ExamDetailsComponent implements OnInit {
       totalscannedcopies: new FormControl(0) ,
       totalevaluatedcopies: new FormControl(0) ,
       evaluationassignment: new FormControl([]) ,
-      editmode: new FormControl("")
+      editmode: new FormControl(""),
+      class: new FormControl(""),
+      semester: new FormControl("")
 
 
     });
@@ -70,7 +72,15 @@ export class ExamDetailsComponent implements OnInit {
     }
 
     if (this.mode != "NEW") {
-      this.disableSubjectCode = true;
+      this.getExamDetails() ; 
+
+    }
+   
+  }
+
+
+  getExamDetails(){
+    this.disableSubjectCode = true;
 
       this.examService.getExamDetails(this.examcode)
         .subscribe(
@@ -85,15 +95,17 @@ export class ExamDetailsComponent implements OnInit {
           this.examForm.patchValue({ examname: this.examdetails.examname });
           this.examForm.patchValue({ subjectcode: this.examdetails.subjectcode });
           this.examForm.patchValue({ examdate: exDate });
-          this.examForm.patchValue({ numberofcopies: this.examdetails.numberofcopies });
-          this.examForm.patchValue({ totalcopiesassignedforscanning: this.examdetails.totalcopiesassignedforscanning });
-          this.examForm.patchValue({ totalcopiesassignedforevaluation: this.examdetails.totalcopiesassignedforevaluation });
+          this.examForm.patchValue({ numberofcopies: (this.examdetails.numberofcopies? this.examdetails.numberofcopies: 0)  });
+          this.examForm.patchValue({ totalcopiesassignedforscanning: (this.examdetails.totalcopiesassignedforscanning ? this.examdetails.totalcopiesassignedforscanning : 0)});
+          this.examForm.patchValue({ totalcopiesassignedforevaluation: (this.examdetails.totalcopiesassignedforevaluation ? this.examdetails.totalcopiesassignedforevaluation : 0)});
           this.examForm.patchValue({ resultdate: reDate });
           this.examForm.patchValue({ comments: this.examdetails.comments });
           this.examForm.patchValue({scanningassignment: this.examdetails.scanningassignment})
           this.examForm.patchValue({evaluationassignment: this.examdetails.evaluationassignment}) ;
-          this.examForm.patchValue({totalscannedcopies: this.examdetails.totalscannedcopies}) ;
-          this.examForm.patchValue({totalevaluatedcopies: this.examdetails.totalevaluatedcopies}) ;
+          this.examForm.patchValue({totalscannedcopies: (this.examdetails.totalscannedcopies ? this.examdetails.totalscannedcopies :0 )}) ;
+          this.examForm.patchValue({totalevaluatedcopies: ( this.examdetails.totalevaluatedcopies ? this.examdetails.totalevaluatedcopies : 0)}) ;
+          this.examForm.patchValue({class: this.examdetails.class}) ;
+          this.examForm.patchValue({semester: this.examdetails.semester}) ;
 
 
 
@@ -104,12 +116,7 @@ export class ExamDetailsComponent implements OnInit {
           this.loading = false;
 
         });
-
-    }
-   
   }
-
-
 
 
   saveExam() {
@@ -166,7 +173,7 @@ export class ExamDetailsComponent implements OnInit {
     
     modalRef.result.then((result) => {
       if (result) {
-        //this.ngOnInit() ;
+        this.getExamDetails() ; 
       }
     });
   }

@@ -19,6 +19,7 @@ import { MarkingComponent } from '../evaluator/marking/marking.component';
 import { EvalContainerComponent } from '../evaluator/eval-container/eval-container.component';
 import { ExamQuestionDetailsComponent } from '../administrator/exams/exam-question-details/exam-question-details.component';
 import { ScannerContainerComponent } from '../scanner/scanner-container/scanner-container.component';
+import { AnswerMarkingComponent } from '../evaluator/answer-marking/answer-marking.component';
 
 
 
@@ -96,6 +97,10 @@ const routes: Routes = [
       {
         path: 'marking/:examcode',
         component: MarkingComponent
+      },
+      {
+        path: 'marking/answer/:answercode/:examcode',
+        component: AnswerMarkingComponent
       }
     ]
   }

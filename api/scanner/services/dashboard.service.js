@@ -12,7 +12,8 @@ async function getDashboard(username) {
     var query =  { 
         "scanningassignment.username" : username
     }
-    var scannerDashboard = await connectionService.getDocuments(query, "examCollection");
+    var columnList = {"examname": 1, "scanningassignment.$": 1, "subjectcode":1, "examcode": 1} ;
+    var scannerDashboard = await connectionService.getDocuments(query, "examCollection", columnList);
     return scannerDashboard ;
 }
 

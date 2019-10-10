@@ -1,0 +1,18 @@
+
+    <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
+            <a class="navbar-brand" href="#">
+                <img src="/assets/images/logo.png" alt="Logo" style="width:40px;">
+            </a>
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Digital Evaluation System</a>
+            </div>
+            <ul class="nav navbar-nav navbar-right ml-auto">
+                <li class="nav-item" [hidden]="!isLoggedIn">
+                    <a class="nav-link" (click)="logout()">
+                        <span></span> Sign Out
+                        <i class="fa fa-sign-in"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    
