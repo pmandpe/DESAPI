@@ -142,8 +142,12 @@ button.calendar, button.calendar:active {
     background-color:rgb(242, 175, 127)
   }
 
-
-
+.dashboard-card{
+  padding:12px ; 
+  background-color: #fff ; 
+  border: 1px solid #ececec;
+  
+}
 
 
 
