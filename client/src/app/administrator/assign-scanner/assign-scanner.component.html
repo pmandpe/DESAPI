@@ -45,6 +45,8 @@
           <th>Email Id</th>
           <th>Assigned For Scanning</th>
           <th>Copies Scanned</th>
+          <th>Add For Scanning</th>
+          
           <th>Target Date</th>
 
         </tr>
@@ -57,11 +59,10 @@
           <td>{{user.emailid}}</td>
 
           <td>
-            <app-inline-edit [(ngModel)]="user.assignedcopies" type="text"> </app-inline-edit>
+           {{(user.assignedcopies?user.assignedcopies:0)}}
           </td>
-
-
           <td>{{user.scannedcopies}}</td>
+          <td><app-inline-edit [(ngModel)]="user.additionalcopies" type="text"> </app-inline-edit></td>
           <td>
 
             <div class="input-group">
@@ -99,7 +100,7 @@
           <td>{{user.phone}}</td>
           <td>{{user.assignedcopies}}</td>
           <td>
-            <app-inline-edit [(ngModel)]="user.additionalcopies" (input)="addAdditionalCopies($event.target.value, user)"> </app-inline-edit>
+            <app-inline-edit [(ngModel)]="user.additionalcopies"> </app-inline-edit>
           </td>
           <td>{{user.evaluatedcopies}}</td>
         </tr>

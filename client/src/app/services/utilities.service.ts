@@ -57,4 +57,22 @@ export class UtilService {
     padLeft(text:string, padChar:string, size:number): string {
         return (String(padChar).repeat(size) + text).substr( (size * -1), size) ;
     }
+
+    getNumbericValue(input){
+
+        var returnValue = 0 ;
+        if (!input){
+            return 0 ;
+        }
+
+        try{
+            returnValue = parseInt(input) ;
+        }
+        catch(ex){
+            console.log("error in parsing value") ;
+        }
+
+        return returnValue ; 
+        
+    }
 }

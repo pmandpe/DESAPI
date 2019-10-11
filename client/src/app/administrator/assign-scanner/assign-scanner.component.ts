@@ -51,12 +51,13 @@ export class AssignScannerComponent implements OnInit {
     var totalAssignedCopies = 0;
     var additionalCopies = 0  ;
     this.Users.forEach(element => {
-      if (element.assignedcopies > 0) {
-        totalAssignedCopies += parseInt(element.assignedcopies, 10);
-        var assignedCopies = parseInt(element.assignedcopies) ;
-        var evaluatedCopies = parseInt(element.evaluatedcopies)  ;
-        var scannedCopies = parseInt(element.scannedcopies)  ;
-        additionalCopies = parseInt(element.additionalcopies)  ;
+      if (element.additionalcopies > 0) {
+        var additionalCopies =this.utilService.getNumbericValue(element.additionalcopies) ; 
+        totalAssignedCopies += this.utilService.getNumbericValue(element.assignedcopies) + additionalCopies;
+        var assignedCopies = this.utilService.getNumbericValue(element.assignedcopies) + additionalCopies;;
+        var evaluatedCopies = this.utilService.getNumbericValue(element.evaluatedcopies)  ;
+        var scannedCopies = this.utilService.getNumbericValue(element.scannedcopies)  ;
+        //additionalCopies = parseInt(element.additionalcopies)  ;
         if (this.userType == "SCANNER") {
           scanningAssignment.push({ "username": element.username, "scanningoffice": element.scanningoffice,"targetdate":this.utilService.getJoinedDate(element.targetdate), "assigneddate":new Date(),  "assignedcopies": assignedCopies, "scannedcopies": scannedCopies, "evaluatedcopies": (evaluatedCopies ? evaluatedCopies : 0) });
         }
@@ -71,7 +72,7 @@ export class AssignScannerComponent implements OnInit {
       this.saveScanningData(totalAssignedCopies, scanningAssignment);
     }
     else {
-      this.saveEvaluationData(additionalCopies, evaluationassignment);
+      this.saveEvaluationData(totalAssignedCopies, evaluationassignment);
     }
     //Copies assigned for scanning cannot be more than total copies
 
@@ -107,23 +108,22 @@ export class AssignScannerComponent implements OnInit {
   }
 
 
-  addAdditionalCopies(newValue, assignment){
-    if (newValue){
+  getAdditionalCopies(user){
       try{
-        var additionalCopies = parseInt(newValue) ;
-        assignment.assignedcopies += additionalCopies ;
+        return user.assignedcopies + parseInt(user.additionalcopies) ;
       }
       catch(ex){
         this.alertService.error("Additional copies should be a number") ;
       }
-    }
+    
   }
   
   
-  saveEvaluationData(additionalCopies, evaluationassignment) {
+  
+  saveEvaluationData(totalCopiesAssignedForEvaluation, evaluationassignment) {
     // Evaluation cannot be done without scanning so number of copies in evaluation cannot be greater than scanned copies
-    if (additionalCopies > ( this.examFormValues.totalscannedcopies - this.examFormValues.totalcopiesassignedforevaluation) ){
-      this.alertService.error("Copies assigned for evaluation cannot be more than (total scanned copies - already evaluated copies). Copies already evaluated cannot be assigned for evaluation");
+    if (totalCopiesAssignedForEvaluation > ( this.examFormValues.totalscannedcopies) ){
+      this.alertService.error("Copies assigned for evaluation cannot be more than total scanned copies");
       
     }
     else {
@@ -131,9 +131,8 @@ export class AssignScannerComponent implements OnInit {
       var params = { "examcode": "", "evaluationassignment": [], "totalcopiesassignedforevaluation": 0 , "additionalcopies": 0};
 
       params.examcode = this.examCode;
-      params.totalcopiesassignedforevaluation = this.examFormValues.totalcopiesassignedforevaluation + (additionalCopies ? parseInt(additionalCopies) : 0);
+      params.totalcopiesassignedforevaluation = totalCopiesAssignedForEvaluation ;
       params.evaluationassignment = evaluationassignment;
-      params.additionalcopies = (additionalCopies ? parseInt(additionalCopies) : 0) ;
 
       this.examService.saveEvaluationAssignment(params)
         .pipe(first())
@@ -159,6 +158,7 @@ export class AssignScannerComponent implements OnInit {
         var returnValue = x.username == element.username;
         return (returnValue ? x : null);
       });
+      element.additionalcopies = 0 ; 
       if (assignee) {
         element.assignedcopies = (assignee.assignedcopies ? assignee.assignedcopies : 0);
         element.scannedcopies = (assignee.scannedcopies ? assignee.scannedcopies : 0);

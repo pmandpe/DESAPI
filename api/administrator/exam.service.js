@@ -69,8 +69,8 @@ async function getAllExams() {
 
 async function getExamDetails(examcode, columnList) {
 
-    if (!columnList){
-        columnList = {} ;
+    if (!columnList) {
+        columnList = {};
     }
 
     var query = {
@@ -139,7 +139,7 @@ async function saveEvaluationAssignment(evaluationData, userid) {
     //-- get the answer data against which we have to save the evaluation data
 
 
-    updateCount = await connectionService.updateDocument(uniqueIdQuery, setQuery, "examCollection");
+    updateCount = 0;//await connectionService.updateDocument(uniqueIdQuery, setQuery, "examCollection");
     if (updateCount == 11000) {//its a duplicate error
         return { "updateCount": updateCount, "error": "Error in assigning for scanning." };
     }
@@ -147,18 +147,46 @@ async function saveEvaluationAssignment(evaluationData, userid) {
 
         //update data in answers collection
 
-
+        var examCode = evaluationData.examcode;
         //cut and paste copies from scanned folder to evaulator's folder.
-        evaluationData.evaluationassignment.forEach(async function (assignment) {
-            var answersToUpdate = await getAnswersForEvaluation(evaluationData.examcode, assignment.assignedcopies);
-            var copyFiles = await copyAssignedCopiesToUserFolder(assignment.username, evaluationData.examcode);
-            //-- once files are copied, update the answers collection with username to whom copies are assigned for evaluation
-            //-- and set the flag isAssigned to 'Y'
-            var updateCount = await updateAnswersForEvaluation(answersToUpdate, assignment.username);
-            if (updateCount < 0) {
-                return -1;
+        /*
+        const start = async () => {
+            await utilities.asyncForEach(evaluationData.evaluationassignment, async  (assignment) => {
+                var query = { "examcode": examCode, "isassigned": "N" };
+                var answersTobeUpdated = await connectionService.getDocuments(query, "answersCollection", {}, assignment.additionalcopies);
+                console.log(JSON.stringify(answersTobeUpdated));
+                //var answersToUpdate = await getAnswersForEvaluation(evaluationData.examcode, assignment.additionalcopies);
+                //var copyFiles = await copyAssignedCopiesToUserFolder(assignment.username, evaluationData.examcode);
+                //-- once files are copied, update the answers collection with username to whom copies are assigned for evaluation
+                //-- and set the flag isAssigned to 'Y'
+                //var updateCount = await updateAnswersForEvaluation(answersToUpdate, assignment.username);
+                //if (updateCount < 0) {
+                //    return -1;
+                //}
+            });
+        }
+        start() ; 
+        */
+        try {
+            const processData = async _ => {
+                console.log("Start");
+                for (var i = 0; i < evaluationData.evaluationassignment.length; i++) {
+                    var query = { "examcode": examCode, "isassigned": "N" };
+                    const answersTobeUpdated = await connectionService.getDocuments(query, "answersCollection", {}, evaluationData.evaluationassignment[i].additionalcopies);
+                    
+                    var copyFiles = await copyAssignedCopiesToUserFolder(evaluationData.evaluationassignment[i].username, examCode);
+                    var updateCount = await updateAnswersForEvaluation(answersTobeUpdated, evaluationData.evaluationassignment[i].username);
+                }
+                return 1;
             }
-        });
+            const returnValue = await processData();
+        }
+        catch (ex) {
+            console.log("Error in updating data for Evaluation : " + ex);
+            return { "updateCount": -1, "error": "Error in updating evaluation data" };
+        }
+        return { "updateCount": 1, "success": "Data updated successfully" };
+
 
     }
 }
@@ -171,14 +199,14 @@ async function updateAnswersForEvaluation(answersToUpdate, username) {
         var updateCount = await connectionService.updateDocument(uniqueIdQuery, setQuery, "answersCollection");
         return updateCount;
     });
-    return updateCount ;
+    return updateCount;
 }
 
 async function getAnswersForEvaluation(examcode, numberofanswersassigned) {
     //first get all the answers with LIMIT as number of copies to be evaluated for this exam code and not assigned for evaluation yet
-    var query = { "examcode": examcode, "isassigned": "N" };
 
-    var answersTobeUpdated = await connectionService.getDocuments(query, "answersCollection", {}, numberofanswersassigned);
+
+
     return answersTobeUpdated
 }
 
@@ -189,16 +217,10 @@ async function copyAssignedCopiesToUserFolder(username, examcode) {
         files.forEach(file => {
             fileList.push(file);
         });
-        /*
-                if (!fs.existsSync(dir)) {
-                    fs.mkdirSync(dir); // make the parent directory
-                    //fs.mkdirSync(dir + "\\assigned"); // keep all the assigned scanned copies here
-                    //fs.mkdirSync(dir + "\\evaluated"); // keep all the evaluated copies here.
-                }
-                */
 
 
         var destinationDir = config.fileLocation + config.filePathSeparator + "evaluatedcopies" + config.filePathSeparator + examcode + config.filePathSeparator + username + config.filePathSeparator + "assigned" + config.filePathSeparator;
+        console.log("copying files from : " + sourceDir + " TO --> " + destinationDir);
         try {
             var numberOfFilesToBeAssigned = 3;
             var assignedCopies = 0;

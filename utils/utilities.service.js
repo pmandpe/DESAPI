@@ -4,7 +4,8 @@ const cc = require('coupon-code') ;
 module.exports = {
     generateUniqueCode,
     getMax,
-    filterArray 
+    filterArray ,
+    asyncForEach
 };
 
 
@@ -30,3 +31,9 @@ function filterArray (arrayToFilter, criteria){
     return filteredArray ;
     
 }
+
+async function asyncForEach(array, callback) {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array);
+    }
+  }
