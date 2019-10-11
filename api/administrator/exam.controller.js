@@ -14,6 +14,7 @@ router.post('/details', authorize(Role.Admin), getExamsDetails);
 router.post('/scanningassignment/save', authorize(Role.Admin), saveScanningAssignment);
 router.post('/evaluationassignment/save', authorize(Role.Admin), saveEvaluationAssignment);
 router.post('/question/save', authorize(Role.Admin), saveQuestion);
+router.post('/cleardata', authorize(Role.Admin), clearData);
 
 
 module.exports = router;
@@ -21,6 +22,13 @@ module.exports = router;
 async function getExams(req, res, next) {
     //var subjects = await lookupService.getAllSubjects() ;
     var exams = await examService.getAllExams();
+    res.json(exams);
+}
+
+async function clearData(req, res, next) {
+    var examCode = req.body.examcode ; 
+    //var subjects = await lookupService.getAllSubjects() ;
+    var exams = await examService.clearData(examCode) ;
     res.json(exams);
 }
 

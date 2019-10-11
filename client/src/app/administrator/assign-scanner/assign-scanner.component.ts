@@ -78,6 +78,18 @@ export class AssignScannerComponent implements OnInit {
 
   }
 
+  clearData(){
+    this.examService.clearData(this.examCode)
+        .pipe(first())
+        .subscribe(
+        data => {
+          this.alertService.success("Data Saved Successfully");
+        },
+        error => {
+          this.alertService.error(error);
+
+        });
+  }
 
 
   saveScanningData(totalAssignedCopies, scanningAssignment) {

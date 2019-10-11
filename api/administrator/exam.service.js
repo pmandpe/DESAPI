@@ -14,7 +14,8 @@ module.exports = {
     getUniqueCode,
     saveScanningAssignment,
     saveEvaluationAssignment,
-    saveQuestion
+    saveQuestion,
+    clearData
 };
 
 async function saveExam(exam, userid) {
@@ -173,8 +174,8 @@ async function saveEvaluationAssignment(evaluationData, userid) {
                 for (var i = 0; i < evaluationData.evaluationassignment.length; i++) {
                     var query = { "examcode": examCode, "isassigned": "N" };
                     const answersTobeUpdated = await connectionService.getDocuments(query, "answersCollection", {}, evaluationData.evaluationassignment[i].additionalcopies);
-                    
-                    var copyFiles = await copyAssignedCopiesToUserFolder(evaluationData.evaluationassignment[i].username, examCode);
+
+                    var copyFiles = await copyAssignedCopiesToUserFolder(evaluationData.evaluationassignment[i].username, examCode, evaluationData.evaluationassignment[i].additionalcopies);
                     var updateCount = await updateAnswersForEvaluation(answersTobeUpdated, evaluationData.evaluationassignment[i].username);
                 }
                 return 1;
@@ -202,45 +203,51 @@ async function updateAnswersForEvaluation(answersToUpdate, username) {
     return updateCount;
 }
 
-async function getAnswersForEvaluation(examcode, numberofanswersassigned) {
-    //first get all the answers with LIMIT as number of copies to be evaluated for this exam code and not assigned for evaluation yet
+//temporary function
+async function clearData(examCode) {
+    query = { "examcode": examCode };
+    setQuery = { $set: { "evaluationassignment": [], totalcopiesassignedforevaluation: 0 } };
+    var test = connectionService.updateDocument(query, setQuery, "examCollection");
 
-
-
-    return answersTobeUpdated
 }
 
-async function copyAssignedCopiesToUserFolder(username, examcode) {
-    var sourceDir = config.fileLocation + "scannedcopies" + config.filePathSeparator + examcode;
-    var fileList = [];
-    var fileRead = await fs.readdir(sourceDir, (err, files) => {
-        files.forEach(file => {
-            fileList.push(file);
-        });
+async function copyAssignedCopiesToUserFolder(username, examcode, additionalCopies) {
+    //var sourceDir = config.fileLocation + "scannedcopies" + config.filePathSeparator + examcode;
+    var sourceDir = "/Users/potomac/Desktop/PM/DESFiles";
+    var filesRead = await fs.readdir(sourceDir);
+    var copiedFiles = 0 ;
+    const fileProcess = async () => {
+        for (var i = 0; i < filesRead.length; i++) {
+            var destinationDir = "/Users/potomac/Desktop/PM/DESFiles/dest/" + username;//config.fileLocation + config.filePathSeparator + "evaluatedcopies" + config.filePathSeparator + examcode + config.filePathSeparator + username + config.filePathSeparator + "assigned" + config.filePathSeparator;
+            console.log("copying files from : " + sourceDir + " TO --> " + destinationDir);
+            
 
-
-        var destinationDir = config.fileLocation + config.filePathSeparator + "evaluatedcopies" + config.filePathSeparator + examcode + config.filePathSeparator + username + config.filePathSeparator + "assigned" + config.filePathSeparator;
-        console.log("copying files from : " + sourceDir + " TO --> " + destinationDir);
-        try {
-            var numberOfFilesToBeAssigned = 3;
-            var assignedCopies = 0;
-            fileList.forEach(function (fileName) {
-                var filesCopied = fs.move(sourceDir + config.filePathSeparator + fileName, destinationDir + config.filePathSeparator + fileName);
-                assignedCopies++;
-                if (assignedCopies == numberOfFilesToBeAssigned) {
-                    return true;
-                }
-            })
-
+            if (copiedFiles == additionalCopies) {
+                break ; 
+            }
+            var fileName = filesRead[i];
+            var extension = fileName.substring(fileName.lastIndexOf(".") + 1);
+            if (extension != "pdf") {
+                continue;
+            }
+            const copyFiles = async () => {
+                var sourceFileName = sourceDir + config.filePathSeparator + fileName;
+                var destinationFileName = destinationDir + config.filePathSeparator + fileName;
+                var filesCopied = await fs.move(sourceFileName, destinationFileName, { "overwrite": false });
+                copiedFiles = copiedFiles + 1;
+                return copiedFiles ; 
+            }
+            const returned = await copyFiles();
+            
         }
-        catch (error) {
-            console.error("Error in copying files from exam folder to scanned folder")
-        }
+        
 
+        return 1;
 
+    };
 
-    });
-
+    const returnValue = await fileProcess();
+    return returnValue;
 
 }
 

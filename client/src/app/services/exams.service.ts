@@ -15,7 +15,13 @@ export class ExamService {
 
     }
 
+    clearData(examCode) {
+        return this.http.post<any>(environment.apiURL + `/api/v1/exams/cleardata`, {"examcode": examCode})
+            .pipe(map((res: Response) => {
+                return res ; 
+            }))
 
+    }
 
     getExams() {
         return this.http.post<any>(environment.apiURL + `/api/v1/exams/get`, {})
