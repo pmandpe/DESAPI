@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ExamService } from '../../services/exams.service';
+import { AlertService } from '../../services';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -7,10 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminDashboardComponent implements OnInit {
 
-  constructor() { }
-
+  constructor(private examService: ExamService, private alertService: AlertService) { }
+  Exams: any;
   ngOnInit() {
-    console.log("Inside Admin Dashboard") ;
+    this.examService.getExamDashboard()
+      .subscribe(
+        data => {
+          this.Exams = data;
+        },
+        error => {
+          this.alertService.error(error);
+        });
   }
+
 
 }

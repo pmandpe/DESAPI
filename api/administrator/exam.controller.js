@@ -9,6 +9,7 @@ const Role = require('_helpers/roles');
 
 // routes
 router.post('/get', authorize(Role.Admin), getExams);
+router.post('/dashboard', authorize(Role.Admin), getExamDashboard);
 router.post('/save', authorize(Role.Admin), saveExams);
 router.post('/details', authorize(Role.Admin), getExamsDetails);
 router.post('/scanningassignment/save', authorize(Role.Admin), saveScanningAssignment);
@@ -22,6 +23,12 @@ module.exports = router;
 async function getExams(req, res, next) {
     //var subjects = await lookupService.getAllSubjects() ;
     var exams = await examService.getAllExams();
+    res.json(exams);
+}
+
+async function getExamDashboard(req, res, next){
+    var examCode = req.body.examcode ; 
+    var exams = await examService.getExamDashboard() ;
     res.json(exams);
 }
 

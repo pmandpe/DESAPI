@@ -15,6 +15,12 @@ export class ExamService {
 
     }
 
+    getExamDashboard(){
+        return this.http.post<any>(environment.apiURL + `/api/v1/exams/dashboard`, {})
+        .pipe(map((res: Response) => {
+            return res ; 
+        }))
+    }
     clearData(examCode) {
         return this.http.post<any>(environment.apiURL + `/api/v1/exams/cleardata`, {"examcode": examCode})
             .pipe(map((res: Response) => {

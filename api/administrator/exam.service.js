@@ -15,7 +15,8 @@ module.exports = {
     saveScanningAssignment,
     saveEvaluationAssignment,
     saveQuestion,
-    clearData
+    clearData,
+    getExamDashboard
 };
 
 async function saveExam(exam, userid) {
@@ -58,12 +59,25 @@ async function saveExam(exam, userid) {
 
 
 async function getAllExams() {
+    var exams = await connectionService.getDocuments(query, "examCollection");
+    return exams;
+}
 
-    var query = {
+async function getExamDashboard(){
+
+    var columnList  = {
+        "examcode" : 1, 
+        "resultdate": 1, 
+        "evaluationassignment": 1, 
+        "totalcopies": 1,
+        "totalcopiesassignedforscanning" : 1,
+        "totalscannedcopies": 1,
+        "totalcopiesassignedforevaluation" : 1 ,
+        "totalevaluatedcopies" : 1
 
     };
 
-    var exams = await connectionService.getDocuments(query, "examCollection");
+    var exams = await connectionService.getDocuments({}, "examCollection", columnList);
     return exams;
 }
 
