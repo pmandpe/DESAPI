@@ -54,6 +54,7 @@ export class ExamDetailsComponent implements OnInit {
       scanningassignment: new FormControl([]) ,
       totalscannedcopies: new FormControl(0) ,
       totalevaluatedcopies: new FormControl(0) ,
+      totalmarks: new FormControl(0) ,
       evaluationassignment: new FormControl([]) ,
       editmode: new FormControl(""),
       class: new FormControl(""),
@@ -96,6 +97,7 @@ export class ExamDetailsComponent implements OnInit {
           this.examForm.patchValue({ subjectcode: this.examdetails.subjectcode });
           this.examForm.patchValue({ examdate: exDate });
           this.examForm.patchValue({ numberofcopies: (this.examdetails.numberofcopies? this.examdetails.numberofcopies: 0)  });
+          this.examForm.patchValue({ totalmarks: (this.examdetails.totalmarks? this.examdetails.totalmarks: 0)  });
           this.examForm.patchValue({ totalcopiesassignedforscanning: (this.examdetails.totalcopiesassignedforscanning ? this.examdetails.totalcopiesassignedforscanning : 0)});
           this.examForm.patchValue({ totalcopiesassignedforevaluation: (this.examdetails.totalcopiesassignedforevaluation ? this.examdetails.totalcopiesassignedforevaluation : 0)});
           this.examForm.patchValue({ resultdate: reDate });

@@ -104,6 +104,21 @@
 
 
                     </div>
+                    <div class="col-lg-2 col-sm-6 col-md-4">
+                        <div>
+                            <label for="numberofcopies">Total Marks</label>
+                        </div>
+                        <div>
+                            <input type="number" formControlName="totalmarks" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.totalmarks.errors }"
+                            />
+                            <div *ngIf="submitted && f.totalmarks.errors">
+                                <div *ngIf="f.totalmarks.errors.required" class="error">Total Marks is required</div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
 
                     <div class="col-lg-2 col-sm-6 col-md-4">
                         <div>
@@ -116,15 +131,6 @@
                     </div>
                     <div class="col-lg-2 col-sm-6 col-md-4">
                         <div>
-                            <label for="resultdate">Assigned To Evaluate</label>
-                        </div>
-                        <div>
-                            <input type="number" [readonly]="true" formControlName="totalcopiesassignedforevaluation" class="form-control" />
-                        </div>
-
-                    </div>
-                    <div class="col-lg-3 col-sm-6 col-md-4">
-                        <div>
                             <label for="resultdate">Scanned</label>
                         </div>
                         <div>
@@ -132,7 +138,17 @@
                         </div>
 
                     </div>
-                    <div class="col-lg-3 col-sm-6 col-md-4">
+                    <div class="col-lg-2 col-sm-6 col-md-4">
+                        <div>
+                            <label for="resultdate">Assigned To Evaluate</label>
+                        </div>
+                        <div>
+                            <input type="number" [readonly]="true" formControlName="totalcopiesassignedforevaluation" class="form-control" />
+                        </div>
+
+                    </div>
+                    
+                    <div class="col-lg-2 col-sm-6 col-md-4">
                         <div>
                             <label for="resultdate">Evaluated</label>
                         </div>

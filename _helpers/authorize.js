@@ -4,7 +4,6 @@ const { secret } = require('config.json');
 
 
 function authorize(roles = []) {
-    console.log({secret}) ;
     // roles param can be a single role string (e.g. Role.User or 'User') 
     // or an array of roles (e.g. [Role.Admin, Role.User] or ['Admin', 'User'])
     if (typeof roles === 'string') {

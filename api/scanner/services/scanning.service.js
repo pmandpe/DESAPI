@@ -63,7 +63,7 @@ async function getBarcode(fields, files, username, examcode) {
     var data = await fs.readFile(files.RemoteFile.path);
     var answerCode = "ANS-" + utils.generateUniqueCode();
     var dirPath = config.fileLocation + "scannedcopies" + config.filePathSeparator + examcode + config.filePathSeparator;
-    var pdfFilePath = dirPath + answerCode + ".pdf";
+    var pdfFilePath = dirPath + answerCode + config.answerFileExtension ;
 
     if (!fs.existsSync(dirPath)) {
         fs.mkdirSync(dirPath); // make the parent directory

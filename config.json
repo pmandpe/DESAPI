@@ -4,5 +4,6 @@
     "pwd" :"abcd1234",
     "database":"desdb",
     "fileLocation" : "E:\\Projects\\DES\\DESFiles\\",
-    "filePathSeparator":"\\"
+    "filePathSeparator":"\\",
+    "answerFileExtension":".pdf"
 }

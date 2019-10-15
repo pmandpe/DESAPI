@@ -38,7 +38,8 @@ export class ScanDocumentComponent implements OnInit {
      *    resource files that you obtain after purchasing a key
      */
     Dynamsoft.WebTwainEnv.Trial = true;
-    Dynamsoft.WebTwainEnv.ProductKey = "t0068UwAAAFuGVxYuHUpzk5J3Tt3zblNQMsn1OpOFqQodE+HXMWzTuhW6NBnIypP8un+KenPrO6Eqw3DcSnZ9il7hstL/sYY=";
+    //Dynamsoft.WebTwainEnv.ProductKey = "t0068UwAAAFuGVxYuHUpzk5J3Tt3zblNQMsn1OpOFqQodE+HXMWzTuhW6NBnIypP8un+KenPrO6Eqw3DcSnZ9il7hstL/sYY=";
+    Dynamsoft.WebTwainEnv.ProductKey = "t0136TQMAAHgeuBInvhXS5/gLMYkJ0TCjJAoDbRvDJzq0638DLJDIlcOLDVp3QbthdlAsnUB54bT8odqutHn84TH2iGD4G2S9Mn2Kt2TBVPpIYjSa9ZjG/5guP3tJ0KdtOFFutGA8N0zzKKLdDXnmj9GC8dwwzVPIfHyGRgpGC8avjcHbyuYvFh2rvA==" ;
     //Dynamsoft.WebTwainEnv.ResourcesPath = "https://tst.dynamsoft.com/libs/dwt/15.0";
 
     Dynamsoft.WebTwainEnv.Load();
@@ -65,19 +66,33 @@ export class ScanDocumentComponent implements OnInit {
 
     //this.DWObject.ProductKey = 't0126vQIAAAsYy4ECUsO3V3m3sstataymDEQsQ8Nt8n1QqYhELQ6YOOwYQoS/Gwr1cR7p5JMYdkS2fLtk0c97U62rS+odm1jJp5D6OGBG+ohjtPdXOo39mCyfuaTTJ2y4kW90wJhv6OZR9GaP8DM/RgeM+YZunnbmYKSVwQ68x4jT';
 
-    if (this.DWObject.SelectSource()) {
+/*    if (this.DWObject.SelectSource()) {
       const onAcquireImageSuccess = () => { this.DWObject.CloseSource(); };
       const onAcquireImageFailure = onAcquireImageSuccess;
       this.DWObject.OpenSource();
 
       this.DWObject.AcquireImage({}, onAcquireImageSuccess, onAcquireImageFailure);
     }
+    */
+    this.DWObject.SelectSourceByIndex(3) ;
+    this.DWObject.OpenSource() 
+    this.DWObject.IfShowUI = false;
+    this.DWObject.RegisterEvent('OnPostAllTransfers', function() {
+      this.uploadDocument() ; 
+  }.bind(this));
+    
+    this.DWObject.IfAutoFeed = true;
+    this.DWObject.XferCount = -1;
+    
+    this.DWObject.IfFeederEnabled = true;
+    this.DWObject.AcquireImage(); //using ADF  for scanning
+
   }
 
 
 
   uploadDocument() {
-
+  
     var strHTTPServer = environment.apiURL;//location.hostname; //The name of the HTTP server. 
     var CurrentPathName = '/api/v1/scanner';
     var CurrentPath = CurrentPathName.substring(0, CurrentPathName.lastIndexOf("/") + 1);

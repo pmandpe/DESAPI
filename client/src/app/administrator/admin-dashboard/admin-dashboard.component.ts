@@ -22,5 +22,9 @@ export class AdminDashboardComponent implements OnInit {
         });
   }
 
+  getWidth(value, totalValue){
+    return (value * 100 / totalValue) + "%" ;
+  }
+
 
 }

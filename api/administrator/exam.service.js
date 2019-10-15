@@ -34,7 +34,8 @@ async function saveExam(exam, userid) {
         "modified_by": userid,
         "comments": exam.comments,
         "class": exam.class,
-        "semester": exam.semester
+        "semester": exam.semester,
+        "totalmarks" : exam.totalmarks 
     }
     var updateCount = 0;
     var setQuery = {
@@ -59,21 +60,21 @@ async function saveExam(exam, userid) {
 
 
 async function getAllExams() {
-    var exams = await connectionService.getDocuments(query, "examCollection");
+    var exams = await connectionService.getDocuments({}, "examCollection");
     return exams;
 }
 
-async function getExamDashboard(){
+async function getExamDashboard() {
 
-    var columnList  = {
-        "examcode" : 1, 
-        "resultdate": 1, 
-        "evaluationassignment": 1, 
-        "totalcopies": 1,
-        "totalcopiesassignedforscanning" : 1,
+    var columnList = {
+        "examcode": 1,
+        "resultdate": 1,
+        "evaluationassignment": 1,
+        "numberofcopies": 1,
+        "totalcopiesassignedforscanning": 1,
         "totalscannedcopies": 1,
-        "totalcopiesassignedforevaluation" : 1 ,
-        "totalevaluatedcopies" : 1
+        "totalcopiesassignedforevaluation": 1,
+        "totalevaluatedcopies": 1
 
     };
 
@@ -153,68 +154,54 @@ async function saveEvaluationAssignment(evaluationData, userid) {
 
     //-- get the answer data against which we have to save the evaluation data
 
+    var examCode = evaluationData.examcode;
+    try {
+        const processData = async _ => {
+            console.log("Start");
+            for (var i = 0; i < evaluationData.evaluationassignment.length; i++) {
+                var query = { "examcode": examCode, "isassigned": "N" };
+                const answersTobeUpdated = await connectionService.getDocuments(query, "answersCollection", {}, evaluationData.evaluationassignment[i].additionalcopies);
 
-    updateCount = 0;//await connectionService.updateDocument(uniqueIdQuery, setQuery, "examCollection");
-    if (updateCount == 11000) {//its a duplicate error
-        return { "updateCount": updateCount, "error": "Error in assigning for scanning." };
+                var copyFiles = await copyAssignedCopiesToUserFolder(evaluationData.evaluationassignment[i].username, examCode, answersTobeUpdated);
+                var updateCount = await updateAnswersForEvaluation(answersTobeUpdated, evaluationData.evaluationassignment[i].username);
+                //-- if everything goes well, update the total evaluated count in examCollection for summar/dashboard purpose
+                if (updateCount > 0) {
+                    updateCount = await connectionService.updateDocument(uniqueIdQuery, setQuery, "examCollection");
+                }
+            }
+            return 1;
+        }
+        const returnValue = await processData();
+    }
+    catch (ex) {
+        console.log("Error in updating data for Evaluation : " + ex);
+        return { "updateCount": -1, "error": "Error in updating evaluation data" };
+    }
+    if (examCode == 1) {
+        return { "updateCount": 1, "success": "Data updated successfully" };
     }
     else {
-
-        //update data in answers collection
-
-        var examCode = evaluationData.examcode;
-        //cut and paste copies from scanned folder to evaulator's folder.
-        /*
-        const start = async () => {
-            await utilities.asyncForEach(evaluationData.evaluationassignment, async  (assignment) => {
-                var query = { "examcode": examCode, "isassigned": "N" };
-                var answersTobeUpdated = await connectionService.getDocuments(query, "answersCollection", {}, assignment.additionalcopies);
-                console.log(JSON.stringify(answersTobeUpdated));
-                //var answersToUpdate = await getAnswersForEvaluation(evaluationData.examcode, assignment.additionalcopies);
-                //var copyFiles = await copyAssignedCopiesToUserFolder(assignment.username, evaluationData.examcode);
-                //-- once files are copied, update the answers collection with username to whom copies are assigned for evaluation
-                //-- and set the flag isAssigned to 'Y'
-                //var updateCount = await updateAnswersForEvaluation(answersToUpdate, assignment.username);
-                //if (updateCount < 0) {
-                //    return -1;
-                //}
-            });
-        }
-        start() ; 
-        */
-        try {
-            const processData = async _ => {
-                console.log("Start");
-                for (var i = 0; i < evaluationData.evaluationassignment.length; i++) {
-                    var query = { "examcode": examCode, "isassigned": "N" };
-                    const answersTobeUpdated = await connectionService.getDocuments(query, "answersCollection", {}, evaluationData.evaluationassignment[i].additionalcopies);
-
-                    var copyFiles = await copyAssignedCopiesToUserFolder(evaluationData.evaluationassignment[i].username, examCode, evaluationData.evaluationassignment[i].additionalcopies);
-                    var updateCount = await updateAnswersForEvaluation(answersTobeUpdated, evaluationData.evaluationassignment[i].username);
-                }
-                return 1;
-            }
-            const returnValue = await processData();
-        }
-        catch (ex) {
-            console.log("Error in updating data for Evaluation : " + ex);
-            return { "updateCount": -1, "error": "Error in updating evaluation data" };
-        }
-        return { "updateCount": 1, "success": "Data updated successfully" };
-
-
+        return { "updateCount": -1, "error": "Error in updating evaluation data" };
     }
+
 }
 
+
 async function updateAnswersForEvaluation(answersToUpdate, username) {
-    var updateCount = await answersToUpdate.forEach(async function (answer) {
-        var answerCode = answer.answercode;
-        var uniqueIdQuery = { "answercode": answerCode };
-        var setQuery = { $set: { "assignedto": username, "isassigned": "Y" } };
-        var updateCount = await connectionService.updateDocument(uniqueIdQuery, setQuery, "answersCollection");
-        return updateCount;
-    });
-    return updateCount;
+
+    const updateAnswers = async () => {
+    
+        for (var i = 0; i < answersToUpdate.length; i++) {
+            var answerCode = answersToUpdate[i].answercode ; 
+            var uniqueIdQuery = { "answercode": answerCode };
+            var setQuery = { $set: { "assignedto": username, "isassigned": "Y" } };
+            var updateCount = await connectionService.updateDocument(uniqueIdQuery, setQuery, "answersCollection");
+        }
+        return 1 ; 
+    }
+
+    var returnValue = await updateAnswers() ; 
+    return returnValue ; 
 }
 
 //temporary function
@@ -225,43 +212,58 @@ async function clearData(examCode) {
 
 }
 
-async function copyAssignedCopiesToUserFolder(username, examcode, additionalCopies) {
-    //var sourceDir = config.fileLocation + "scannedcopies" + config.filePathSeparator + examcode;
-    var sourceDir = "/Users/potomac/Desktop/PM/DESFiles";
-    var filesRead = await fs.readdir(sourceDir);
-    var copiedFiles = 0 ;
+async function copyAssignedCopiesToUserFolder(username, examcode, answersTobeUpdated) {
+    var sourceDir = config.fileLocation + "scannedcopies" + config.filePathSeparator + examcode + config.filePathSeparator;
+    var destinationDir = config.fileLocation + config.filePathSeparator + "evaluatedcopies" + config.filePathSeparator + examcode + config.filePathSeparator + username + config.filePathSeparator + "assigned" + config.filePathSeparator;
+    
     const fileProcess = async () => {
-        for (var i = 0; i < filesRead.length; i++) {
-            var destinationDir = "/Users/potomac/Desktop/PM/DESFiles/dest/" + username;//config.fileLocation + config.filePathSeparator + "evaluatedcopies" + config.filePathSeparator + examcode + config.filePathSeparator + username + config.filePathSeparator + "assigned" + config.filePathSeparator;
-            console.log("copying files from : " + sourceDir + " TO --> " + destinationDir);
-            
-
-            if (copiedFiles == additionalCopies) {
-                break ; 
-            }
-            var fileName = filesRead[i];
-            var extension = fileName.substring(fileName.lastIndexOf(".") + 1);
-            if (extension != "pdf") {
-                continue;
-            }
-            const copyFiles = async () => {
-                var sourceFileName = sourceDir + config.filePathSeparator + fileName;
-                var destinationFileName = destinationDir + config.filePathSeparator + fileName;
-                var filesCopied = await fs.move(sourceFileName, destinationFileName, { "overwrite": false });
-                copiedFiles = copiedFiles + 1;
-                return copiedFiles ; 
-            }
-            const returned = await copyFiles();
-            
+    
+        for (var i = 0; i < answersTobeUpdated.length; i++) {
+            var fileName = answersTobeUpdated[i].answercode + config.answerFileExtension
+            var filesCopied = await fs.move(sourceDir + fileName, destinationDir + fileName, { "overwrite": false });
         }
-        
+        return 1 ; 
+    }
 
-        return 1;
-
-    };
-
-    const returnValue = await fileProcess();
-    return returnValue;
+    const returnValue = await fileProcess() ;  
+    //var sourceDir = "/Users/potomac/Desktop/PM/DESFiles";
+    /*
+        var filesRead = await fs.readdir(sourceDir);
+        var copiedFiles = 0;
+        const fileProcess = async () => {
+            for (var i = 0; i < filesRead.length; i++) {
+                //var destinationDir = "/Users/potomac/Desktop/PM/DESFiles/dest/" + username;//
+                var destinationDir = config.fileLocation + config.filePathSeparator + "evaluatedcopies" + config.filePathSeparator + examcode + config.filePathSeparator + username + config.filePathSeparator + "assigned" + config.filePathSeparator;
+                console.log("copying files from : " + sourceDir + " TO --> " + destinationDir);
+    
+    
+                if (copiedFiles == additionalCopies) {
+                    break;
+                }
+                var fileName = filesRead[i];
+                var extension = fileName.substring(fileName.lastIndexOf(".") + 1);
+                if (extension != "pdf") {
+                    continue;
+                }
+                const copyFiles = async () => {
+                    var sourceFileName = sourceDir + config.filePathSeparator + fileName;
+                    var destinationFileName = destinationDir + config.filePathSeparator + fileName;
+                    var filesCopied = await fs.move(sourceFileName, destinationFileName, { "overwrite": false });
+                    copiedFiles = copiedFiles + 1;
+                    return copiedFiles;
+                }
+                const returned = await copyFiles();
+    
+            }
+    
+    
+            return 1;
+    
+        };
+    
+        const returnValue = await fileProcess();
+        return returnValue;
+        */
 
 }
 

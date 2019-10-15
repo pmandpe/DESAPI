@@ -303,6 +303,10 @@ a[data-toggle="collapse"] {
   border-color:1px solid darkgray !important;
 }
 
+.table td{
+  font-size: 14px ; 
+}
+
 .table-bordered td {
   border: 1px solid #a0a0a0;
 }

@@ -38,7 +38,7 @@ async function getMarkingDetails(username, examcode, answerCode) {
 async function getQuestions(username, examcode) {
     var returnValue = {} ;
     var examDetails = await examService.getExamDetails(examcode);
-    returnValue.totalexammarks = examDetails[0].totalexammarks ;
+    returnValue.totalmarks = examDetails[0].totalmarks ;
     if (examDetails && examDetails.length > 0) {
         returnValue.questions = examDetails[0].questions;
     }
@@ -49,7 +49,7 @@ async function getQuestions(username, examcode) {
 async function getAnswersPdf(examcode, username, answercode) {
     //var filePath = "/Users/potomac/Desktop/PM/Backup/DES/pdfsample.pdf";
     //-- path is like <root>\evaluatedcopies\<examcode>\<username>\assigned\<answercode>.pdf
-    var filePath = config.fileLocation + "evaluatedcopies" + config.filePathSeparator + examcode + config.filePathSeparator + username + config.filePathSeparator + "assigned" + config.filePathSeparator + answercode + ".pdf";
+    var filePath = config.fileLocation + "evaluatedcopies" + config.filePathSeparator + examcode + config.filePathSeparator + username + config.filePathSeparator + "assigned" + config.filePathSeparator + answercode + config.answerFileExtension;
     var fileData = await fs.readFile(filePath);
     return fileData;
 }
@@ -121,10 +121,11 @@ async function updateEvaluationNumbers(username, examCode, answerCode) {
     }
 
     //-- once everything is done, move the copies to evaluated folder
-    var evaluatedCopyPath = config.fileLocation + "evaluatedcopies" + config.filePathSeparator + examcode + config.filePathSeparator + username  + config.filePathSeparator + "evaluated" + config.filePathSeparator + answerCode;
-    var assignedCopyPath = config.fileLocation + "evaluatedcopies" + config.filePathSeparator + examcode + config.filePathSeparator + username  + config.filePathSeparator + "assighned"  + config.filePathSeparator + answerCode;
+    var destinationPath = config.fileLocation + "evaluatedcopies" + config.filePathSeparator + examCode + config.filePathSeparator + username  + config.filePathSeparator + "evaluated" + config.filePathSeparator + answerCode + config.answerFileExtension;
+    var sourcePath = config.fileLocation + "evaluatedcopies" + config.filePathSeparator + examCode + config.filePathSeparator + username  + config.filePathSeparator + "assigned"  + config.filePathSeparator + answerCode + config.answerFileExtension;
 
-    var filesCopied = fs.move(evaluatedCopyPath, assignedCopyPath);
+    var filesCopied = await fs.move(sourcePath, destinationPath);
+    return 1 ; 
 }
 catch(Ex){
     return { "updateCount": -1, "error": "Error in updating evaluation data." + Ex }; 

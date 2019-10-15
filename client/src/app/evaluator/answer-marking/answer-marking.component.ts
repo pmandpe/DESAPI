@@ -45,7 +45,7 @@ export class AnswerMarkingComponent implements OnInit {
       data => {
         var questionDataPlaceHolder: any;
         questionDataPlaceHolder = data;
-        this.totalMarks = questionDataPlaceHolder.questions.totalexammarks;
+        this.totalMarks = questionDataPlaceHolder.questions.totalmarks;
         this.answerData = questionDataPlaceHolder.answers.answerdata;
         this.questionData = questionDataPlaceHolder.questions.questions;
 

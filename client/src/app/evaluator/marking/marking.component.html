@@ -1,8 +1,9 @@
-<div class="container-fluid" style="padding:20px">
+<!--<div class="container-fluid" style="padding:20px">
     <div class="float-right">
         <button class="btn btn-success">Check Random Copy</button>
     </div>
 </div>
+-->
 
 
 <div class="container-fluid" style="padding:20px;">
@@ -23,7 +24,7 @@
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-5 float-left p-2 border-right shadow p-3 mb-5 rounded bg-white">
             <div class="row">
-                <div class="col-lg-3 col-md-3 col-sm-6" *ngFor="let answer of pendingForEvaluation">
+                <div class="col-lg-4 col-md-4 col-sm-6" *ngFor="let answer of pendingForEvaluation">
                         <a [routerLink]="['../answer', answer.answercode, examCode]">{{answer.answercode}}</a>
                     
                 </div>
@@ -31,7 +32,7 @@
         </div>
         <div class="col-lg-6 col-md-6 col-sm-5 float-left p-2 border-right shadow p-3 mb-5 rounded bg-white">
             <div class="row">
-                <div class="col-lg-3 col-md-3 col-sm-6" *ngFor="let answer of evaluatedCopies">
+                <div class="col-lg-4 col-md-4 col-sm-6" *ngFor="let answer of evaluatedCopies">
                        {{answer.answercode}}
                 </div>
             </div>
