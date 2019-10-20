@@ -5,5 +5,7 @@
     "database":"desdb",
     "fileLocation" : "E:\\Projects\\DES\\DESFiles\\",
     "filePathSeparator":"\\",
-    "answerFileExtension":".pdf"
+    "firstPageLocation": "firstpage",
+    "answerFileExtension":".pdf",
+    "evaluatorextension" : "-evaluator"
 }

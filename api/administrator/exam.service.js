@@ -219,7 +219,7 @@ async function copyAssignedCopiesToUserFolder(username, examcode, answersTobeUpd
     const fileProcess = async () => {
     
         for (var i = 0; i < answersTobeUpdated.length; i++) {
-            var fileName = answersTobeUpdated[i].answercode + config.answerFileExtension
+            var fileName = answersTobeUpdated[i].answercode + config.evaluatorextension + config.answerFileExtension
             var filesCopied = await fs.move(sourceDir + fileName, destinationDir + fileName, { "overwrite": false });
         }
         return 1 ; 

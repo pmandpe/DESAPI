@@ -1,10 +1,21 @@
-<div class="container edit-box">
-    <div class="" style="margin-top:10px;margin-bottom:10px">
+<div class="container-fluid edit-box "  style="width:98%" >
+    <div class="p-2">
         <span class="float-right">
             <button class="btn btn-primary" (click)="openQuestion(-1)">Add New Question</button>
         </span>
+        
+        
+        
+    
         <span class="float-left">
-            <h4>Exam Questions</h4>
+            
+            <h6>Question Marks Total : {{totalExamMarks}}</h6>
+            <h6>Total Exam Marks : {{grandTotal}}</h6>
+            <h6>
+
+                <span class="text-danger" [hidden]="totalExamMarks == grandTotal"><i class="fa fa-warning"></i> Total sum of question does not match with total exam marks.</span>
+            </h6>
+            
         </span>
     </div>
     <div style="margin-top:55px;">
@@ -12,7 +23,9 @@
             <thead>
                 <tr>
                     <th>Question #</th>
-                    <th>Total Marks</th>
+                    <th>Main Question Marks</th>
+                    <th>Sub Question Total</th>
+
                     <th>Question Type</th>
                     <th>Edit</th>
 
@@ -22,6 +35,7 @@
                 <tr *ngFor="let examQuestion of examQuestions">
                     <td>{{examQuestion.questionno}}</td>
                     <td>{{examQuestion.totalmarks}}</td>
+                    <td>{{examQuestion.subsectiontotal}}</td>
                     <td>{{examQuestion.questiontype}}</td>
 
                     <td>

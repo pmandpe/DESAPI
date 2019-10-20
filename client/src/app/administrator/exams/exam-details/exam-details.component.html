@@ -4,9 +4,9 @@
 <div [hidden]="!showUniqueCode">
     <h4>{{examcode}}</h4>
 </div>
-<div class="container-fluid edit-box">
+<div class="container-fluid edit-box" style="width:98%;">
     <form [formGroup]="examForm" (ngSubmit)="saveExam()" class="form-login">
-        <div class="row">
+        <div class="row"  style="margin-right:20px;">
             <div class="col-lg-2 col-sm-6 col-md-3">
                 <div class="form-group">
                     <label for="subjectcode">Subject Code</label>
@@ -212,10 +212,11 @@
 
 </div>
 <br>
-<div class="container-fluid">
+    
     <div *ngIf="mode=='EDIT'">
-        <app-exam-questions [examQuestions]="examQuestions" [examcode]="examcode"></app-exam-questions>
+        <app-exam-questions [examQuestions]="examQuestions" [examcode]="examcode" [grandTotal] = "(examdetails ? examdetails.totalmarks : 0)"></app-exam-questions>
     </div>
+
     <!-- Assigning Copies Popoup Window -->
     <ng-template #testcontent let-modal>
         <app-assign-scanner></app-assign-scanner>
@@ -225,7 +226,7 @@
 
     <!--Questions Window-->
 
-</div>
+
 
 
 

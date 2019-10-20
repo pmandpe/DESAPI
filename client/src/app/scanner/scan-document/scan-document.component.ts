@@ -13,22 +13,28 @@ import { environment } from '../../../environments/environment';
 })
 export class ScanDocumentComponent implements OnInit {
 
-  constructor(private _Activatedroute: ActivatedRoute, private scannerService: ScannerService, private alertService: AlertService, private authenctationService: AuthenticationService) { 
-    this.OnHttpUploadSuccess =  this.OnHttpUploadSuccess.bind(this) ;
+  constructor(private _Activatedroute: ActivatedRoute, private scannerService: ScannerService, private alertService: AlertService, private authenctationService: AuthenticationService) {
+    this.OnHttpUploadSuccess = this.OnHttpUploadSuccess.bind(this);
   }
   title = 'Scan Document';
   DWObject: WebTwain;
   examcode: any;
   message: string;
   scannerSummaryData: any;
-  disableAllButtons: any ; 
+  disableAllButtons: any;
+  isScanning: boolean;
+  numberofsupplimentaries: any ;
+  rollnumber: any ;
+
+
+
   ngOnInit() {
-    this.disableAllButtons = false ; 
+    this.disableAllButtons = false;
     this.message = "Please place your documents in the scanner and click the 'Scan Document' button";
     this.examcode = this._Activatedroute.snapshot.paramMap.get("examcode");
 
     Dynamsoft.WebTwainEnv.AutoLoad = false;
-    Dynamsoft.WebTwainEnv.Containers = [{ ContainerId: 'dwtcontrolContainer', Width: '800px', Height: '800px' }];
+    Dynamsoft.WebTwainEnv.Containers = [{ ContainerId: 'dwtcontrolContainer', Width: '0px', Height: '0px' }];
     Dynamsoft.WebTwainEnv.RegisterEvent('OnWebTwainReady', () => { this.Dynamsoft_OnReady(); });
     /**
      * In order to use the full version, do the following
@@ -39,7 +45,7 @@ export class ScanDocumentComponent implements OnInit {
      */
     Dynamsoft.WebTwainEnv.Trial = true;
     //Dynamsoft.WebTwainEnv.ProductKey = "t0068UwAAAFuGVxYuHUpzk5J3Tt3zblNQMsn1OpOFqQodE+HXMWzTuhW6NBnIypP8un+KenPrO6Eqw3DcSnZ9il7hstL/sYY=";
-    Dynamsoft.WebTwainEnv.ProductKey = "t0136TQMAAHgeuBInvhXS5/gLMYkJ0TCjJAoDbRvDJzq0638DLJDIlcOLDVp3QbthdlAsnUB54bT8odqutHn84TH2iGD4G2S9Mn2Kt2TBVPpIYjSa9ZjG/5guP3tJ0KdtOFFutGA8N0zzKKLdDXnmj9GC8dwwzVPIfHyGRgpGC8avjcHbyuYvFh2rvA==" ;
+    Dynamsoft.WebTwainEnv.ProductKey = "t0136TQMAAHgeuBInvhXS5/gLMYkJ0TCjJAoDbRvDJzq0638DLJDIlcOLDVp3QbthdlAsnUB54bT8odqutHn84TH2iGD4G2S9Mn2Kt2TBVPpIYjSa9ZjG/5guP3tJ0KdtOFFutGA8N0zzKKLdDXnmj9GC8dwwzVPIfHyGRgpGC8avjcHbyuYvFh2rvA==";
     //Dynamsoft.WebTwainEnv.ResourcesPath = "https://tst.dynamsoft.com/libs/dwt/15.0";
 
     Dynamsoft.WebTwainEnv.Load();
@@ -49,12 +55,14 @@ export class ScanDocumentComponent implements OnInit {
       data => {
         this.scannerSummaryData = data;
         //-- disable buttons if nothing to scan
-        if (this.scannerSummaryData.assignedcopies == 0){
-          this.disableAllButtons = true ; 
+        if (this.scannerSummaryData.assignedcopies == 0) {
+          this.disableAllButtons = true;
         }
       },
       error => {
-        this.alertService.error(error);
+        this.alertService.error("Unable to retrieve data from Server. Please contact System Administrator");
+        this.disableAllButtons = true ; 
+        
       });
   }
 
@@ -64,47 +72,62 @@ export class ScanDocumentComponent implements OnInit {
 
   acquireImage(): void {
 
-    //this.DWObject.ProductKey = 't0126vQIAAAsYy4ECUsO3V3m3sstataymDEQsQ8Nt8n1QqYhELQ6YOOwYQoS/Gwr1cR7p5JMYdkS2fLtk0c97U62rS+odm1jJp5D6OGBG+ohjtPdXOo39mCyfuaTTJ2y4kW90wJhv6OZR9GaP8DM/RgeM+YZunnbmYKSVwQ68x4jT';
-
-/*    if (this.DWObject.SelectSource()) {
-      const onAcquireImageSuccess = () => { this.DWObject.CloseSource(); };
-      const onAcquireImageFailure = onAcquireImageSuccess;
-      this.DWObject.OpenSource();
-
-      this.DWObject.AcquireImage({}, onAcquireImageSuccess, onAcquireImageFailure);
+    if (!this.rollnumber || this.rollnumber == ""){
+      this.alertService.error("Roll number cannot be blank") ;
+      return ; 
     }
-    */
-    this.DWObject.SelectSourceByIndex(3) ;
-    this.DWObject.OpenSource() 
-    this.DWObject.IfShowUI = false;
-    this.DWObject.RegisterEvent('OnPostAllTransfers', function() {
-      this.uploadDocument() ; 
-  }.bind(this));
-    
-    this.DWObject.IfAutoFeed = true;
-    this.DWObject.XferCount = -1;
-    
-    this.DWObject.IfFeederEnabled = true;
-    this.DWObject.AcquireImage(); //using ADF  for scanning
+
+    try {
+      this.isScanning = true;
+      this.disableAllButtons = true; // disable all buttons while scanning is going on so that user doesnt click other buttons accidentally.
+      //this.DWObject.ProductKey = 't0126vQIAAAsYy4ECUsO3V3m3sstataymDEQsQ8Nt8n1QqYhELQ6YOOwYQoS/Gwr1cR7p5JMYdkS2fLtk0c97U62rS+odm1jJp5D6OGBG+ohjtPdXOo39mCyfuaTTJ2y4kW90wJhv6OZR9GaP8DM/RgeM+YZunnbmYKSVwQ68x4jT';
+
+      /*    if (this.DWObject.SelectSource()) {
+            const onAcquireImageSuccess = () => { this.DWObject.CloseSource(); };
+            const onAcquireImageFailure = onAcquireImageSuccess;
+            this.DWObject.OpenSource();
+      
+            this.DWObject.AcquireImage({}, onAcquireImageSuccess, onAcquireImageFailure);
+          }
+          */
+      this.DWObject.SelectSourceByIndex(3);
+      this.DWObject.OpenSource()
+      this.DWObject.IfShowUI = false;
+      this.DWObject.RegisterEvent('OnPostAllTransfers', function () {
+        this.uploadDocument();
+      }.bind(this));
+
+      this.DWObject.IfAutoFeed = true;
+      this.DWObject.XferCount = -1;
+
+      this.DWObject.IfFeederEnabled = true;
+      this.DWObject.AcquireImage(); //using ADF  for scanning
+    }
+    catch (ex) {
+      console.log("-----------------------------------" + ex);  
+    }
 
   }
 
 
 
   uploadDocument() {
-  
+
     var strHTTPServer = environment.apiURL;//location.hostname; //The name of the HTTP server. 
     var CurrentPathName = '/api/v1/scanner';
     var CurrentPath = CurrentPathName.substring(0, CurrentPathName.lastIndexOf("/") + 1);
     var strActionPage = '/api/v1/scanner/' + "uploadscan";
     this.DWObject.IfSSL = false; // Set whether SSL is used
     this.DWObject.HTTPPort = location.port == "" ? 80 : 4000;
-    var authToken = this.authenctationService.getHeaderToken() ;
-    this.DWObject.SetHTTPHeader("Authorization" , authToken.Authorization) ; 
+    var authToken = this.authenctationService.getHeaderToken();
+    this.DWObject.SetHTTPHeader("Authorization", authToken.Authorization);
     this.DWObject.SetHTTPFormField("examcode", this.examcode);
+    this.DWObject.SetHTTPFormField("rollnumber", this.rollnumber);
+    this.DWObject.SetHTTPFormField("numberofsupplimentaries", this.numberofsupplimentaries);
     //this.DWObject.SetHTTPFormField("DocumentType", "Invoice");
 
     // Upload all the images in Dynamic Web TWAIN viewer to the HTTP server as a PDF file asynchronously
+    try{
     this.DWObject.HTTPUploadAllThroughPostAsPDF(
       'localhost',
       '/api/v1/scanner/uploadscan',
@@ -113,20 +136,34 @@ export class ScanDocumentComponent implements OnInit {
       this.OnHttpUploadFailure
     );
   }
+  catch(ex){
+    console.log("error occurred --------------------------------------" + ex ) ;
+  }
+  }
 
 
   OnHttpUploadSuccess() {
- 
+
     //this.DWObject.ClearAllHTTPFormField(); // Clear all fields first
-    this.alertService.success("Document uploaded successfully, reloading the scanner...") ;
-    setTimeout(function(){
+    //this.alertService.success("Document uploaded successfully, Ready for Next Scanning ; ") ;
+    this.alertService.success("Document uploaded successfully, Ready for Next Scanning. ");
+    this.numberofsupplimentaries = 0;
+    this.rollnumber = "" ;
+    this.DWObject.RemoveAllImages();
+    /*setTimeout(function(){
       location.reload();  
     },2000);
+    */
+    this.isScanning = false;
+    this.disableAllButtons = false;
 
-    
+
   }
   OnHttpUploadFailure(errorCode, errorString, sHttpResponse) {
-    alert(errorString + sHttpResponse);
+    
+    //alert(errorString + sHttpResponse);
+    this.isScanning = false;
+    this.disableAllButtons = false;
   }
 
 

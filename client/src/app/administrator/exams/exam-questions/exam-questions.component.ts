@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, SimpleChange } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute } from '@angular/router';
 import { AlertService } from '../../../services';
@@ -14,6 +14,8 @@ export class ExamQuestionsComponent implements OnInit {
 
   @Input() examQuestions;
   @Input() examcode;
+  @Input() grandTotal  ; 
+  totalExamMarks : number ; 
   constructor(private modalService: NgbModal,
     private route: ActivatedRoute,
 
@@ -21,9 +23,37 @@ export class ExamQuestionsComponent implements OnInit {
     private utilService: UtilService) { }
 
    
+ngOnInit(){
 
-  ngOnInit() {
+}
+  
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log("Grand Total " + this.grandTotal ) ;
+    if (this.examQuestions && this.examQuestions.length > 0){
+      
+      this.setTotalSubQuestionMarks() ;
+      this.setTotalMarks() ;
+    }
     
+  }
+
+  setTotalSubQuestionMarks(){
+    
+    this.examQuestions.forEach(question => {
+      var subSectionTotal = 0 ; 
+      question.sections.forEach(section => {
+        subSectionTotal += parseFloat(section.subquestionmarks ? section.subquestionmarks : 0);
+      });
+      question.subsectiontotal =  subSectionTotal ; 
+    });
+  }
+
+  setTotalMarks (){
+    this.totalExamMarks = 0 ;
+    this.examQuestions.forEach(function(question){
+      this.totalExamMarks += question.totalmarks + question.subsectiontotal ; 
+    }.bind(this)) ;
   }
 
   openQuestion(questionNo) {

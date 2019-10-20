@@ -3,6 +3,7 @@ var formidable = require('formidable');
 var fs = require('fs-extra');
 var dbr = require('dynamsoft-javascript-barcode');
 var QrCode = require('qrcode-reader');
+var hummus = require('hummus') ;
 var Jimp = require("jimp");
 const PDF2Pic = require("pdf2pic");
 var connectionService = require('utils/connection.service')
@@ -47,44 +48,77 @@ async function uploadDocument(req) {
             }
             console.log("within form.parse method, subject field of fields object is: " + fields.subjects);
             resolve([fields, files]);
-        }); // form.parse
+        }); 
     });
     var fields = parsedItems[0];
     var files = parsedItems[1];
-    //convert the uploaded file to PDF. This is used only for Virtual scanner purpose
-    var barcode = await getBarcode(fields, files, username, fields.examcode);
-
-    //get the barcode from image
-     return barcode ;
-}
-
-async function getBarcode(fields, files, username, examcode) {
-
-    var data = await fs.readFile(files.RemoteFile.path);
-    var answerCode = "ANS-" + utils.generateUniqueCode();
-    var dirPath = config.fileLocation + "scannedcopies" + config.filePathSeparator + examcode + config.filePathSeparator;
-    var pdfFilePath = dirPath + answerCode + config.answerFileExtension ;
-
+    var dirPath = config.fileLocation + "scannedcopies" + config.filePathSeparator + fields.examcode + config.filePathSeparator;
+    //-- Create the directory for storing scanned PDF if it doesnot exist.
     if (!fs.existsSync(dirPath)) {
         fs.mkdirSync(dirPath); // make the parent directory
-        fs.mkdirSync(dirPath + config.filePathSeparator + "images"); // keep all the assigned scanned copies here
-        //fs.mkdirSync(dir + "\\evaluated"); // keep all the evaluated copies here.
+        fs.mkdirSync(dirPath + config.filePathSeparator + config.firstPageLocation) ;
     }
-    // save file from temp dir to new dir
-   
-    //-- convert pdf to image file because barcode/qrcode cant be read directly from pdf file.
-    var returnValue = await fs.writeFile(pdfFilePath, data);
-    //var converToImage = await convertPdfToImage(answerCode, dirPath, filePath);
 
-    //--read barcode from converted image
-    var barcode = await readBarcode(answerCode, dirPath, pdfFilePath)
+    var answerCode = "ANS-" + utils.generateUniqueCode();
+    //-- This is only for Virtual Scanner
+    var data = await fs.readFile(files.RemoteFile.path);
+    var pdfFilePath = dirPath + answerCode + config.answerFileExtension ;
+
+
+    var returnValue = await fs.writeFile(pdfFilePath, data);
+    fs.close() ; 
+
+    //-- sepaarate the first page of pdf from rest of pdf
+    var firstPagePath = await separateFirstPage(dirPath, pdfFilePath, answerCode) ;
+    if (returnValue != "" && firstPagePath != null ){
+       returnValue = await updateAnswers(fields, files, username,  pdfFilePath, firstPagePath, answerCode)  ;
+    }
+    console.log(returnValue)
+}
+
+async function separateFirstPage(dirPath, pdfFilePath, answerCode){
+    try{
+        var pdfReader = hummus.createReader(pdfFilePath) ;
+        var pageCount = pdfReader.getPagesCount() ;
+        if (pageCount < 1){
+            console.log("There are no pages available in PDF.") ;
+            return null ; 
+
+        }
+        var firstPagePdf = dirPath + config.firstPageLocation + config.filePathSeparator + answerCode + config.answerFileExtension  ;
+        var pdfWriter = hummus.createWriter(firstPagePdf) ;
+        //-- put first page in a folder of "firstpage"
+        pdfWriter.createPDFCopyingContext(pdfReader).appendPDFPageFromPDF(0) ;
+        pdfWriter.end() ; 
+        pdfWriter = hummus.createWriter(dirPath + answerCode + config.evaluatorextension + config.answerFileExtension) ; 
+        if (pageCount > 1){
+            for(var i=1;i< pageCount ;++i){
+                pdfWriter.createPDFCopyingContext(pdfReader).appendPDFPageFromPDF(i);
+            }
+        }
+        else{
+            console.log("Total Pages for Answer : " + answerCode + " Were only one. No further pages available, only first page was scanned.") ;
+            firstPagePdf = null ; 
+        }
+        pdfWriter.end();
+        return firstPagePdf ;
+    //--put remaining PDF in separate PDF
+    }
+    catch(ex){
+        console.log("Error in creating files " + new Date() + ex ) ;
+        return "" ;
+    }
+
     
-    //var session = await connectionService.getSession() ; 
-    
+    return "" ; 
+
+}
+
+async function updateAnswers(fields, files, username, pdfFilePath, firstPagePath, answerCode) {
     try {
        //var transact =  session.sessionObject.startTransaction( { readConcern: { level: "snapshot" }, writeConcern: { w: "majority" } } );
-       var answerUpdateCount = await addAnswer(fields, username, barcode, pdfFilePath, answerCode);
-       console.log("Answer Added : " + answerUpdateCount) ;
+       var answerUpdateCount = await addAnswer(fields, username, pdfFilePath, firstPagePath,  answerCode);
+       
        if (answerUpdateCount > 0){
             var updateScanningNumberCount = await updateScanningNumbers(fields.examcode, username) ;
             if (updateScanningNumberCount >0) {
@@ -101,24 +135,23 @@ async function getBarcode(fields, files, username, examcode) {
         console.log("Error in updating answers : " + err) ;
         return "N" ;
       }
-      finally{
-          //session.sesssio.endSession() ; 
-      }
+     
+}   
 
-
-    return barcode ;
-}
-
-async function addAnswer(fields, username, qrcode, pdfFilePath, answerCode) {
+async function addAnswer(fields, username, pdfFilePath, firstPagePath, answerCode) {
     var addAnswerData = {};
+    
     addAnswerData.answercode = answerCode ; 
+    addAnswerData.rollnumber = fields.rollnumber;
+    addAnswerData.numberofsupplimentaries = fields.numberofsupplimentaries ; 
     addAnswerData.examcode = fields.examcode;
     addAnswerData.scandate = new Date();
     addAnswerData.scannedby = username;
     addAnswerData.answers = [];
     addAnswerData.isassigned = "N";
     addAnswerData.pdfFilepath = pdfFilePath;
-    addAnswerData.qrcode = qrcode;
+    addAnswerData.firstpagepath = firstPagePath,
+    addAnswerData.qrcode = "" ;//qrcode;
 
     var uniqueIdQuery = {answercode: answerCode} ;
     var setQuery = {$set: addAnswerData} ;

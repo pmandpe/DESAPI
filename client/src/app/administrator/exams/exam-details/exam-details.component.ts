@@ -152,11 +152,19 @@ export class ExamDetailsComponent implements OnInit {
         this.alertService.success("Data Saved Successfully");
         this.examForm.patchValue({ editmode: 'EDIT' });
         this.disableSubjectCode = true;
+        this.reloadComponent() ;
+        
       },
       error => {
         this.alertService.error(error);
         this.loading = false;
       });
+  }
+
+  reloadComponent(){
+    this.router.navigateByUrl('/login', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/admin/edit-exam', 'EDIT', this.examcode]);
+  }); 
   }
 
 

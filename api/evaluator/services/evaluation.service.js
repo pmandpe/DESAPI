@@ -49,7 +49,8 @@ async function getQuestions(username, examcode) {
 async function getAnswersPdf(examcode, username, answercode) {
     //var filePath = "/Users/potomac/Desktop/PM/Backup/DES/pdfsample.pdf";
     //-- path is like <root>\evaluatedcopies\<examcode>\<username>\assigned\<answercode>.pdf
-    var filePath = config.fileLocation + "evaluatedcopies" + config.filePathSeparator + examcode + config.filePathSeparator + username + config.filePathSeparator + "assigned" + config.filePathSeparator + answercode + config.answerFileExtension;
+    var filePath = config.fileLocation + "evaluatedcopies" + config.filePathSeparator + examcode + config.filePathSeparator + username + config.filePathSeparator + "assigned" + config.filePathSeparator + answercode + config.evaluatorextension + config.answerFileExtension;
+    //var filePath = "E:\\Projects\\DES\\DESFiles\\evaluatedcopies\\MAC-KLQH-30J1-MKVU\\shree\\assigned\\ANS-E0HT-LV1K-0XY5.pdf" ;
     var fileData = await fs.readFile(filePath);
     return fileData;
 }

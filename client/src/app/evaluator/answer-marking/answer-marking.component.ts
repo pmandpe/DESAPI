@@ -54,7 +54,7 @@ export class AnswerMarkingComponent implements OnInit {
 
         this.getAnswerDetails();
         //this.answerData = {"questionno":"", "totalmarks":0, "marksobtained":0, "sections": []} ;
-        this.setInitialAnswerData(data, this.questionData);
+        //this.setInitialAnswerData(data, this.questionData);
 
       },
       error => {
@@ -87,7 +87,7 @@ export class AnswerMarkingComponent implements OnInit {
       else {
         question.marksobtained = 0;
       }
-      if (question.sections && question.sections.length > 0) {
+      if (question.sections && question.sections.length > 0 && answers && answers.length > 0) {
         question.sections.forEach(function (section) {
           var answerSection = answer.sections.find(function (answersection) {
             var returnValue = answersection.subquestionid == section.subquestionid;

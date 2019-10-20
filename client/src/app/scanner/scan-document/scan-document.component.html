@@ -1,55 +1,99 @@
+<alert></alert>
+<div class="container-fluid">
+    <a [routerLink]="['/scanner/dashboard']">Dashboard</a>
+</div>
 
 <div class="container-fluid">
-    <alert></alert>
-    <div class="float-right">
-        <a [routerLink]="['/scanner/dashboard']">Dashboard</a>
-    </div>
+
     <div>
         <div class="row">
             <div class="col-sm-6 col-lg-4 col-md-4">
-                <table class="table table-bordered" style="width:100%;margin-top:20px;">
+                <table class="table table-bordered border border-primary" style="width:100%;margin-top:20px;">
                     <tr>
                         <td width="40%">Exam Code</td>
-                        <td width="60%">{{examcode}}</td>
+                        <td width="60%">
+                            <strong>{{examcode}}</strong>
+                        </td>
                     </tr>
                     <tr>
                         <td width="40%">Assigned Copies</td>
-                        <td width="60%">{{scannerSummaryData.assignedcopies}}</td>
+                        <td width="60%">
+                            <strong>{{(scannerSummaryData && scannerSummaryData.assignedcopies ? scannerSummaryData.assignedcopies
+                                :"")}}
+                            </strong>
+                        </td>
                     </tr>
                     <tr>
                         <td>Scanned Copies</td>
-                        <td>{{scannerSummaryData.scannedcopies}}</td>
+                        <td>
+                            <strong>{{(scannerSummaryData && scannerSummaryData.scannedcopies ? scannerSummaryData.scannedcopies
+                                : "")}}</strong>
+                        </td>
                     </tr>
                     <tr>
                         <td>Assigned Date</td>
-                        <td>{{scannerSummaryData.assigneddate}}</td>
+                        <td>
+                            <strong>{{(scannerSummaryData && scannerSummaryData.assigneddate ? scannerSummaryData.assigneddate :
+                                "")}}
+                            </strong>
+                        </td>
                     </tr>
                     <tr>
                         <td>Target Date</td>
-                        <td>{{scannerSummaryData.targetdate}}</td>
+                        <td>
+                            <strong>{{(scannerSummaryData && scannerSummaryData.targetdate ? scannerSummaryData.targetdate : "")}}</strong>
+                        </td>
                     </tr>
                 </table>
             </div>
 
 
-            <div class="col-sm-6 col-lg-8 col-md-8" [hidden]="scannerSummaryData.assignedcopies == scannerSummaryData.scannedcopies">
-                <div style="margin:20px">
-                    <h5>{{message}}</h5>
-                    <div>
+            <div class="col-sm-6 col-lg-8 col-md-8" [hidden]="(scannerSummaryData && scannerSummaryData.assignedcopies && scannerSummaryData.assignedcopies == scannerSummaryData.scannedcopies)">
+                
+                <div>
+                    <div style="text-align:center ; margin:auto; margin-top:5%;">
+                        <h5>{{message}}</h5>
+                    </div>
+                    <div class="row shadow p-3 container-fluid bg-light">
+
+                            <div class="col-sm-3 col-lg-3 text-right">
+                                <label for="subquestionid">Number of Supplimentaries</label>
+                            </div>
+                            <div class="col-sm-3 col-lg-3 d-flex justify-content-center">
+                                <input type="number" class="form-control" [(ngModel)]="numberofsupplimentaries" />
+                            </div>
+                            <div class="col-sm-2 col-lg-2 text-right">
+                                <label for="subquestiontype">Roll Number</label>
+                            </div>
+                            <div class="col-sm-4 col-lg-4 d-flex justify-content-center">
+                                <input type="input" class="form-control" [(ngModel)]="rollnumber" />
+                            </div>
+    
+                        </div>
+    
+                    <div style="margin:auto; text-align:center; margin-top:1%">
                         <span>
-                            <button class="btn btn-primary" (click)="acquireImage()" [disabled]="disableAllButtons">Scan Document</button>
+                            <button class="btn btn-success btn-circle" (click)="acquireImage()" [disabled]="disableAllButtons" [ngClass]="{'btn-danger': isScanning, 'btn-success' : !isScanning }">
+                                <strong>SCAN</strong>
+                                <br>
+                                <i class="fa fa-4x fa-print"></i>
+                            </button>
                         </span>
+                        <!--
                         <span>&nbsp;</span>
                         <span>
                             <button class="btn btn-success" (click)="uploadDocument()" [disabled]="disableAllButtons">Submit Document</button>
                         </span>
-                        
+                    -->
+
                     </div>
+                    <br>
+                    <br>
                 </div>
 
-                <div id="dwtcontrolContainer" style="margin:10px;"></div>
+                <div id="dwtcontrolContainer" style="margin:10px; height:10px ; width: 10px ;"></div>
             </div>
-            <div class="col-sm-6 col-lg-9 col-md-9 card" style="margin-top:20px ; display: table; height: 200px; overflow: hidden;" [hidden]="scannerSummaryData.assignedcopies != scannerSummaryData.scannedcopies">
+            <div class="col-sm-6 col-lg-9 col-md-9 card" style="margin-top:20px ; display: table; height: 200px; overflow: hidden;" [hidden]="( !scannerSummaryData || !scannerSummaryData.assignedcopies || scannerSummaryData.assignedcopies != scannerSummaryData.scannedcopies)">
                 <div style="display: table-cell; vertical-align: middle;">
                     <div style="text-align:center">
                         <h4>All Documents for this Exam assigned to you are already scanned.

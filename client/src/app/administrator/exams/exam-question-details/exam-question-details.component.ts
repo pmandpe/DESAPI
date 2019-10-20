@@ -19,31 +19,51 @@ export class ExamQuestionDetailsComponent implements OnInit {
   @Input() examcode;
   @Input() mode;
 
-  
+
   loading: any;
-  dataSaved: boolean ; 
-  constructor( public activeModal: NgbActiveModal, private examService: ExamService, private _fb: FormBuilder, private alertService: AlertService, private utilService: UtilService) { }
-  
+  dataSaved: boolean;
+  subquestiontotal: any;
+  totalquestionmarks: any;
+  constructor(public activeModal: NgbActiveModal, private examService: ExamService, private _fb: FormBuilder, private alertService: AlertService, private utilService: UtilService) { }
+
   ngOnInit() {
-    this.dataSaved = false ; 
+    this.dataSaved = false;
     if (!this.examQuestions) { //In case its a new question, the examQuestions will come as undefined
       this.examQuestions = [];
       this.examQuestion = this.getNewQuestion();
     }
-   
+    else {
+      this.setTotalMarks();
+    }
+
   }
 
   closeModal() {
     this.activeModal.close(this.examQuestions);
   }
- 
+
 
   addNewSubQuestion() {
-    if (!this.examQuestion.sections){
-      this.examQuestion.sections =[] ;
+    if (!this.examQuestion.sections) {
+      this.examQuestion.sections = [];
     }
     this.examQuestion.sections.push(this.getNewSubQuestion());
     //this.formArr.push(this.initItemRows()) ;
+  }
+
+  setTotalMarks() {
+
+    var mainQuestionMarks = this.examQuestion.totalmarks;
+    var subQuestionMarks = 0.0;
+    this.examQuestion.sections.forEach(element => {
+      subQuestionMarks += parseFloat(element.subquestionmarks ? element.subquestionmarks : 0);
+    });
+
+    this.examQuestion.totalmarks = mainQuestionMarks;
+    this.subquestiontotal = subQuestionMarks;
+    this.totalquestionmarks = mainQuestionMarks + subQuestionMarks;
+
+
   }
 
   save(questionNo) {
@@ -81,15 +101,17 @@ export class ExamQuestionDetailsComponent implements OnInit {
     this.examService.saveQuestion(params)
       .pipe(first())
       .subscribe(
-        data => {
-          this.loading = false;
-          this.alertService.success("Data Saved Successfully");
-          this.dataSaved = true ; 
-        },
-        error => {
-          this.alertService.error(error);
-          this.loading = false;
-        });
+      data => {
+        this.loading = false;
+        this.alertService.success("Data Saved Successfully");
+        this.dataSaved = true;
+   
+
+      },
+      error => {
+        this.alertService.error(error);
+        this.loading = false;
+      });
 
   }
 
@@ -112,7 +134,7 @@ export class ExamQuestionDetailsComponent implements OnInit {
       "totalmarks": "",
       "idealanswer": "",
       "subquestiontype": ""
-     }
+    }
     return newQuestion;
   }
 
