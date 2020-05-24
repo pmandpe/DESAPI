@@ -21,7 +21,7 @@ export class AnswerMarkingComponent implements OnInit {
   totalMarks: any;
   answerpdf: any;
   validation: boolean;
-
+  pdfHeight : number ; 
 
   json: any;
 
@@ -40,6 +40,7 @@ export class AnswerMarkingComponent implements OnInit {
 
     this.examCode = this._Activatedroute.snapshot.paramMap.get("examcode");
     this.answerCode = this._Activatedroute.snapshot.paramMap.get("answercode");
+    this.pdfHeight=80 ; 
     this.evaluatorService.getQuestionAnswers(this.examCode, this.answerCode)
       .subscribe(
       data => {
@@ -199,5 +200,9 @@ export class AnswerMarkingComponent implements OnInit {
       });
   }
 
+
+  adjustHeight(value){
+    this.pdfHeight += value ; 
+  }
 }
 

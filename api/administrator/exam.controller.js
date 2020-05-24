@@ -6,17 +6,19 @@ const config = require('config.json');
 const examService = require('./exam.service');
 const authorize = require('_helpers/authorize')
 const Role = require('_helpers/roles');
+const paperAllocationService = require('../sa/services/paperallocation.service')
 
 // routes
-router.post('/get', authorize(Role.Admin), getExams);
-router.post('/dashboard', authorize(Role.Admin), getExamDashboard);
+router.post('/get', authorize([Role.Admin, Role.SA]), getExams);
+router.post('/dashboard', authorize([Role.Admin, Role.SA]), getExamDashboard);
 router.post('/save', authorize(Role.Admin), saveExams);
 router.post('/details', authorize(Role.Admin), getExamsDetails);
 router.post('/scanningassignment/save', authorize(Role.Admin), saveScanningAssignment);
 router.post('/evaluationassignment/save', authorize(Role.Admin), saveEvaluationAssignment);
 router.post('/question/save', authorize(Role.Admin), saveQuestion);
 router.post('/cleardata', authorize(Role.Admin), clearData);
-
+router.post('/update/paperallocation', authorize(Role.SA), updatePaperAllocation);
+router.post('/paper', authorize(Role.Admin), getApprovedPaper);
 
 module.exports = router;
 
@@ -53,6 +55,15 @@ async function saveScanningAssignment(req, res, next) {
     res.json(returValue);
 }
 
+
+
+async function updatePaperAllocation(req, res, next) {
+    var examCode = req.body.examcode;
+    var updateDoc = req.body.paperallocation ;
+    var returValue = await examService.updatePaperAllocation(examCode, updateDoc) ;
+    res.json(returValue);
+}
+
 async function saveEvaluationAssignment(req, res, next) {
     var username = req.username;
     var returValue = await examService.saveEvaluationAssignment(req.body, username);
@@ -70,5 +81,16 @@ async function saveQuestion(req, res, next) {
     var examdetails = await examService.getExamDetails(req.body.examcode);
     var returnValue = await examService.saveQuestion(examdetails[0], req.body.questions, req.username) ;
     res.json(examdetails);
+}
+
+async function getApprovedPaper(req, res, next) {
+    let username = req.body.username;
+    let file = null;
+    var examcode = req.body.examcode;
+    if (examcode && examcode != "") {
+        file = await paperAllocationService.getPaper(username, examcode);
+    }
+
+    res.download(file);
 }
 

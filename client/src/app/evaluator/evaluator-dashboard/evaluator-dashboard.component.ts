@@ -9,11 +9,11 @@ import { UtilService } from '../../services/utilities.service';
   styleUrls: ['./evaluator-dashboard.component.css']
 })
 export class EvaluatorDashboardComponent implements OnInit {
-
+  breakpoint: number;
   constructor(private evaluatorService: EvaluatorService, private authenticationService: AuthenticationService, private alertService: AlertService, private utilityService: UtilService) { }
   dashboardData : any ; 
   ngOnInit() {
-
+    this.breakpoint = (window.innerWidth <= 400) ? 1 : 6;
     this.evaluatorService.getDashboard()
       .subscribe(
         data => {
@@ -26,7 +26,9 @@ export class EvaluatorDashboardComponent implements OnInit {
 
         });
   }
-
+  onResize(event) {
+    this.breakpoint = (event.target.innerWidth <= 400) ? 1 : 6;
+  }
 
   getAssignedCopies(data) {
     var username = this.authenticationService.currentUserValue.username ;

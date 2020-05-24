@@ -6,6 +6,8 @@ import { AlertService } from '../../../services';
 import { UtilService } from '../../../services/utilities.service';
 import { FormBuilder, FormArray } from '@angular/forms';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ExamDetailsComponent } from '../exam-details/exam-details.component'
+import { MatDialogRef } from '@angular/material/dialog';
 
 
 @Component({
@@ -24,7 +26,7 @@ export class ExamQuestionDetailsComponent implements OnInit {
   dataSaved: boolean;
   subquestiontotal: any;
   totalquestionmarks: any;
-  constructor(public activeModal: NgbActiveModal, private examService: ExamService, private _fb: FormBuilder, private alertService: AlertService, private utilService: UtilService) { }
+  constructor(public activeModal: NgbActiveModal,  public dialogRef: MatDialogRef<ExamDetailsComponent>, private examService: ExamService, private _fb: FormBuilder, private alertService: AlertService, private utilService: UtilService) { }
 
   ngOnInit() {
     this.dataSaved = false;
@@ -39,7 +41,8 @@ export class ExamQuestionDetailsComponent implements OnInit {
   }
 
   closeModal() {
-    this.activeModal.close(this.examQuestions);
+    //this.activeModal.close(this.examQuestions);
+    this.dialogRef.close(this.examQuestions) ; 
   }
 
 

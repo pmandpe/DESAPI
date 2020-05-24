@@ -1,33 +1,74 @@
-<!--<div class="container">
-        <div class="panel-group" id="accordion">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        
-                    </h4>
-                </div>
-                <div id="collapse1">
-                    <ul class="list-group">
-                        <li class="list-group-item">
-                            <a [routerLink]="['./subject']">
-                                Manage Subjects</a>
-                        </li>
-                        <li class="list-group-item">
-                            <a [routerLink]="['./exams']">Manage Exams</a>
-                        </li>
-                        <li class="list-group-item">
-                            Reports</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-</div>
--->
+<!--
 <div class="col-sm-12 col-md-12 sidebar" style="padding-left:0px">
     <ul class="nav nav-sidebar list-group">
         <li class="list-group-item" *ngFor="let menu of menus"  (click)="listClick($event, menu)"   [ngClass]="{'active-class': selectedMenu == menu}">
                 <a  [routerLink]="[menu.link]">{{menu.label}}</a>
                 <span style="float:right" [style.color]="selectedMenu == menu ? '#448fe0' : '#fff'"> <i class="fa fa-lg fa-angle-right"></i> </span>
+        </li>
+    </ul>
+</div>
+-->
+
+
+<!--
+<div class="col-sm-12 col-md-12 sidebar" style="padding-left:0px">
+    
+    <ul class="nav nav-sidebar list-group">
+        <li class="list-group-item" *ngFor="let menu of menus" (click)="listClick($event, menu)" [ngClass]="{'active-class': selectedMenu == menu}">
+            <a [routerLink]="[menu.link]">{{menu.label}}</a>
+            <span style="float:right" [style.color]="selectedMenu == menu ? '#448fe0' : '#fff'">
+                <i class="fa fa-lg fa-angle-right"></i>
+            </span>
+        </li>
+    </ul>
+</div>
+-->
+
+
+<div class="des-sidebar-wrapper">
+    <!-- <div *ngIf="isMobileMenu()">
+       
+        <ul class="nav navbar-nav nav-mobile-menu">
+            <li class="nav-item">
+                <a class="nav-link" href="javascript:void(0)">
+                    <i class="material-icons">dashboard</i>
+                    <p>
+                        <span class="d-lg-none d-md-block">Stats</span>
+                    </p>
+                </a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link" href="javascript:void(0)" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-commenting-o"></i>
+                    
+                    <p>
+                        <span class="d-lg-none d-md-block">Some Actions</span>
+                    </p>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="#">Mike John responded to your email</a>
+                    <a class="dropdown-item" href="#">You have 5 new tasks</a>
+                    <a class="dropdown-item" href="#">You're now friend with Andrew</a>
+                    <a class="dropdown-item" href="#">Another Notification</a>
+                    <a class="dropdown-item" href="#">Another One</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="javascript:void(0)">
+                    <i class="material-icons">person</i>
+                    <p>
+                        <span class="d-lg-none d-md-block">Account</span>
+                    </p>
+                </a>
+            </li>
+        </ul>
+    </div> -->
+    <ul class="nav">
+        <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{menuItem.class}} nav-item">
+            <a class="nav-link" [routerLink]="[menuItem.path]">
+                <i class="fa {{menuItem.icon}}"></i>
+                {{menuItem.title}}
+            </a>
         </li>
     </ul>
 </div>

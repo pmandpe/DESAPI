@@ -181,6 +181,8 @@ export class AssignScannerComponent implements OnInit {
         element.assignedcopies = 0;
       }
     });
+
+    
   }
 
   setEvaluatorCopies(userData: any): any {

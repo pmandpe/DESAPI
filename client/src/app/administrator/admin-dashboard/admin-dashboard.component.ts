@@ -23,8 +23,15 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   getWidth(value, totalValue){
-    return (value * 100 / totalValue) + "%" ;
+    let dividedBy = this.checkNull(totalValue) ;
+
+    return (this.checkNull(value) * 100 / ( dividedBy == 0 ? 1 : dividedBy) + "%" ) ;
   }
 
-
+  checkNull(input){
+    if (!input){
+      return 0 ; 
+    }
+    return input ; 
+  }
 }

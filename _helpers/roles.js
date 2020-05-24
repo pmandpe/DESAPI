@@ -1,5 +1,6 @@
 module.exports = {
     Admin: 'ADMIN',
     Evaluator: 'EVALUATOR',
-    Scanner:"SCANNER"
+    Scanner:"SCANNER",
+    SA: "SA"
 }

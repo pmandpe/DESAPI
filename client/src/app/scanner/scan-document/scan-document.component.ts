@@ -23,8 +23,9 @@ export class ScanDocumentComponent implements OnInit {
   scannerSummaryData: any;
   disableAllButtons: any;
   isScanning: boolean;
-  numberofsupplimentaries: any ;
-  rollnumber: any ;
+  numberofsupplimentaries: any;
+  rollnumber: any;
+  selectSources: HTMLSelectElement;
 
 
 
@@ -34,7 +35,7 @@ export class ScanDocumentComponent implements OnInit {
     this.examcode = this._Activatedroute.snapshot.paramMap.get("examcode");
 
     Dynamsoft.WebTwainEnv.AutoLoad = false;
-    Dynamsoft.WebTwainEnv.Containers = [{ ContainerId: 'dwtcontrolContainer', Width: '0px', Height: '0px' }];
+    Dynamsoft.WebTwainEnv.Containers = [{ ContainerId: 'dwtcontrolContainer', Width: '100%', Height: '100%' }];
     Dynamsoft.WebTwainEnv.RegisterEvent('OnWebTwainReady', () => { this.Dynamsoft_OnReady(); });
     /**
      * In order to use the full version, do the following
@@ -45,7 +46,8 @@ export class ScanDocumentComponent implements OnInit {
      */
     Dynamsoft.WebTwainEnv.Trial = true;
     //Dynamsoft.WebTwainEnv.ProductKey = "t0068UwAAAFuGVxYuHUpzk5J3Tt3zblNQMsn1OpOFqQodE+HXMWzTuhW6NBnIypP8un+KenPrO6Eqw3DcSnZ9il7hstL/sYY=";
-    Dynamsoft.WebTwainEnv.ProductKey = "t0136TQMAAHgeuBInvhXS5/gLMYkJ0TCjJAoDbRvDJzq0638DLJDIlcOLDVp3QbthdlAsnUB54bT8odqutHn84TH2iGD4G2S9Mn2Kt2TBVPpIYjSa9ZjG/5guP3tJ0KdtOFFutGA8N0zzKKLdDXnmj9GC8dwwzVPIfHyGRgpGC8avjcHbyuYvFh2rvA==";
+    //Dynamsoft.WebTwainEnv.ProductKey = "t0138cQMAAJcMDa31CdoMBwZI7nOl/5Bcfvgh+tsAjk9LgmtHGYod3rMm6Ag84U8D3vSyz5JGbDufWmtag0gEpttIAP2LxrGb2brQ1kyYzBwNDL231m7sj9n051/qzFkKLhQbJozFRsI8hPf3ijjzbZgwFhsJ8yQyn03XaMIwYSw2gndjKAUm/AK/TqoE";
+    Dynamsoft.WebTwainEnv.ProductKey = "t0140lQMAAB/eePgtZRMeSx4xqk37kLkhHgl1vP+mCtiybjAKuK7cJKPTAzZbrWCL0UKKtSSVH3Mll94bUt6mvqa9NIBsdV2fzD6EvpsJk5mjgaH3VxvG/phdf/ZSZ8624kaxYcJYbCTMQ3i7V8SZP4YJY7GRME8i89V0jSYME8ZiI4iNOqahlFqVLxB7sfo=" ;
     //Dynamsoft.WebTwainEnv.ResourcesPath = "https://tst.dynamsoft.com/libs/dwt/15.0";
 
     Dynamsoft.WebTwainEnv.Load();
@@ -61,50 +63,69 @@ export class ScanDocumentComponent implements OnInit {
       },
       error => {
         this.alertService.error("Unable to retrieve data from Server. Please contact System Administrator");
-        this.disableAllButtons = true ; 
-        
+        this.disableAllButtons = true;
+
       });
   }
 
   Dynamsoft_OnReady(): void {
     this.DWObject = Dynamsoft.WebTwainEnv.GetWebTwain('dwtcontrolContainer');
+    let count = this.DWObject.SourceCount;
+    this.selectSources = <HTMLSelectElement>document.getElementById("sources");
+    this.selectSources.options.length = 0;
+    for (let i = 0; i < count; i++) {
+      this.selectSources.options.add(new Option(this.DWObject.GetSourceNameItems(i), i.toString()));
+    }
   }
 
   acquireImage(): void {
 
-    if (!this.rollnumber || this.rollnumber == ""){
-      this.alertService.error("Roll number cannot be blank") ;
-      return ; 
+    if (!this.rollnumber || this.rollnumber == "") {
+      this.alertService.error("Roll number cannot be blank");
+      return;
     }
 
     try {
       this.isScanning = true;
       this.disableAllButtons = true; // disable all buttons while scanning is going on so that user doesnt click other buttons accidentally.
       //this.DWObject.ProductKey = 't0126vQIAAAsYy4ECUsO3V3m3sstataymDEQsQ8Nt8n1QqYhELQ6YOOwYQoS/Gwr1cR7p5JMYdkS2fLtk0c97U62rS+odm1jJp5D6OGBG+ohjtPdXOo39mCyfuaTTJ2y4kW90wJhv6OZR9GaP8DM/RgeM+YZunnbmYKSVwQ68x4jT';
+      /*
+      if (this.DWObject.SelectSource()) {
+        const onAcquireImageSuccess = () => { this.DWObject.CloseSource(); };
+        const onAcquireImageFailure = onAcquireImageSuccess;
+        this.DWObject.OpenSource();
 
-      /*    if (this.DWObject.SelectSource()) {
-            const onAcquireImageSuccess = () => { this.DWObject.CloseSource(); };
-            const onAcquireImageFailure = onAcquireImageSuccess;
-            this.DWObject.OpenSource();
-      
-            this.DWObject.AcquireImage({}, onAcquireImageSuccess, onAcquireImageFailure);
-          }
-          */
-      this.DWObject.SelectSourceByIndex(3);
-      this.DWObject.OpenSource()
-      this.DWObject.IfShowUI = false;
+        this.DWObject.AcquireImage({}, onAcquireImageSuccess, onAcquireImageFailure);
+      }
+      */
+
+      //this.DWObject.SelectSourceByIndex(3);
+      //this.DWObject.OpenSource()
+      //this.DWObject.IfShowUI = true;
+      /*
       this.DWObject.RegisterEvent('OnPostAllTransfers', function () {
         this.uploadDocument();
       }.bind(this));
-
-      this.DWObject.IfAutoFeed = true;
+      */
+      /*
       this.DWObject.XferCount = -1;
-
-      this.DWObject.IfFeederEnabled = true;
       this.DWObject.AcquireImage(); //using ADF  for scanning
+      */
+      this.DWObject.IfAutoFeed = true;
+      this.DWObject.IfFeederEnabled = true;
+
+      if (this.DWObject.SourceCount > 0 && this.DWObject.SelectSourceByIndex(this.selectSources.selectedIndex)) {
+        const onAcquireImageSuccess = () => { this.DWObject.CloseSource(); };
+        const onAcquireImageFailure = onAcquireImageSuccess;
+        this.DWObject.OpenSource();
+        this.DWObject.AcquireImage({}, onAcquireImageSuccess, onAcquireImageFailure);
+      } else {
+        alert("No Source Available!");
+      }
+      this.disableAllButtons=false ; 
     }
     catch (ex) {
-      console.log("-----------------------------------" + ex);  
+      console.log("-----------------------------------" + ex);
     }
 
   }
@@ -114,9 +135,9 @@ export class ScanDocumentComponent implements OnInit {
   uploadDocument() {
 
     var strHTTPServer = environment.apiURL;//location.hostname; //The name of the HTTP server. 
-    var CurrentPathName = '/api/v1/scanner';
-    var CurrentPath = CurrentPathName.substring(0, CurrentPathName.lastIndexOf("/") + 1);
-    var strActionPage = '/api/v1/scanner/' + "uploadscan";
+    //var CurrentPathName = '/api/v1/scanner';
+    //var CurrentPath = CurrentPathName.substring(0, CurrentPathName.lastIndexOf("/") + 1);
+    //var strActionPage = '/api/v1/scanner/uploadscan';
     this.DWObject.IfSSL = false; // Set whether SSL is used
     this.DWObject.HTTPPort = location.port == "" ? 80 : 4000;
     var authToken = this.authenctationService.getHeaderToken();
@@ -127,20 +148,26 @@ export class ScanDocumentComponent implements OnInit {
     //this.DWObject.SetHTTPFormField("DocumentType", "Invoice");
 
     // Upload all the images in Dynamic Web TWAIN viewer to the HTTP server as a PDF file asynchronously
-    try{
-    this.DWObject.HTTPUploadAllThroughPostAsPDF(
-      'localhost',
-      '/api/v1/scanner/uploadscan',
-      "imageData.pdf",
-      this.OnHttpUploadSuccess,
-      this.OnHttpUploadFailure
-    );
-  }
-  catch(ex){
-    console.log("error occurred --------------------------------------" + ex ) ;
-  }
+    try {
+      this.DWObject.HTTPUploadAllThroughPostAsPDF(
+        'localhost',
+        '/api/v1/scanner/uploadscan',
+        "imageData.pdf",
+        this.OnHttpUploadSuccess,
+        this.OnHttpUploadFailure
+      );
+    }
+    catch (ex) {
+      console.log("error occurred --------------------------------------" + ex);
+    }
   }
 
+  setScannedCount(){
+    if (this.scannerSummaryData.scannedcopies == "" ){
+      this.scannerSummaryData.scannedcopies = 0 ;
+    }
+    this.scannerSummaryData.scannedcopies = this.scannerSummaryData.scannedcopies + 1
+  }
 
   OnHttpUploadSuccess() {
 
@@ -148,19 +175,20 @@ export class ScanDocumentComponent implements OnInit {
     //this.alertService.success("Document uploaded successfully, Ready for Next Scanning ; ") ;
     this.alertService.success("Document uploaded successfully, Ready for Next Scanning. ");
     this.numberofsupplimentaries = 0;
-    this.rollnumber = "" ;
+    this.rollnumber = "";
     this.DWObject.RemoveAllImages();
     /*setTimeout(function(){
       location.reload();  
     },2000);
     */
+    this.setScannedCount() ; 
     this.isScanning = false;
     this.disableAllButtons = false;
 
 
   }
   OnHttpUploadFailure(errorCode, errorString, sHttpResponse) {
-    
+    this.alertService.error(errorString);
     //alert(errorString + sHttpResponse);
     this.isScanning = false;
     this.disableAllButtons = false;

@@ -5,11 +5,12 @@ module.exports = jwt;
 
 function jwt() {
     const { secret } = config;
-    console.log(secret) ;
-    return expressJwt({ secret }).unless({
+
+    var expJwt =  expressJwt({ secret }).unless({
         path: [
             // public routes that don't require authentication
             '/users/authenticate'
         ]
     });
+    return expJwt ; 
 }

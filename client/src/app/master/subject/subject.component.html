@@ -1,29 +1,136 @@
+<!-- <app-subject-menu></app-subject-menu> -->
 
+<mat-tab-group [selectedIndex]="selectedIndex" (selectedTabChange)="onTabChanged($event)">
+  <mat-tab label="Subject List">
+    <div style="max-width: 100%;margin:auto;">
 
-<app-subject-menu></app-subject-menu>
-<br>
-<div class="container-fluid" style="margin:auto;width:80%">
-<table class="table table table-hover table-striped table-bordered">
-  <thead>
-    <tr>
-      <th>Subject Code</th>
-      <th>Subject Name</th>
-      <th>Subject Class</th>
-      <th>Examination Year</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let subject of Subjects">
+      
+      <mat-card class="des-mat-card">
 
-      <td>{{subject.subjectcode}}</td>
-      <td>{{subject.subjectname}}</td>
-      <td>{{subject.subjectclass}}</td>
-      <td>{{subject.examyear}}</td>
-      <td style="text-align:center">
-        <a [routerLink]="['../edit-subject', 'EDIT', subject.subjectcode]"><i class="fa fa-edit"></i></a>
-      </td>
-    </tr>
-  </tbody>
-</table>
-</div>
+        <mat-card-title-group>
+          <div style="width:100%">
+            <div class="card-title">
+              Manage Subject</div>
+            <div style="float:right">
+              <button class="btn btn-success" (click)="addNewSubject()">Add New Subject</button>
+            </div>
+          </div>
+        </mat-card-title-group>
+      </mat-card>
+      <mat-card class="des-mat-card mat-elevation-z8">
+
+      <div class="no-data"   [hidden]="Subjects && Subjects.length > 0">No subjects are added. Please add New Subjects.</div>
+
+        <table class="table"  [hidden]="Subjects && Subjects.length <= 0">
+          <thead>
+            <tr>
+              <th>Subject Code</th>
+              <th>Subject Name</th>
+              <th>Subject Class</th>
+              <th>Examination Year</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let subject of Subjects">
+
+              <td>{{subject.subjectcode}}</td>
+              <td>{{subject.subjectname}}</td>
+              <td>{{subject.subjectclass}}</td>
+              <td>{{subject.examyear}}</td>
+              <td style="text-align:center">
+                <!-- <a [routerLink]="['../edit-subject', 'EDIT', subject.subjectcode]"> -->
+                <i class="fa fa-edit" (click)="getSubjectDetails(subject.subjectcode, 'EDIT')"></i>
+                <!-- </a> -->
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </mat-card>
+    </div>
+
+  </mat-tab>
+  <mat-tab label="Subject Details" [disabled]='true'>
+    <div style="max-width: 70%;margin:auto;background-colo">
+      <mat-card class="des-mat-card mat-elevation-z8">
+
+        <form [formGroup]="subjectForm" (ngSubmit)="saveSubject()" class="form-login">
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="form-group">
+                <label for="subjectcode">Subject Code</label>
+                <input type="text" formControlName="subjectcode" class="form-control" [readonly]="disableSubjectCode" maxlength="10" [ngClass]="{ 'is-invalid': submitted && f.subjectcode.errors }"
+                />
+                <div *ngIf="submitted && f.subjectcode.errors" class="invalid-feedback">
+                  <div *ngIf="f.subjectcode.errors.required">Subject Code is required</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="form-group">
+                <label for="subjectname">Subject Name</label>
+                <input type="input" formControlName="subjectname" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.subjectname.errors }"
+                  maxlength="50" />
+                <div *ngIf="submitted && f.subjectname.errors" class="invalid-feedback">
+                  <div *ngIf="f.subjectname.errors.required">Subject Name is required</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="form-group">
+                <label for="subjectclass">Class</label>
+                <input type="number" formControlName="subjectclass" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.subjectclass.errors }"
+                />
+                <div *ngIf="submitted && f.subjectclass.errors" class="invalid-feedback">
+                  <div *ngIf="f.subjectclass.errors.required">Class Name is required</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="form-group">
+                <label for="examyear">Examination Year</label>
+                <input type="number" formControlName="examyear" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.examyear.errors }"
+                />
+                <div *ngIf="submitted && f.examyear.errors" class="invalid-feedback">
+                  <div *ngIf="f.examyear.errors.required">Examination Year is required</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="form-group">
+                <label for="semester">Semester</label>
+                <input type="input" formControlName="semester" class="form-control" maxlength="2">
+
+              </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="form-group">
+                <label for="stream">Stream</label>
+                <input type="input" formControlName="stream" class="form-control" maxlength="20" />
+
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <input type="hidden" formControlName="editmode" [(ngModel)]="mode" />
+
+          </div>
+
+          <div class="form-group" style="text-align:right">
+            <span>
+              <button [disabled]="loading" class="btn btn-success">Save Subject</button>
+            </span>
+            <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+            />
+          </div>
+        </form>
+      </mat-card>
+    </div>
+  </mat-tab>
+</mat-tab-group>

@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AlertService } from '../../../services';
 import { UtilService } from '../../../services/utilities.service';
 import { ExamQuestionDetailsComponent } from '../../../administrator/exams/exam-question-details/exam-question-details.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-exam-questions',
@@ -14,50 +15,62 @@ export class ExamQuestionsComponent implements OnInit {
 
   @Input() examQuestions;
   @Input() examcode;
-  @Input() grandTotal  ; 
-  totalExamMarks : number ; 
+  @Input() grandTotal;
+  totalExamMarks: number;
   constructor(private modalService: NgbModal,
     private route: ActivatedRoute,
-
+    public dialog: MatDialog,
     private alertService: AlertService,
     private utilService: UtilService) { }
 
-   
-ngOnInit(){
 
-}
-  
-
-  ngOnChanges(changes: SimpleChanges) {
-    console.log("Grand Total " + this.grandTotal ) ;
-    if (this.examQuestions && this.examQuestions.length > 0){
-      
-      this.setTotalSubQuestionMarks() ;
-      this.setTotalMarks() ;
-    }
-    
+  ngOnInit() {
+    this.setTotalMarks();
   }
 
-  setTotalSubQuestionMarks(){
-    
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log("Grand Total " + this.grandTotal);
+    if (this.examQuestions && this.examQuestions.length > 0) {
+
+      this.setTotalSubQuestionMarks();
+      this.setTotalMarks();
+    }
+
+  }
+
+  setExamQuestions(argExamQuestion){
+    this.examQuestions = argExamQuestion ;
+
+  }
+
+  setTotalSubQuestionMarks() {
+
     this.examQuestions.forEach(question => {
-      var subSectionTotal = 0 ; 
+      var subSectionTotal = 0;
       question.sections.forEach(section => {
         subSectionTotal += parseFloat(section.subquestionmarks ? section.subquestionmarks : 0);
       });
-      question.subsectiontotal =  subSectionTotal ; 
+      question.subsectiontotal = subSectionTotal;
     });
   }
 
-  setTotalMarks (){
-    this.totalExamMarks = 0 ;
-    this.examQuestions.forEach(function(question){
-      this.totalExamMarks += question.totalmarks + question.subsectiontotal ; 
-    }.bind(this)) ;
+  setTotalMarks() {
+    this.totalExamMarks = 0;
+    if (this.examQuestions && this.examQuestions.length) {
+      this.examQuestions.forEach(function (question) {
+        this.totalExamMarks += question.totalmarks + parseFloat(question.subsectiontotal ? question.subsectiontotal : 0);
+      }.bind(this));
+    }
   }
 
+
+
+
+
   openQuestion(questionNo) {
-    var question = {} ;
+
+    var question = {};
     var editMode = "EDIT";
     if (questionNo == -1) {
       editMode = "NEW";
@@ -70,23 +83,25 @@ ngOnInit(){
       });
     }
 
+    const modalRef = this.dialog.open(ExamQuestionDetailsComponent, {
+      panelClass: 'scannerpopup'
+    });
 
+    modalRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.examQuestions = result;
+        this.setTotalSubQuestionMarks() 
+        this.setTotalMarks();
 
-    //const modalRef = this.modalService.open(ExamQuestionDetailsComponent);
-    
-    var modalRef = this.modalService.open(ExamQuestionDetailsComponent, { windowClass: 'scannerpopup' });
+      }
+    });
+
     modalRef.componentInstance.examQuestion = question;
     modalRef.componentInstance.examQuestions = this.examQuestions;
     modalRef.componentInstance.mode = editMode;
     modalRef.componentInstance.examcode = this.examcode;
 
 
-    modalRef.result.then((result) => {
-      if (result){
-        this.examQuestions = result ; 
-      }
-        
-    });
   }
 
 }

@@ -23,6 +23,8 @@ router.post('/answerspdf', authorize(Role.Evaluator), getAnswersPdf);
 router.post('/questions', authorize(Role.Evaluator), getQuestions);
 router.post('/evaluationdata', authorize(Role.Evaluator), getEvaluationData);
 router.post('/evaluationsummary', authorize(Role.Evaluator), getAnswerSummaryForUser);
+router.post('/papersetting', authorize(Role.Evaluator), getPaperAllocation);
+router.post('/paperupload', authorize(Role.Evaluator), uploadPaper);
 
 module.exports = router;
 
@@ -93,6 +95,18 @@ async function saveAnswers(req, res, next) {
     var questions = await evaluationService.saveAnswers(answerData, username) ;
     var saveExamDetails = await evaluationService.updateEvaluationNumbers(username, answerData.examcode, answerData.answercode) ; 
     res.json(questions);
+}
+
+async function getPaperAllocation(req, res, next) {
+    var username = req.username;
+    
+    var paperAllocation = await evaluationService.getPaperAllocation(username)
+    res.json(paperAllocation);
+}
+
+async function uploadPaper(req, res, next) {
+    var uplaodPaperStatus = await evaluationService.uploadPaper(req) ;
+    res.json(uplaodPaperStatus);
 }
 
 

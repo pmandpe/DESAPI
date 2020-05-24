@@ -1,109 +1,125 @@
+<mat-card class="des-mat-card">
+    <mat-card-title-group>
 
-<div class="modal-header">
-    <h3 class="modal-title" style="width:200px;" id="modal-basic-title">Edit Question</h3>
-    <div class="container-fluid">
-        <span class="float-right">
-
+        <mat-card-subtitle style="margin-bottom:2px" class="mat-h3">
+            <div fxLayout="row" fxLayoutGap="100px">
+                <span class="mat-h3">
+                    Edit Question
+                </span>
+            </div>
+        </mat-card-subtitle>
+        <div style="float:right">
             <button type="button" class="btn btn-success" (click)="save(examQuestion.questionno)">
                 Save
             </button>
-            &nbsp;&nbsp;
+
             <button type="button" class="btn btn-danger" (click)="closeModal()">
                 Close
             </button>
-            
-        </span>
-    </div>
-</div>
-<div class="modal-body">
-    <alert></alert>
+        </div>
+    </mat-card-title-group>
+</mat-card>
 
 
-    <div class="container-fluid">
 
-        <div class="form-group">
-            <div class="row">
-                <div class="col-sm-4 col-lg-2">
+<mat-card class="des-mat-card mat-elevation-z8">
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-3 col-lg-2">
 
-                    <label for="questionno">Question #</label>
-                    <input type="input" [disabled]="true" class="form-control" [(ngModel)]="examQuestion.questionno" />
-                </div>
-
-                <div class="col-sm-4 col-lg-2">
-                    <label for="questiontype">Question Type</label>
-                    <input type="input" class="form-control" [(ngModel)]="examQuestion.questiontype" />
-                </div>
-                <div class="col-sm-4 col-lg-2">
-                        <label for="questionno">Main Question Marks</label>
-                        <input type="input" type="number" step="0.5"  class="form-control" [(ngModel)]="examQuestion.totalmarks"  (input)="setTotalMarks()"/>
-                    </div>
-    
-                <div class="col-sm-4 col-lg-3">
-                        <label for="questionno">Sub Question Total</label>
-                        <input type="input"  [readonly]="true" class="form-control" [(ngModel)]="subquestiontotal" />
-                    </div>
-
-                    <div class="col-sm-4 col-lg-3">
-                            <label for="questionno">Total Marks</label>
-                            <input type="input" [readonly]="true"   class="form-control" [(ngModel)]="totalquestionmarks" />
-                        </div>
-
+                <label for="questionno">Question #</label>
+                <input type="input" [disabled]="true" class="form-control" [(ngModel)]="examQuestion.questionno" />
             </div>
-            <div class="row">
-                <div class="col-sm-12 col-lg-12">
 
-                    <label for="questiontext">Question</label>
-                    <textarea type="input" class="form-control" [(ngModel)]="examQuestion.questiontext">
-                    </textarea>
-                </div>
-                <div class="col-sm-12 col-lg-12">
-                    <label for="questiontext">Ideal Answer</label>
-                    <textarea type="input" class="form-control" [(ngModel)]="examQuestion.idealanswer">
-                        </textarea>
-                </div>
+            <div class="col-sm-2 col-lg-3">
+                <label for="questiontype">Question Type</label>
+                <input type="input" class="form-control" [(ngModel)]="examQuestion.questiontype" />
             </div>
-            <br>
-            <span class="float-left"><h3> Sub Questions</h3></span>
-            <span class="float-right"><h3> 
-                <button class="btn btn-primary" (click)="addNewSubQuestion()">Add Sub Question</button>
-            </h3></span>
-            <div  style=" width: 100%;">
-                <div class="container-fluid border"  style="overflow: auto; max-height:400px;">
-                    <div *ngIf="examQuestion.sections && examQuestion.sections.length > 0" class="table table-striped">
+            <div class="col-sm-5 col-lg-3">
+                <label for="questionno">Main Question Marks</label>
+                <input type="input" type="number" step="0.5" class="form-control" [(ngModel)]="examQuestion.totalmarks" (input)="setTotalMarks()"
+                />
+            </div>
 
-                        <div class="row shadow p-3 mb-5 bg-white rounded" *ngFor="let section of examQuestion.sections">
+            <div class="col-sm-1 col-lg-2">
+                <label for="questionno">Sub Question Total</label>
+                <input type="input" [readonly]="true" class="form-control" [(ngModel)]="subquestiontotal" />
+            </div>
 
-                            <div class="col-sm-4 col-lg-4">
-                                <label for="subquestionid">Sub Question Id</label>
-                                <input type="input" class="form-control" [(ngModel)]="section.subquestionid" />
-                            </div>
-                            <div class="col-sm-4 col-lg-4">
-                                <label for="subquestiontype">Sub Question Type</label>
-                                <input type="input" class="form-control" [(ngModel)]="section.subquestiontype" />
-                            </div>
-                            <div class="col-sm-4 col-lg-4">
-                                <label for="questiontext">Sub Question Marks</label>
-                                <input type="number" step="0.5" class="form-control" [(ngModel)]="section.subquestionmarks" (input)="setTotalMarks()"/>
-                            </div>
-
-                            <div class="col-sm-6 col-lg-6">
-                                <label for="questiontext">Sub Question</label>
-                                <textarea type="input" class="form-control" [(ngModel)]="section.subquestiontext">
-                        </textarea>
-                            </div>
-                            <div class="col-sm-6 col-lg-6">
-                                <label for="questiontext">Ideal Answer</label>
-                                <textarea type="input" class="form-control" [(ngModel)]="section.idealanswer">
-                            </textarea>
-                            </div>
-
-                        </div>
-
-                        
-
-                    </div>
-                </div>
+            <div class="col-sm-1 col-lg-2">
+                <label for="questionno">Total Marks</label>
+                <input type="input" [readonly]="true" class="form-control" [(ngModel)]="totalquestionmarks" />
             </div>
 
         </div>
+        <div class="row">
+            <div class="col-sm-12 col-lg-12">
+
+                <label for="questiontext">Question</label>
+                <textarea type="input" class="form-control" [(ngModel)]="examQuestion.questiontext">
+                    </textarea>
+            </div>
+            <div class="col-sm-12 col-lg-12">
+                <label for="questiontext">Ideal Answer</label>
+                <textarea type="input" class="form-control" [(ngModel)]="examQuestion.idealanswer">
+                        </textarea>
+            </div>
+        </div>
     </div>
+</mat-card>
+
+
+<mat-card class="des-mat-card">
+    <mat-card-title-group>
+
+        <mat-card-subtitle style="margin-bottom:2px" class="mat-h3">
+            <div fxLayout="row" fxLayoutGap="100px">
+                <span class="mat-h3">
+                    Sub Questions
+                </span>
+            </div>
+        </mat-card-subtitle>
+        <div style="float:right">
+            <button class="btn btn-primary" (click)="addNewSubQuestion()">Add Sub Question</button>
+        </div>
+    </mat-card-title-group>
+</mat-card>
+
+<mat-card class="des-mat-card mat-elevation-z8">
+    <mat-card-content [style.overflow]="'auto'"  [style.height.vh]="'30'">
+            <div *ngIf="!examQuestion.sections || examQuestion.sections.length == 0" class="center-container">
+                <h3>There are no sub questions added.</h3>
+            </div>
+        <div *ngIf="examQuestion.sections && examQuestion.sections.length > 0" class="table table-striped">
+
+            <mat-card *ngFor="let section of examQuestion.sections" class="des-mat-card mat-elevation-z8">
+                <div class="row">
+                    <div class="col-sm-4 col-lg-4">
+                        <label for="subquestionid">Sub Question Id</label>
+                        <input type="input" class="form-control" [(ngModel)]="section.subquestionid" />
+                    </div>
+                    <div class="col-sm-4 col-lg-4">
+                        <label for="subquestiontype">Sub Question Type</label>
+                        <input type="input" class="form-control" [(ngModel)]="section.subquestiontype" />
+                    </div>
+                    <div class="col-sm-4 col-lg-4">
+                        <label for="questiontext">Sub Question Marks</label>
+                        <input type="number" step="0.5" class="form-control" [(ngModel)]="section.subquestionmarks" (input)="setTotalMarks()" />
+                    </div>
+
+                    <div class="col-sm-6 col-lg-6">
+                        <label for="questiontext">Sub Question</label>
+                        <textarea type="input" class="form-control" [(ngModel)]="section.subquestiontext">
+                        </textarea>
+                    </div>
+                    <div class="col-sm-6 col-lg-6">
+                        <label for="questiontext">Ideal Answer</label>
+                        <textarea type="input" class="form-control" [(ngModel)]="section.idealanswer">
+                            </textarea>
+                    </div>
+                </div>
+
+            </mat-card>
+        </div>
+    </mat-card-content>
+</mat-card>

@@ -74,5 +74,13 @@ export class EvaluatorService {
             }))
 
     }
+
+    getPaperAllocation() {
+        return this.http.post<any>(environment.apiURL + `/api/v1/evaluator/papersetting`, {})
+            .pipe(map((res: Response) => {
+                return res ; 
+            }))
+
+    }
     
 }

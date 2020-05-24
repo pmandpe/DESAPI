@@ -9,10 +9,7 @@ import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class ExamService {
-
-
     constructor(private http: HttpClient) {
-
     }
 
     getExamDashboard(){
@@ -62,6 +59,15 @@ export class ExamService {
 
     }
 
+
+    updatePaperAllocation(params) {
+        return this.http.post<any>(environment.apiURL + `/api/v1/exams/update/paperallocation`, params)
+            .pipe(map((res: Response) => {
+                return res ; 
+            }))
+
+    }
+
     saveEvaluationAssignment(evaluationData) {
         return this.http.post<any>(environment.apiURL + `/api/v1/exams/evaluationassignment/save`, evaluationData)
             .pipe(map((res: Response) => {
@@ -81,7 +87,21 @@ export class ExamService {
     }
 
 
-    
+    getSubjectList() {
+        return this.http.post<any>(environment.apiURL + `/api/v1/lookup/subjects`, {})
+            .pipe(map((res: Response) => {
+                return res ; 
+            }))
+
+    }   
+
+    getPaper(username, examcode) {
+        return this.http.post(environment.apiURL + '/api/v1/exams/paper', {"username":username, "examcode" : examcode},{responseType: 'blob' as 'json'})
+            .pipe(map((res: Response) => {
+                return res ; 
+            }))
+
+    }
 
 
 }

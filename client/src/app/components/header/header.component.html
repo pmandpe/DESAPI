@@ -1,0 +1,43 @@
+<alert></alert>
+<!--<nav class="navbar navbar-expand-sm bg-primary navbar-dark">
+    <a class="navbar-brand" href="#">
+        <img src="/assets/images/logo.png" alt="Logo" style="width:40px;">
+    </a>
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#">Digital Evaluation System</a>
+    </div>
+    <ul class="nav navbar-nav navbar-right ml-auto">
+
+        <li class="nav-item"  [hidden]="!isLoggedIn">
+            <a class="nav-link" href="" routerLink="/login">
+                <span></span>Home
+                <i class="fa fa-home"></i>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" (click)="logout()"   [hidden]="!isLoggedIn">
+                <span></span> Sign Out
+                <i class="fa fa-sign-in"></i>
+            </a>
+        </li>
+    </ul>
+</nav>
+-->
+<mat-toolbar color="primary">
+    <span class="gap">
+        <h3>Digital Evaluation System
+            </h3>
+        </span>
+    <span class="filler"></span>
+    <span style="font-weight:normal; font-size:14px;">
+        Currently Logged in as <strong>{{currUser.username}}</strong> &nbsp;&nbsp;&nbsp;
+    </span>
+    <span>
+        <a (click)="logout()" class="gap">
+            
+            <i class="fa fa-lg fa-sign-out gap"></i>
+        </a>
+    </span>
+
+</mat-toolbar>

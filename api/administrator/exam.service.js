@@ -16,7 +16,8 @@ module.exports = {
     saveEvaluationAssignment,
     saveQuestion,
     clearData,
-    getExamDashboard
+    getExamDashboard,
+    updatePaperAllocation
 };
 
 async function saveExam(exam, userid) {
@@ -43,12 +44,14 @@ async function saveExam(exam, userid) {
     };
     if (exam.editmode == 'NEW') {
         addDoc.examcode = this.getUniqueCode(exam.examname);
+        
         addDoc.createdby = userid;
         addDoc.createddate = new Date();
         addDoc.scanningassignment = [];
         addDoc.evaluationassignment = [];
         addDoc.status = "NEW";
         updateCount = await connectionService.addDocuments(addDoc, "examCollection");
+        
     }
     if (exam.editmode == 'EDIT') {
         updateCount = await connectionService.updateDocument(uniqueIdQuery, setQuery, "examCollection");
@@ -56,6 +59,10 @@ async function saveExam(exam, userid) {
     if (updateCount == 11000) {//its a duplicate error
         return { "updateCount": updateCount, "error": "This subject code already exist. Please try a different one." };
     }
+    if (exam.editmode == 'NEW') {
+        exam.examcode = addDoc.examcode ; 
+    }
+    return { "updateCount": updateCount, "examcode": exam.examcode };
 }
 
 
@@ -99,6 +106,18 @@ async function getExamDetails(examcode, columnList) {
 
 
 
+async function updatePaperAllocation(examCode, updateDoc){
+    var setQuery = {
+        $set: {"paperallocation":updateDoc}
+    };
+    var uniqueIdQuery = { "examcode": examCode }
+    updateCount = await connectionService.updateDocument(uniqueIdQuery, setQuery, "examCollection");
+    if (updateCount <= 0){
+        return { "updateCount": updateCount, "error": "This subject code already exist. Please try a different one." };
+    }
+
+    return {"updateCount" : 1} ;
+}
 
 
 

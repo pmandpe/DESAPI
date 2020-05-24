@@ -16,8 +16,6 @@ export class MasterService {
 
     }
 
-
-
     getSubjects() {
         return this.http.post<any>(environment.apiURL + `/api/v1/master/subject/get`, {})
             .pipe(map((res: Response) => {
@@ -44,6 +42,69 @@ export class MasterService {
 
     }
 
-    
+    getUsers(){
+        return this.http.post<any>(environment.apiURL + `/api/v1/master/users/get`,{})
+            .pipe(map((res: Response) => {
+                return res ; 
+            }))
+    }
+    getEvaluators(){
+        return this.http.post<any>(environment.apiURL + `/api/v1/master/users/getevaluators`,{})
+            .pipe(map((res: Response) => {
+                return res ; 
+            }))
+    }
 
+    getPendingEvaluators(){
+        return this.http.post<any>(environment.apiURL + `/api/v1/master/users/pendingevaluators`,{})
+            .pipe(map((res: Response) => {
+                return res ; 
+            }))
+    }
+
+    saveUser(formData) {
+        return this.http.post<any>(environment.apiURL + `/api/v1/master/users/save`, formData)
+            .pipe(map((res: Response) => {
+                return res ; 
+            }))
+
+    }
+
+    saveAdmin(formData) {
+        return this.http.post<any>(environment.apiURL + `/api/v1/master/users/save/admin`, formData)
+            .pipe(map((res: Response) => {
+                return res ; 
+            }))
+
+    }
+    approveUsers(formData) {
+        return this.http.post<any>(environment.apiURL + `/api/v1/master/users/approveusers`, formData)
+            .pipe(map((res: Response) => {
+                return res ; 
+            }))
+
+    }
+
+    getUserDetails(userName) {
+        return this.http.post<any>(environment.apiURL + `/api/v1/master/users/getdetails`, {"username" : userName})
+            .pipe(map((res: Response) => {
+
+                return res ; 
+            }))
+
+    }
+    
+    getAdminUsers(){
+        return this.http.post<any>(environment.apiURL + `/api/v1/master/users/getadmins`,{})
+            .pipe(map((res: Response) => {
+                return res ; 
+            }))
+    }
+    getPaper() {
+        return this.http.post(environment.apiURL + `/api/v1/sa/paper/download`, {},{responseType: 'blob' as 'json'})
+            .pipe(map((res: Response) => {
+                return res ; 
+            }))
+
+    }
 }

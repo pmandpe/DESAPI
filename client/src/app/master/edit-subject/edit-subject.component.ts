@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { first } from 'rxjs/operators';
@@ -19,6 +19,8 @@ export class EditSubjectComponent implements OnInit {
   uniquecode: string;
   subjectdetails: any;
   disableSubjectCode = false;
+  @Input() passedCode: string;
+  @Output() changeName = new EventEmitter();
   constructor(private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
@@ -28,7 +30,7 @@ export class EditSubjectComponent implements OnInit {
 
   ngOnInit() {
 
-
+    console.log("------------------------------"+this.passedCode) ;
     this.subjectForm = this.formBuilder.group({
       subjectcode: ['', Validators.required],
       subjectname: ['', Validators.required],
@@ -77,14 +79,19 @@ export class EditSubjectComponent implements OnInit {
   }
 
 
-
+  updateName() {
+    // emitting changeName custom event
+    this.changeName.emit();
+  }
 
 // convenience getter for easy access to form fields
 get f() { return this.subjectForm.controls; }
 
+getSubjectCode(){
+  return this.passedCode ;
+}
 saveSubject() {
   this.submitted = true;
-
   // stop here if form is invalid
   if (this.subjectForm.invalid) {
     return;

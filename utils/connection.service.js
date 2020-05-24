@@ -10,6 +10,7 @@ service.addDocuments = addDocuments;
 service.upsertDocument = upsertDocument;
 service.updateDocument = updateDocument;
 service.getSession = getSession;
+service.updateMany = updateMany ; 
 service.upsertDocumentInTransaction = upsertDocumentInTransaction ;
 
 module.exports = service
@@ -183,6 +184,28 @@ async function upsertDocumentInTransaction(uniqueIdQuery, setQuery, collectionNa
         var database = session.connectionObject.db(config.database) ;
         var collection = database.collection(collectionName);
         var docs = await collection.updateOne(uniqueIdQuery, setQuery, { upsert: true }, {session: session.sessionObject}); 
+        return 1;
+    }
+    catch (err) {
+        console.log("Error occured in inserting : " + err);
+        return err.code;
+    }
+    finally {
+        //this.closeConnection(connectionObject);
+    }
+    return -1;
+
+
+}
+
+async function updateMany(uniqueIdQuery, setQuery, collectionName) {
+    var connectionObject;
+    try {
+
+
+        connectionObject = await this.getConnection();
+        var collection = connectionObject.db(config.database).collection(collectionName);
+        var docs = await collection.updateMany(uniqueIdQuery, setQuery); 
         return 1;
     }
     catch (err) {

@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterContentInit,AfterViewInit} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { AuthenticationService } from '../services/authentication.service';
 import { AlertService } from '../services';
+import 'rxjs/add/operator/filter';
 
 
 
 @Component(
     {templateUrl: 'login.component.html'})
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, AfterViewInit {
     loginForm: FormGroup;
     loading = false;
     submitted = false;
@@ -29,7 +30,19 @@ export class LoginComponent implements OnInit {
         }
     }
 
+
+
+    ngAfterViewInit(): void {
+        if (this.authenticationService.forcedLogout){
+            this.alertService.error("You are logged out. This may happen if you are trying to access unauthorized services.");
+        }
+      }
+    
+
     ngOnInit() {
+
+       
+        
         this.loginForm = this.formBuilder.group({
             username: ['', Validators.required],
             password: ['', Validators.required]

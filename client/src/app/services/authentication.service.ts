@@ -12,7 +12,7 @@ import { Role } from '../models/Role';
 export class AuthenticationService {
     private currentUserSubject: BehaviorSubject<User>;
     public currentUser: Observable<User>;
-   
+    public forcedLogout = false ; 
 
     constructor(private http: HttpClient) {
         this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
@@ -23,31 +23,34 @@ export class AuthenticationService {
         return this.currentUserSubject.value;
     }
 
-    public getDashboardUrl(){
-        var user = localStorage.getItem('currentUser') ;
-        var userObject = {"role":""} ;
-        var dashboardUrl = "/" ;
-        if (user){
-            userObject  = JSON.parse(user) ;
-            switch (userObject.role){
+    public getDashboardUrl() {
+        var user = localStorage.getItem('currentUser');
+        var userObject = { "role": "" };
+        var dashboardUrl = "/";
+        if (user) {
+            userObject = JSON.parse(user);
+            switch (userObject.role) {
                 case Role.Admin:
-                    dashboardUrl = "/admin/dashboard" ;
-                    break ; 
+                    dashboardUrl = "/admin/dashboard";
+                    break;
                 case Role.Scanner:
-                    dashboardUrl = "/scanner/dashboard" ;
-                    break ; 
+                    dashboardUrl = "/scanner/dashboard";
+                    break;
                 case Role.Evaluator:
-                    dashboardUrl = "/evaluator/dashboard" ;
-                    break ; 
+                    dashboardUrl = "/evaluator/dashboard";
+                    break;
+                case Role.SA:
+                    dashboardUrl = "/sa/dashboard";
+                    break;
 
             }
-            
+
         }
-    
-        return dashboardUrl ;
+
+        return dashboardUrl;
     }
 
-    
+
     login(username: string, password: string) {
         return this.http.post<any>(environment.apiURL + `/users/authenticate`, { username, password })
             .pipe(map(user => {
@@ -56,7 +59,7 @@ export class AuthenticationService {
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
                     localStorage.setItem('currentUser', JSON.stringify(user));
                     this.currentUserSubject.next(user);
-                    
+
 
                 }
 
@@ -64,13 +67,14 @@ export class AuthenticationService {
             }));
     }
 
-    logout() {
+    logout(reasonCode) {
+        this.forcedLogout = (reasonCode && reasonCode == "FORCED") ;
         // remove user from local storage to log user out
         localStorage.removeItem('currentUser');
         this.currentUserSubject.next(null);
     }
 
-    interceptToken(request){
+    interceptToken(request) {
         const currentUser = this.currentUserValue;
         const isLoggedIn = currentUser && currentUser.token;
         const isApiUrl = request.url.startsWith(environment.apiURL);
@@ -79,23 +83,30 @@ export class AuthenticationService {
                 setHeaders: this.getHeaderToken()
             });
         }
-        return request ; 
+        return request;
     }
 
-    getHeaderToken(){
-        if (!this.currentUserValue){
-            return null ; 
+    getHeaderToken() {
+        if (!this.currentUserValue) {
+            return null;
         }
         return {
             Authorization: `Bearer ${this.currentUserValue.token}`
         }
     }
 
-    isLoggedIn(){
-        var token = this.getHeaderToken() ; 
-        if (token){
-            return true ; 
+    isLoggedIn() {
+        var token = this.getHeaderToken();
+        if (token) {
+            return true;
         }
-        return false ; 
+        return false;
+    }
+
+    changePassword(params){
+        return this.http.post<any>(environment.apiURL + `/api/v1/master/users/changepassword`, params)
+            .pipe(map((res: Response) => {
+                return res ; 
+            }))
     }
 }

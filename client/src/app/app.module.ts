@@ -9,7 +9,7 @@ import { AppRoutingModule } from './app-routing/app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { LoginComponent } from './login/login.component';
-import { MyMaterialModule } from  './material.module';
+import { MaterialModule } from  './material.module';
 import { AlertComponent } from './components';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
@@ -44,6 +44,20 @@ import { TopMenuComponent } from './components/top-menu/top-menu.component';
 import { ConfirmationDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { ConfirmationDialogService } from './services/confirm-dialog.service';
 import { ExamMenuComponent } from './administrator/exams/exam-menu/exam-menu.component';
+import { HeaderComponent } from './components/header/header.component';
+
+import { ComponentsModule } from './components/components.module';
+import { UserComponent } from './master/user/user.component';
+import { SaContainerComponent } from './sa/sa-container/sa-container.component' ;
+import { SaDashboardComponent } from './sa/sa-dashboard/sa-dashboard.component';
+import { SaMenuComponent } from './sa/sa-menu/sa-menu.component';
+import { PaperallocationComponent } from './sa/paperallocation/paperallocation.component';
+import { ManageUsersComponent } from './sa/manage-users/manage-users.component';
+import { EvalMenuComponent } from './evaluator/eval-menu/eval-menu.component';
+import { FileSelectDirective } from 'ng2-file-upload';
+import { PaperSettingComponent } from './evaluator/paper-setting/paper-setting.component';
+import { UploadService } from './services/upload.service';
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
 
 
 const appRoutes: Routes = [
@@ -66,6 +80,7 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     LoginComponent,
+    HeaderComponent,
     AlertComponent,
     DashboardComponent,
     InlineEditComponent,
@@ -92,8 +107,17 @@ const appRoutes: Routes = [
     ScannerContainerComponent,
     ExamMenuComponent,
     TopMenuComponent,
-    ConfirmationDialogComponent
-    
+    ConfirmationDialogComponent,
+    UserComponent,
+    SaContainerComponent,
+    SaDashboardComponent,
+    SaMenuComponent,
+    PaperallocationComponent,
+    ManageUsersComponent,
+    EvalMenuComponent,
+    ChangePasswordComponent,
+    PaperSettingComponent,
+    FileSelectDirective
   ],
   imports: [
     BrowserModule,
@@ -102,11 +126,10 @@ const appRoutes: Routes = [
     HttpClientModule, 
     AppRoutingModule,
     ReactiveFormsModule,
-    MyMaterialModule,
     NgbModule,
     PdfViewerModule,
-   
-    
+    MaterialModule,
+   ComponentsModule,
     RouterModule
 
   ],
@@ -117,7 +140,8 @@ const appRoutes: Routes = [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     NgbActiveModal,
-    ConfirmationDialogService
+    ConfirmationDialogService,
+    UploadService
   ],
   bootstrap: [AppComponent],
   entryComponents: [

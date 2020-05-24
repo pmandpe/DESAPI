@@ -38,42 +38,49 @@ async function getUserScanningSummary(username, examcode) {
 
 async function uploadDocument(req) {
 
-    var form = new formidable.IncomingForm();
-    var username = req.username;
-    var parsedItems = await new Promise(function (resolve, reject) {
-        form.parse(req, function (err, fields, files) {
-            if (err) {
-                reject(err);
-                return;
-            }
-            console.log("within form.parse method, subject field of fields object is: " + fields.subjects);
-            resolve([fields, files]);
-        }); 
-    });
-    var fields = parsedItems[0];
-    var files = parsedItems[1];
-    var dirPath = config.fileLocation + "scannedcopies" + config.filePathSeparator + fields.examcode + config.filePathSeparator;
-    //-- Create the directory for storing scanned PDF if it doesnot exist.
-    if (!fs.existsSync(dirPath)) {
-        fs.mkdirSync(dirPath); // make the parent directory
-        fs.mkdirSync(dirPath + config.filePathSeparator + config.firstPageLocation) ;
+    try{
+        var form = new formidable.IncomingForm();
+        var username = req.username;
+        var parsedItems = await new Promise(function (resolve, reject) {
+            form.parse(req, function (err, fields, files) {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                console.log("within form.parse method, subject field of fields object is: " + fields.subjects);
+                resolve([fields, files]);
+            }); 
+        });
+        var fields = parsedItems[0];
+        var files = parsedItems[1];
+        var dirPath = config.fileLocation + "scannedcopies" + config.filePathSeparator + fields.examcode + config.filePathSeparator;
+        //-- Create the directory for storing scanned PDF if it doesnot exist.
+        console.log("File Uploaded to " + dirPath) ;
+        if (!fs.existsSync(dirPath)) {
+            fs.mkdirSync(dirPath); // make the parent directory
+            fs.mkdirSync(dirPath + config.filePathSeparator + config.firstPageLocation) ;
+        }
+
+        var answerCode = "ANS-" + utils.generateUniqueCode();
+        //-- This is only for Virtual Scanner
+        var data = await fs.readFile(files.RemoteFile.path);
+        var pdfFilePath = dirPath + answerCode + config.answerFileExtension ;
+
+
+        var returnValue = await fs.writeFile(pdfFilePath, data);
+        //fs.close() ; 
+
+        //-- sepaarate the first page of pdf from rest of pdf
+        var firstPagePath = await separateFirstPage(dirPath, pdfFilePath, answerCode) ;
+        if (returnValue != "" && firstPagePath != null ){
+        returnValue = await updateAnswers(fields, files, username,  pdfFilePath, firstPagePath, answerCode)  ;
+        }
+        return 1 ; 
     }
-
-    var answerCode = "ANS-" + utils.generateUniqueCode();
-    //-- This is only for Virtual Scanner
-    var data = await fs.readFile(files.RemoteFile.path);
-    var pdfFilePath = dirPath + answerCode + config.answerFileExtension ;
-
-
-    var returnValue = await fs.writeFile(pdfFilePath, data);
-    fs.close() ; 
-
-    //-- sepaarate the first page of pdf from rest of pdf
-    var firstPagePath = await separateFirstPage(dirPath, pdfFilePath, answerCode) ;
-    if (returnValue != "" && firstPagePath != null ){
-       returnValue = await updateAnswers(fields, files, username,  pdfFilePath, firstPagePath, answerCode)  ;
+    catch (ex){
+        console.log("Error in uploading answer sheet " + ex) ;
+        return -1 ; 
     }
-    console.log(returnValue)
 }
 
 async function separateFirstPage(dirPath, pdfFilePath, answerCode){
@@ -83,7 +90,11 @@ async function separateFirstPage(dirPath, pdfFilePath, answerCode){
         if (pageCount < 1){
             console.log("There are no pages available in PDF.") ;
             return null ; 
+        }
 
+        if (pageCount == 1){ //No pages available to be separated.
+            console.log("Only one page is available in answer " + answerCode) ;
+            return null ; 
         }
         var firstPagePdf = dirPath + config.firstPageLocation + config.filePathSeparator + answerCode + config.answerFileExtension  ;
         var pdfWriter = hummus.createWriter(firstPagePdf) ;

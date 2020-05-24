@@ -3,6 +3,12 @@ import { Injectable } from '@angular/core';
 @Injectable({ providedIn: 'root' })
 export class UtilService {
 
+    getFormattedDate(dateValue){
+        var date =  new Date(dateValue) ;
+        let formatted_date = date.getDate() + "-" + this.padLeft((date.getMonth() + 1 +""),'0',2) + "-" + date.getFullYear()
+        return formatted_date ;
+    }
+
     getBrokenDate(dateValue: string) {
         var year = parseInt(dateValue.substr(0, 4), 10);
         var month = parseInt(dateValue.substr(5, 2), 10);

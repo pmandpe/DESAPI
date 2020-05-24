@@ -30,7 +30,14 @@ async function getDashboardData(req, res, next) {
 
 async function uploadScannedDocument(req, res, next) {
     var returnValue = await scanningService.uploadDocument(req) ;
-    res.end() ; 
+    
+    if (returnValue < 1){
+        return res.end(res.writeHead(400, 'Error in uploading answersheet. Please contact system administrator.'));
+    }
+    else{
+        return res.end();
+    }
+    
     
 
 }

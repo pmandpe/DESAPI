@@ -1,4 +1,4 @@
-import { Component, OnInit, Directive } from '@angular/core';
+import { Component, OnInit, Directive, Input, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -11,6 +11,8 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { AssignScannerComponent } from '../../../administrator/assign-scanner/assign-scanner.component';
 import { ExamQuestionsComponent } from '../exam-questions/exam-questions.component';
 import { __core_private_testing_placeholder__ } from '@angular/core/testing';
+import { LookupService } from '../../../services/lookup.service';
+import { SaService } from '../../../services/sa.service';
 
 @Component({
   selector: 'app-exam-details',
@@ -20,6 +22,7 @@ import { __core_private_testing_placeholder__ } from '@angular/core/testing';
 export class ExamDetailsComponent implements OnInit {
   examForm: FormGroup;
   loading = false;
+  subjectlist : any ; 
   submitted = false;
   returnUrl: string;
   examQuestions: any;
@@ -29,19 +32,41 @@ export class ExamDetailsComponent implements OnInit {
   disableSubjectCode = false;
   showUniqueCode = false;
   closeResult: string;
+  paperApproved : boolean ; 
+  @Input() public passedExamCode;
+  @ViewChild(ExamQuestionsComponent, {static: false}) examQuestionChildComponent:ExamQuestionsComponent;
   constructor(private formBuilder: FormBuilder,
     private modalService: NgbModal,
     private route: ActivatedRoute,
     private router: Router,
+    private saService: SaService,
     private examService: ExamService,
+    private lookupService: LookupService,
     private alertService: AlertService,
     private utilService: UtilService,
 
     private _Activatedroute: ActivatedRoute) { }
 
   ngOnInit() {
+    this.subjectlist = this.getSubjectList() ; 
+    this.createExamForm();
+    //this.mode = this.examForm.value.editmode ; 
+    this.mode = this._Activatedroute.snapshot.paramMap.get("mode");
+    this.examcode = this._Activatedroute.snapshot.paramMap.get("examcode");
 
-    
+    if (this.examcode) {
+      this.showUniqueCode = false;
+    }
+
+
+    if (this.mode != "NEW") {
+      this.getExamDetails();
+    }
+
+  }
+
+  createExamForm() {
+
     this.examForm = this.formBuilder.group({
       examname: ['', Validators.required],
       subjectcode: ['', Validators.required],
@@ -51,73 +76,73 @@ export class ExamDetailsComponent implements OnInit {
       comments: new FormControl(""),
       totalcopiesassignedforscanning: new FormControl(0),
       totalcopiesassignedforevaluation: new FormControl(0),
-      scanningassignment: new FormControl([]) ,
-      totalscannedcopies: new FormControl(0) ,
-      totalevaluatedcopies: new FormControl(0) ,
-      totalmarks: new FormControl(0) ,
-      evaluationassignment: new FormControl([]) ,
+      scanningassignment: new FormControl([]),
+      totalscannedcopies: new FormControl(0),
+      totalevaluatedcopies: new FormControl(0),
+      totalmarks: new FormControl(0),
+      evaluationassignment: new FormControl([]),
       editmode: new FormControl(""),
       class: new FormControl(""),
       semester: new FormControl("")
 
 
     });
-    //this.mode = this.examForm.value.editmode ; 
-    this.mode = this._Activatedroute.snapshot.paramMap.get("mode") ; 
-    this.examcode = this._Activatedroute.snapshot.paramMap.get("examcode");
-    
-  
 
-    if (this.examcode) {
-      this.showUniqueCode = false;
-    }
-
+  }
+  setExamCode(exCode, exMode) {
+    this.examcode = exCode;
+    this.mode = exMode;
+    this.createExamForm();
+    this.disableSubjectCode = false;
     if (this.mode != "NEW") {
-      this.getExamDetails() ; 
-
+      this.getExamDetails();
     }
-   
   }
 
-
-  getExamDetails(){
+  getExamDetails() {
     this.disableSubjectCode = true;
 
-      this.examService.getExamDetails(this.examcode)
-        .subscribe(
-        data => {
-          
+    this.examService.getExamDetails(this.examcode)
+      .subscribe(
+      (data: any) => {
+
+        if (data && data.length > 0) {
+
           this.examdetails = data[0];
-          this.examQuestions = this.examdetails.questions; 
-         
+          this.examQuestions = this.examdetails.questions;
+          this.isPaperApproved() ; 
           var exDate = this.utilService.getBrokenDate(this.examdetails.examdate);
           var reDate = this.utilService.getBrokenDate(this.examdetails.resultdate);
-          
+
           this.examForm.patchValue({ examname: this.examdetails.examname });
           this.examForm.patchValue({ subjectcode: this.examdetails.subjectcode });
           this.examForm.patchValue({ examdate: exDate });
-          this.examForm.patchValue({ numberofcopies: (this.examdetails.numberofcopies? this.examdetails.numberofcopies: 0)  });
-          this.examForm.patchValue({ totalmarks: (this.examdetails.totalmarks? this.examdetails.totalmarks: 0)  });
-          this.examForm.patchValue({ totalcopiesassignedforscanning: (this.examdetails.totalcopiesassignedforscanning ? this.examdetails.totalcopiesassignedforscanning : 0)});
-          this.examForm.patchValue({ totalcopiesassignedforevaluation: (this.examdetails.totalcopiesassignedforevaluation ? this.examdetails.totalcopiesassignedforevaluation : 0)});
+          this.examForm.patchValue({ numberofcopies: (this.examdetails.numberofcopies ? this.examdetails.numberofcopies : 0) });
+          this.examForm.patchValue({ totalmarks: (this.examdetails.totalmarks ? this.examdetails.totalmarks : 0) });
+          this.examForm.patchValue({ totalcopiesassignedforscanning: (this.examdetails.totalcopiesassignedforscanning ? this.examdetails.totalcopiesassignedforscanning : 0) });
+          this.examForm.patchValue({ totalcopiesassignedforevaluation: (this.examdetails.totalcopiesassignedforevaluation ? this.examdetails.totalcopiesassignedforevaluation : 0) });
           this.examForm.patchValue({ resultdate: reDate });
           this.examForm.patchValue({ comments: this.examdetails.comments });
-          this.examForm.patchValue({scanningassignment: this.examdetails.scanningassignment})
-          this.examForm.patchValue({evaluationassignment: this.examdetails.evaluationassignment}) ;
-          this.examForm.patchValue({totalscannedcopies: (this.examdetails.totalscannedcopies ? this.examdetails.totalscannedcopies :0 )}) ;
-          this.examForm.patchValue({totalevaluatedcopies: ( this.examdetails.totalevaluatedcopies ? this.examdetails.totalevaluatedcopies : 0)}) ;
-          this.examForm.patchValue({class: this.examdetails.class}) ;
-          this.examForm.patchValue({semester: this.examdetails.semester}) ;
-
-
-
+          this.examForm.patchValue({ scanningassignment: this.examdetails.scanningassignment })
+          this.examForm.patchValue({ evaluationassignment: this.examdetails.evaluationassignment });
+          this.examForm.patchValue({ totalscannedcopies: (this.examdetails.totalscannedcopies ? this.examdetails.totalscannedcopies : 0) });
+          this.examForm.patchValue({ totalevaluatedcopies: (this.examdetails.totalevaluatedcopies ? this.examdetails.totalevaluatedcopies : 0) });
+          this.examForm.patchValue({ class: this.examdetails.class });
+          this.examForm.patchValue({ semester: this.examdetails.semester });
           this.examForm.patchValue({ editmode: 'EDIT' });
-        },
-        error => {
-          this.alertService.error(error);
-          this.loading = false;
+          
+          //-- set the exam questions and total marks on child component
+          this.examQuestionChildComponent.setExamQuestions(this.examQuestions) ;
+          this.examQuestionChildComponent.setTotalMarks() ; 
 
-        });
+
+        }
+      },
+      error => {
+        this.alertService.error(error);
+        this.loading = false;
+
+      });
   }
 
 
@@ -129,31 +154,38 @@ export class ExamDetailsComponent implements OnInit {
       return;
     }
     this.loading = true;
-    
+
 
     var params = this.examForm.value;
-    params.examcode = this.examcode ;
+    params.examcode = this.examcode;
     var resultdateValue = this.examForm.value.resultdate.year.toString().padStart(2, '0') + "-" + this.examForm.value.resultdate.month.toString().padStart(2, '0') + "-" + this.examForm.value.resultdate.day.toString().padStart(2, '0');
     var examdateValue = this.examForm.value.examdate.year + "-" + this.examForm.value.examdate.month.toString().padStart(2, '0') + "-" + this.examForm.value.examdate.day.toString().padStart(2, '0');
     params.resultdate = resultdateValue;
     params.examdate = examdateValue;
-
-    if (this.examForm.value.numberofcopies < this.examForm.value.totalcopiesassignedforscanning){
-      this.alertService.error("Total Number of copies cannot be less than already assigned for scanning") ;
-      this.loading = false ; 
-      return ;
+    /*
+    if (this.examForm.value.numberofcopies < this.examForm.value.totalcopiesassignedforscanning) {
+      this.alertService.error("Total Number of copies cannot be less than already assigned for scanning");
+      this.loading = false;
+      return;
     }
-  
+    */
+
     this.examService.saveExam(params)
       .pipe(first())
       .subscribe(
-      data => {
+      (data: any) => {
+
+        if (data.updateCount == 11000){
+          this.alertService.error("This exam code is duplicate, please retry.");  
+          return ; 
+        }
         this.loading = false;
         this.alertService.success("Data Saved Successfully");
         this.examForm.patchValue({ editmode: 'EDIT' });
         this.disableSubjectCode = true;
-        this.reloadComponent() ;
-        
+        this.examcode = data.examcode ; 
+        this.reloadComponent();
+
       },
       error => {
         this.alertService.error(error);
@@ -161,10 +193,10 @@ export class ExamDetailsComponent implements OnInit {
       });
   }
 
-  reloadComponent(){
+  reloadComponent() {
     this.router.navigateByUrl('/login', { skipLocationChange: true }).then(() => {
       this.router.navigate(['/admin/edit-exam', 'EDIT', this.examcode]);
-  }); 
+    });
   }
 
 
@@ -176,16 +208,59 @@ export class ExamDetailsComponent implements OnInit {
 
   open(openFor) {
 
-    const modalRef = this.modalService.open(AssignScannerComponent,   { windowClass: 'scannerpopup'});
-    modalRef.componentInstance.examFormValues =  this.examForm.value;
-    modalRef.componentInstance.examCode = this.examcode ; 
-    modalRef.componentInstance.userType = openFor ;
-    
+    const modalRef = this.modalService.open(AssignScannerComponent, { windowClass: 'scannerpopup' });
+    modalRef.componentInstance.examFormValues = this.examForm.value;
+    modalRef.componentInstance.examCode = this.examcode;
+    modalRef.componentInstance.userType = openFor;
+
     modalRef.result.then((result) => {
       if (result) {
-        this.getExamDetails() ; 
+        this.getExamDetails();
       }
     });
+  }
+
+  getSubjectList() {
+    this.lookupService.getSubjects()
+    .pipe(first())
+    .subscribe(
+    data => {
+      this.subjectlist = data ; 
+
+    },
+    error => {
+      this.alertService.error(error);
+      this.loading = false;
+    });
+  }
+
+  downloadPaper(){
+    this.examService.getPaper("", this.examcode)
+      .subscribe(
+      (data : any) => {
+        let dataType = data.type;
+            let binaryData = [];
+            binaryData.push(data);
+            let downloadLink = document.createElement('a');
+            downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, {type: dataType}));
+            downloadLink.setAttribute('download', 'paper');
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+      },
+      error => {
+        this.alertService.error(error);
+      });
+
+  }
+
+  isPaperApproved(){
+    if (this.examdetails.paperallocation){
+      var appovedPaper = this.examdetails.paperallocation.filter(paper => paper.status === "U");
+      if (appovedPaper && appovedPaper.length > 0){
+        this.paperApproved = true ; 
+      }
+    }
+   
   }
 
 }

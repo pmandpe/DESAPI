@@ -1,92 +1,34 @@
-<div class="container">
-    <div class="row" style="margin-top:20px">
+<app-header></app-header>
 
 
-        <div class="col-lg-4 col-sm-6 col-md-6" *ngFor="let dashboard of dashboardData">
-            <div class="card border-primary mb-3">
-                <div class="card-header">{{dashboard.examname}}</div>
-                <div class="card-body text-primary">
-                    <h6 class="card-subtitle mb-2 text-muted">Subject Code : {{dashboard.subjectcode}}</h6>
-                    <div class="row">
-                        <div class="col-lg-8 col-md-8 col-sm-8">Assigned Copies</div>
-                        <div class="col-lg-4 col-md-4 col-sm-4"><strong>{{dashboard.scanningassignment[0].assignedcopies}}</strong></div>
-                    </div>
-                    <div class="row">
-                            <div class="col-lg-8 col-md-8 col-sm-8">Scanned Copies</div>
-                            <div class="col-lg-4 col-md-4 col-sm-4"><strong>{{dashboard.scanningassignment[0].scannedcopies}}</strong></div>
-                        </div>
+
+<div class="row container-fluid">
+        <div class="col-lg-3 col-md-6 col-sm-6" *ngFor="let dashboard of dashboardData">
+            <div class="card card-stats">
+                <div class="card-header card-header-info card-header-icon">
+                    <div class="card-icon">
+                        <i class="fa fa-book"></i>
     
-
+                    </div>
+    
+                    <p class="card-category">&nbsp;</p>
+                    <h3 class="card-title">{{dashboard.examname}}</h3>
+    
                 </div>
-                <div class="card-footer bg-transparent border-success">
-                    <a [routerLink]="['../scandocument', dashboard.examcode]" class="btn btn-success" >Start Scanning</a>
+                <div class="card-footer">
+                    <div class="stats">
+                        <div>
+                            Assigned Copies : <strong>{{dashboard.scanningassignment[0].assignedcopies}}</strong>
+                            <br/> Scanned Copies : <strong>{{dashboard.scanningassignment[0].scannedcopies}}</strong>
+                        </div>
+                    </div>
+                    <div class="stats">
+                            <a [routerLink]="['../scandocument', dashboard.examcode]" class="btn btn-success" >Start Scanning</a>
+    
+                    </div>
+    
                 </div>
             </div>
         </div>
-
-
-
-
-        <!--
-    <div class="col-lg-3 col-sm-6 col-md-4">
-        <div class="card border-primary mb-3" style="max-width: 18rem;">
-            <div class="card-header">Header</div>
-            <div class="card-body text-primary">
-                <h5 class="card-title">Primary card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                    card's content.</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-3 col-sm-6 col-md-4">
-        <div class="card border-primary mb-3" style="max-width: 18rem;">
-            <div class="card-header">Header</div>
-            <div class="card-body text-primary">
-                <h5 class="card-title">Primary card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                    card's content.</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-3 col-sm-6 col-md-4">
-        <div class="card border-primary mb-3" style="max-width: 18rem;">
-            <div class="card-header">Header</div>
-            <div class="card-body text-primary">
-                <h5 class="card-title">Primary card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                    card's content.</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-3 col-sm-6 col-md-4">
-        <div class="card border-primary mb-3" style="max-width: 18rem;">
-            <div class="card-header">Header</div>
-            <div class="card-body text-primary">
-                <h5 class="card-title">Primary card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                    card's content.</p>
-            </div>
-        </div>
-    </div><div class="col-lg-3 col-sm-6 col-md-4">
-        <div class="card border-primary mb-3" style="max-width: 18rem;">
-            <div class="card-header">Header</div>
-            <div class="card-body text-primary">
-                <h5 class="card-title">Primary card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                    card's content.</p>
-            </div>
-        </div>
-    </div><div class="col-lg-3 col-sm-6 col-md-4">
-        <div class="card border-primary mb-3" style="max-width: 18rem;">
-            <div class="card-header">Header</div>
-            <div class="card-body text-primary">
-                <h5 class="card-title">Primary card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                    card's content.</p>
-            </div>
-        </div>
     </div>
 
--->
-    </div>
-</div>

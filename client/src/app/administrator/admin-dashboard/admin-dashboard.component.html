@@ -1,41 +1,45 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col col-md-3 shadow p-3 mb-5 bg-white m-3 rounded" *ngFor="let exam of Exams">
-      <h6>Exam Name: {{exam.examcode}}</h6>
-      <h6>Total Copies: {{exam.numberofcopies}}</h6>
 
-      <div class="dashboard-card">
-        Assigned for Scanning
-        <span class="pull-right strong">{{exam.totalcopiesassignedforscanning}}</span>
-        <div class="progress">
-          <div class="progress-bar bg-success" role="progressbar" aria-valuenow="40" aria-valuemin="0"
-            aria-valuemax="15" [ngStyle]="{'width':getWidth(exam.totalcopiesassignedforscanning,exam.numberofcopies)}" >{{( exam.totalcopiesassignedforscanning * 100 / exam.numberofcopies  )}}%</div>
+<mat-card class="des-mat-card">
+    <mat-card-title>Active Exams</mat-card-title>
+  <div class="container-fluid">
+          <div class="row">
+            <div class="col col-md-3 shadow p-3 mb-5 bg-white m-3 rounded" *ngFor="let exam of Exams">
+              <h6>Exam Name: {{exam.examcode}}</h6>
+              <h6>Total Copies: {{exam.numberofcopies}}</h6>
+        
+              <div class="dashboard-card">
+                Assigned for Scanning
+                <span class="pull-right strong">{{checkNull(exam.totalcopiesassignedforscanning)}}</span>
+                <div class="progress">
+                  <div class="progress-bar bg-success" role="progressbar" aria-valuenow="40" aria-valuemin="0"
+                    aria-valuemax="15" [ngStyle]="{'width':getWidth(exam.totalcopiesassignedforscanning,exam.numberofcopies)}" >{{( checkNull(exam.totalcopiesassignedforscanning) * 100 / checkNull(exam.numberofcopies)  )}}%</div>
+                </div>
+              </div>
+              <div  class="dashboard-card">
+                Scanned
+                <span class="pull-right strong">{{exam.totalscannedcopies}}</span>
+                <div class="progress">
+                  <div class="progress-bar  bg-info" role="progressbar" aria-valuenow="30" aria-valuemin="0"
+                    aria-valuemax="15"  [ngStyle]="{'width':getWidth(exam.totalscannedcopies,exam.numberofcopies)}">{{( checkNull(exam.totalscannedcopies) * 100 / checkNull(exam.numberofcopies)  )}}%</div>
+                </div>
+              </div>
+              <div  class="dashboard-card">
+                Assigned for Evaluation
+                <span class="pull-right strong">{{(exam.totalcopiesassignedforevaluation?exam.totalcopiesassignedforevaluation:0)}}</span>
+                <div class="progress">
+                  <div class="progress-bar  bg-secondary" role="progressbar" aria-valuenow="15" aria-valuemin="0"
+                    aria-valuemax="100"  [ngStyle]="{'width':getWidth((exam.totalcopiesassignedforevaluation?exam.totalcopiesassignedforevaluation:0),exam.numberofcopies)}">{{( (exam.totalcopiesassignedforevaluation?exam.totalcopiesassignedforevaluation:0)* 100 / exam.numberofcopies  )}}%</div>
+                </div>
+              </div>
+              <div  class="dashboard-card">
+                Evaluated
+                <span class="pull-right strong">{{(exam.totalevaluatedcopies?exam.totalevaluatedcopies:0)}}</span>
+                <div class="progress">
+                  <div class="progress-bar  bg-danger" role="progressbar" aria-valuenow="8" aria-valuemin="0"
+                    aria-valuemax="100" [ngStyle]="{'width':getWidth((exam.totalevaluatedcopies?exam.totalevaluatedcopies:0),exam.numberofcopies)}">{{((exam.totalevaluatedcopies?exam.totalevaluatedcopies:0) * 100 / exam.numberofcopies  )}}%</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div  class="dashboard-card">
-        Scanned
-        <span class="pull-right strong">{{exam.totalscannedcopies}}</span>
-        <div class="progress">
-          <div class="progress-bar  bg-info" role="progressbar" aria-valuenow="30" aria-valuemin="0"
-            aria-valuemax="15"  [ngStyle]="{'width':getWidth(exam.totalscannedcopies,exam.numberofcopies)}">{{( exam.totalscannedcopies * 100 / exam.numberofcopies  )}}%</div>
-        </div>
-      </div>
-      <div  class="dashboard-card">
-        Assigned for Evaluation
-        <span class="pull-right strong">{{(exam.totalcopiesassignedforevaluation?exam.totalcopiesassignedforevaluation:0)}}</span>
-        <div class="progress">
-          <div class="progress-bar  bg-secondary" role="progressbar" aria-valuenow="15" aria-valuemin="0"
-            aria-valuemax="100"  [ngStyle]="{'width':getWidth((exam.totalcopiesassignedforevaluation?exam.totalcopiesassignedforevaluation:0),exam.numberofcopies)}">{{( (exam.totalcopiesassignedforevaluation?exam.totalcopiesassignedforevaluation:0)* 100 / exam.numberofcopies  )}}%</div>
-        </div>
-      </div>
-      <div  class="dashboard-card">
-        Evaluated
-        <span class="pull-right strong">{{(exam.totalevaluatedcopies?exam.totalevaluatedcopies:0)}}</span>
-        <div class="progress">
-          <div class="progress-bar  bg-danger" role="progressbar" aria-valuenow="8" aria-valuemin="0"
-            aria-valuemax="100" [ngStyle]="{'width':getWidth((exam.totalevaluatedcopies?exam.totalevaluatedcopies:0),exam.numberofcopies)}">{{((exam.totalevaluatedcopies?exam.totalevaluatedcopies:0) * 100 / exam.numberofcopies  )}}%</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+      </mat-card>

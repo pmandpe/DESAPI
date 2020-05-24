@@ -27,6 +27,13 @@ export class LookupService {
 
     }
  
+    getSubjects() {
+        return this.http.post<any>(environment.apiURL + `/api/v1/lookup/subjects`, {})
+            .pipe(map((res: Response) => {
+                return res ; 
+            }))
+
+    }
 
     
 

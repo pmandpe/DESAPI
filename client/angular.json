@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/angular-cli-application",
+            "outputPath": "../www",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -24,9 +24,14 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/assets/scss/material-dashboard.scss",
+              "src/assets/css/demo.css",
+              "src/styles.css",
+              "node_modules/perfect-scrollbar/css/perfect-scrollbar.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/js/doc-scanner.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -115,6 +120,7 @@
           }
         }
       }
-    }},
+    }
+  },
   "defaultProject": "angular-cli-application"
 }

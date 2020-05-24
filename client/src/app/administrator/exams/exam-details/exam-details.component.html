@@ -1,20 +1,44 @@
-<app-exam-menu></app-exam-menu>
+<form [formGroup]="examForm" (ngSubmit)="saveExam()" class="form-login">
+    <mat-card class="des-mat-card">
+            <div style="float:left">
+                    <a (click)="downloadPaper()" class="icon-green">Download Question Paper</a>
+                </div>
+        <mat-card-title-group>
+          
+            <div style="float:right">
+                <button type="button" class="btn btn-primary" (click)="open('SCANNER')" [disabled]="(examdetails && examdetails.totalcopiesassignedforscanning ? examdetails.totalcopiesassignedforscanning == examdetails.numberofcopies : true) || mode == 'NEW' || !paperApproved">Assign For Scanning</button>
+                
+                <button type="button" class="btn btn-primary" (click)="open('EVALUATOR')" 
+                [disabled]="
+                ((examdetails && examdetails.totalscannedcopies ? examdetails.totalscannedcopies == 0 : true) || 
+                ((examdetails && examdetails.totalscannedcopies <= ( totalcopiesassignedforevaluation ?totalcopiesassignedforevaluation : 0)  )))">Assign For Evaluation</button>
+                &nbsp; &nbsp;
+                <button [disabled]="loading" class="btn btn-success">Save Exam</button>
+            </div>
+        </mat-card-title-group>
+        <mat-divider></mat-divider>
+        <div [hidden]="!showUniqueCode">
+            <h4>{{examcode}}</h4>
+        </div>
 
 
-<div [hidden]="!showUniqueCode">
-    <h4>{{examcode}}</h4>
-</div>
-<div class="container-fluid edit-box" style="width:98%;">
-    <form [formGroup]="examForm" (ngSubmit)="saveExam()" class="form-login">
-        <div class="row"  style="margin-right:20px;">
+        <div class="row" style="margin-right:20px;">
             <div class="col-lg-2 col-sm-6 col-md-3">
                 <div class="form-group">
-                    <label for="subjectcode">Subject Code</label>
-                    <input type="text" formControlName="subjectcode" class="form-control" [readonly]="disableSubjectCode" [ngClass]="{ 'is-invalid': submitted && f.subjectcode.errors }"
-                    />
-                    <div *ngIf="submitted && f.subjectcode.errors" class="invalid-feedback">
-                        <div *ngIf="f.subjectcode.errors.required">Subject Code is required</div>
-                    </div>
+
+
+                    <mat-form-field style="margin-top:27px;">
+                        <mat-label style="margin-bottom:10px;">Subject</mat-label>
+                        <select required matNativeControl required formControlName="subjectcode" [readonly]="disableSubjectCode" [ngClass]="{ 'is-invalid': submitted && f.subjectcode.errors }">
+                            <option *ngFor="let subject of subjectlist" value="{{subject.subjectcode}}">
+                                {{subject.subjectname}} - {{subject.subjectcode}}
+                            </option>
+                        </select>
+                        <div *ngIf="submitted && f.subjectcode.errors" class="invalid-feedback">
+                            <div *ngIf="f.subjectcode.errors.required">Subject Code is required</div>
+                        </div>
+                    </mat-form-field>
+
                 </div>
             </div>
             <div class="col-lg-1 col-sm-2 col-md-2">
@@ -28,13 +52,12 @@
                 </div>
             </div>
             <div class="col-lg-1 col-sm-2 col-md-2">
-                    <div class="form-group">
-                        <label for="semester">Semester</label>
-                        <input type="text" formControlName="semester" class="form-control" [readonly]="disableSubjectCode"
-                        />
-                    </div>
+                <div class="form-group">
+                    <label for="semester">Semester</label>
+                    <input type="text" formControlName="semester" class="form-control" [readonly]="disableSubjectCode" />
                 </div>
-    
+            </div>
+
             <div class="col-lg-2 col-sm-6 col-md-3">
                 <div class="form-group">
                     <label for="subjectname">Exam Name</label>
@@ -91,7 +114,7 @@
 
                     <div class="col-lg-2 col-sm-6 col-md-4">
                         <div>
-                            <label for="numberofcopies">Total Copies</label>
+                            <label for="numberofcopies">Total Students/Copies</label>
                         </div>
                         <div>
                             <input type="number" formControlName="numberofcopies" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.numberofcopies.errors }"
@@ -147,7 +170,7 @@
                         </div>
 
                     </div>
-                    
+
                     <div class="col-lg-2 col-sm-6 col-md-4">
                         <div>
                             <label for="resultdate">Evaluated</label>
@@ -166,23 +189,14 @@
         <div class="form-group ">
             <div>
                 <div class="row">
-
-
                     <div class="col-lg-12 col-sm-12 col-md-12">
                         <label for="comments">Comments</label>
                         <input type="input" formControlName="comments" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.comments.errors }"
                         />
-
                     </div>
-
-
                 </div>
             </div>
         </div>
-
-
-
-
 
         <div class="form-group">
             <input type="hidden" formControlName="editmode" [(ngModel)]="mode" />
@@ -191,30 +205,24 @@
         </div>
 
         <div class="form-group">
-            <button [disabled]="loading" class="btn btn-success">Save Exam</button>
-
             <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
             />
-
-
             <span style="float:right">
-                <button type="button" class="btn btn-primary" (click)="open('SCANNER')" [disabled]="!(examcode && examcode.length > 2)">Assign For Scanning</button>
-
             </span>
             <span style="width:20px;float:right;">&nbsp;</span>
             <span style="float:right">
-                <button type="button" class="btn btn-primary" (click)="open('EVALUATOR')" [disabled]="(totalscannedcopies < ( totalcopiesassignedforevaluation ?totalcopiesassignedforevaluation : 0))">Assign For Evaluation
-                </button>
+
 
             </span>
         </div>
-    </form>
 
-</div>
-<br>
-    
+    </mat-card>
+</form>
+<mat-card class="des-mat-card mat-elevation-z8">
+
+
     <div *ngIf="mode=='EDIT'">
-        <app-exam-questions [examQuestions]="examQuestions" [examcode]="examcode" [grandTotal] = "(examdetails ? examdetails.totalmarks : 0)"></app-exam-questions>
+        <app-exam-questions [examQuestions]="examQuestions" [examcode]="examcode" [grandTotal]="(examdetails ? examdetails.totalmarks : 0)"></app-exam-questions>
     </div>
 
     <!-- Assigning Copies Popoup Window -->
@@ -230,4 +238,5 @@
 
 
 
-<div>{{closeResult}}</div>
+    <div>{{closeResult}}</div>
+</mat-card>

@@ -1,39 +1,58 @@
+<!-- <app-exam-menu></app-exam-menu> -->
+<mat-tab-group [selectedIndex]="selectedIndex" (selectedTabChange)="onTabChanged($event)">
+  <mat-tab label="Exam List">
+    <mat-card class="des-mat-card">
+      <mat-card-title-group>
+        <div style="width:100%">
+          <div class="card-title">
+            Manage Exams</div>
+          <div style="float:right">
+            <a href="javascript:void(0)" class="btn btn-success" (click)="setExamCode(0, 'NEW')">
+              Add New Exam
+            </a>
+          </div>
+        </div>
+      </mat-card-title-group>
+    </mat-card>
+    <mat-card class="des-mat-card mat-elevation-z8">
+        <div class="no-data"   [hidden]="Exams && Exams.length > 0">No Exams are added. Please add New Exams.</div>
+      <table class="table table table-hover table-striped" [hidden]="Exams && Exams.length <= 0">
+        <thead>
+          <tr>
+            <th>Exam Code</th>
+            <th>Subject Code</th>
+            <th>Exam Name</th>
+            <th>Exam Date</th>
+            <th>Result Date</th>
+            <th>Number of Copies</th>
+            <th>Scanned Copies</th>
+            <th>Evaluated Copies</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let exam of Exams">
+            <td>{{exam.examcode}}</td>
+            <td>{{exam.subjectcode}}</td>
+            <td>{{exam.examname}}</td>
+            <td>{{exam.examdate}}</td>
+            <td>{{exam.resultdate}}</td>
+            <td>{{exam.numberofcopies}}</td>
+            <td>{{exam.totalscannedcopies}}</td>
+            <td>{{exam.totalevaluatedcopies}}</td>
+            <td style="text-align:center">
+              <!-- <a [routerLink]="['../edit-exam', 'EDIT', exam.examcode]">View / Edit</a> -->
+              <a href="javascript:void(0)" (click)="setExamCode(exam.examcode, 'EDIT')" class="icon-green">
+                <i class="fa fa-edit"></i>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-
-<app-exam-menu></app-exam-menu>
-<div class="container-fluid" style="margin-top:10px">
-<table class="table table table-hover table-striped">
-  <thead>
-    <tr>
-      <th>Exam Code</th>
-      <th>Subject Code</th>
-      <th>Exam Name</th>
-      <th>Exam Date</th>
-      <th>Result Date</th>
-      <th>Number of Copies</th>
-      <th>Scanned Copies</th>
-      <th>Evaluated Copies</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let exam of Exams">
-      <td>{{exam.examcode}}</td>
-      <td>{{exam.subjectcode}}</td>
-      <td>{{exam.examname}}</td>
-      <td>{{exam.examdate}}</td>
-      <td>{{exam.resultdate}}</td>
-      <td>{{exam.numberofcopies}}</td>
-      <td>{{exam.totalscannedcopies}}</td>
-      <td>{{exam.totalevaluatedcopies}}</td>
-      <td style="text-align:center">
-        <a [routerLink]="['../edit-exam', 'EDIT', exam.examcode]">View / Edit</a>
-      </td>
-
-
-
-
-    </tr>
-  </tbody>
-</table>
-</div>
+    </mat-card>
+  </mat-tab>
+  <mat-tab label="Exams Details" [disabled]='true'>
+    <app-exam-details [passedExamCode]="examCode"></app-exam-details>
+  </mat-tab>
+</mat-tab-group>

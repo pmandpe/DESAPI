@@ -7,35 +7,33 @@
 
 
 <div class="container-fluid" style="padding:20px;">
+    <mat-grid-list cols="2" rowHeight="3rem" [gutterSize]="'12px'">
+        <mat-grid-tile style="padding:5px">
+            
+            <div style="margin:10px"><h4><strong>Pending for Evaluation : {{pendingForEvaluation.length}}</strong></h4></div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+                <div style="margin:10px"><h4><strong>Evaluated : {{evaluatedCopies.length}}</strong></h4></div>
+            <strong></strong>
+        </mat-grid-tile>
+    </mat-grid-list>
 
-    <div class="row">
-        <div class="col-lg-6 col-md-6 col-sm-5 float-left p-2 ">
-            <span>
-                <h4>Pending for Evaluation : {{pendingForEvaluation.length}}</h4>
-            </span>
-        </div>
-        <div class="col-lg-6 col-md-6 col-sm-5 float-left p-2">
-            <span>
-                <h4> Evaluated : {{evaluatedCopies.length}}</h4>
-            </span>
+    <mat-grid-list cols="2" rowHeight="1:1" [gutterSize]="'12px'">
+        <mat-grid-tile class="mat-elevation-z8">
+            <mat-chip-list style="margin:10px;">
+                <mat-chip *ngFor="let answer of pendingForEvaluation" color="success">
+                    <a [routerLink]="['../answer', answer.answercode, examCode]" class="icon-green">{{answer.answercode}}</a>
+                </mat-chip>
 
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-6 col-md-6 col-sm-5 float-left p-2 border-right shadow p-3 mb-5 rounded bg-white">
-            <div class="row">
-                <div class="col-lg-4 col-md-4 col-sm-6" *ngFor="let answer of pendingForEvaluation">
-                        <a [routerLink]="['../answer', answer.answercode, examCode]">{{answer.answercode}}</a>
-                    
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-6 col-md-6 col-sm-5 float-left p-2 border-right shadow p-3 mb-5 rounded bg-white">
-            <div class="row">
-                <div class="col-lg-4 col-md-4 col-sm-6" *ngFor="let answer of evaluatedCopies">
-                       {{answer.answercode}}
-                </div>
-            </div>
-        </div>
-    </div>
+            </mat-chip-list>
+
+        </mat-grid-tile>
+        <mat-grid-tile  class="mat-elevation-z8">
+            <mat-chip-list style="margin:10px;">
+                <mat-chip *ngFor="let answer of evaluatedCopies">
+                    {{answer.answercode}}
+                </mat-chip>
+            </mat-chip-list>
+        </mat-grid-tile>
+    </mat-grid-list>
 </div>

@@ -20,14 +20,20 @@ import { EvalContainerComponent } from '../evaluator/eval-container/eval-contain
 import { ExamQuestionDetailsComponent } from '../administrator/exams/exam-question-details/exam-question-details.component';
 import { ScannerContainerComponent } from '../scanner/scanner-container/scanner-container.component';
 import { AnswerMarkingComponent } from '../evaluator/answer-marking/answer-marking.component';
-
-
-
-
-
-
+import { UserComponent } from '../master/user/user.component' ;
+import { SaContainerComponent } from '../sa/sa-container/sa-container.component';
+import { SaDashboardComponent } from '../sa/sa-dashboard/sa-dashboard.component';
+import { PaperallocationComponent } from '../sa/paperallocation/paperallocation.component';
+import { ManageUsersComponent } from '../sa/manage-users/manage-users.component';
+import { PaperSettingComponent } from '../evaluator/paper-setting/paper-setting.component';
+import { ChangePasswordComponent } from '../components/change-password/change-password.component';
 
 const routes: Routes = [
+  {
+    path: '',
+    redirectTo:'/login',
+    pathMatch: 'full'
+  },
   {
     path: 'login',
     component: LoginComponent
@@ -41,6 +47,10 @@ const routes: Routes = [
       {
         path: 'dashboard',
         component: AdminDashboardComponent
+      },
+      {
+        path: 'users',
+        component: UserComponent
       },
       {
         path: 'exams',
@@ -65,6 +75,10 @@ const routes: Routes = [
       {
         path: 'exam-question-details/:mode/:questionno',
         component: ExamQuestionDetailsComponent
+      },
+      {
+        path: 'changepassword',
+        component: ChangePasswordComponent
       }
     ]
   },
@@ -81,6 +95,10 @@ const routes: Routes = [
       {
         path: 'scandocument/:examcode',
         component: ScanDocumentComponent
+      },
+      {
+        path: 'changepassword',
+        component: ChangePasswordComponent
       }
     ]
   },
@@ -101,10 +119,38 @@ const routes: Routes = [
       {
         path: 'marking/answer/:answercode/:examcode',
         component: AnswerMarkingComponent
+      },
+      {
+        path: 'papersetting',
+        component: PaperSettingComponent
+      }
+      ,
+      {
+        path: 'changepassword',
+        component: ChangePasswordComponent
+      }
+    ]
+  },
+  {
+    path: 'sa',
+    canActivate: [AuthGuard],
+    component: SaContainerComponent,
+    data: { roles: [Role.SA] },
+    children: [
+      {
+        path: 'dashboard',
+        component: SaDashboardComponent
+      },
+      {
+        path: 'paperallocation',
+        component: PaperallocationComponent
+      },
+      {
+        path: 'manage-users',
+        component: ManageUsersComponent
       }
     ]
   }
-
 ]
 
   ;

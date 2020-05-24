@@ -1,0 +1,11 @@
+<app-header></app-header>
+<!--<button mat-button (click)="sidenav.toggle()">Toggle</button>-->
+<mat-sidenav-container>
+    <mat-sidenav #sidenav mode="side" opened style="width: 200px;" [fixedInViewport]="true" [fixedTopGap]="70">
+        <app-sa-menu></app-sa-menu>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
+</mat-sidenav-container>

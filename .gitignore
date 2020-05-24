@@ -28,6 +28,8 @@ build/Release
 
 # Dependency directories
 node_modules
+www
+
 jspm_packages
 typings
 

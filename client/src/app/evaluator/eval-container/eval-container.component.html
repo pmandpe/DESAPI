@@ -1,1 +1,12 @@
-<router-outlet></router-outlet>
+<app-header></app-header>
+
+<mat-sidenav-container>
+    <mat-sidenav #sidenav mode="side" opened style="width: 200px;" [fixedInViewport]="true" [fixedTopGap]="70">
+       <app-eval-menu></app-eval-menu>
+    
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
+</mat-sidenav-container>

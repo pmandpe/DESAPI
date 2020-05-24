@@ -1,48 +1,67 @@
-<div class="container-fluid edit-box "  style="width:98%" >
-    <div class="p-2">
-        <span class="float-right">
+<mat-card class="des-mat-card">
+    <mat-card-title-group>
+
+        <mat-card-subtitle style="margin-bottom:2px" class="mat-h3">
+            <div fxLayout="row" fxLayoutGap="100px">
+                <span class="mat-h3">
+                    Question Marks Total : {{totalExamMarks}}
+                </span>
+            </div>
+        </mat-card-subtitle>
+        <mat-card-subtitle style="margin-bottom:-7px !important" class="mat-h3">
+            <span class="mat-h3">Total Exam Marks :</span>&nbsp;
+            <span [ngClass]="{ 'mat-h3 green':totalObtainedMarks > 33,'mat-h3 red':totalObtainedMarks <= 33  }">
+                <strong> {{grandTotal}}</strong>
+            </span>
+
+        </mat-card-subtitle>
+        <mat-card-content>
+            <div [hidden]="validation" class="red">
+                <span class="float-left">
+                    <h6>
+                        <span class="text-danger" [hidden]="totalExamMarks == grandTotal">
+                            <i class="fa fa-warning"></i> Total sum of question does not match with total exam marks.</span>
+                    </h6>
+                </span>
+
+            </div>
+        </mat-card-content>
+        <div style="float:right">
             <button class="btn btn-primary" (click)="openQuestion(-1)">Add New Question</button>
-        </span>
-        
-        
-        
-    
-        <span class="float-left">
-            
-            <h6>Question Marks Total : {{totalExamMarks}}</h6>
-            <h6>Total Exam Marks : {{grandTotal}}</h6>
-            <h6>
 
-                <span class="text-danger" [hidden]="totalExamMarks == grandTotal"><i class="fa fa-warning"></i> Total sum of question does not match with total exam marks.</span>
-            </h6>
-            
-        </span>
-    </div>
-    <div style="margin-top:55px;">
-        <table class="table table table-hover table-striped">
-            <thead>
-                <tr>
-                    <th>Question #</th>
-                    <th>Main Question Marks</th>
-                    <th>Sub Question Total</th>
+        </div>
+    </mat-card-title-group>
+</mat-card>
 
-                    <th>Question Type</th>
-                    <th>Edit</th>
 
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let examQuestion of examQuestions">
-                    <td>{{examQuestion.questionno}}</td>
-                    <td>{{examQuestion.totalmarks}}</td>
-                    <td>{{examQuestion.subsectiontotal}}</td>
-                    <td>{{examQuestion.questiontype}}</td>
 
-                    <td>
-                        <a href="javascript:void(0)" (click)="openQuestion(examQuestion.questionno)"><i class="fa fa-edit"></i></a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+
+<mat-card class="des-mat-card mat-elevation-z8">
+    <table class="table table table-hover table-striped">
+        <thead>
+            <tr>
+                <th>Question #</th>
+                <th>Main Question Marks</th>
+                <th>Sub Question Total</th>
+
+                <th>Question Type</th>
+                <th>Edit</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let examQuestion of examQuestions">
+                <td>{{examQuestion.questionno}}</td>
+                <td>{{examQuestion.totalmarks}}</td>
+                <td>{{examQuestion.subsectiontotal}}</td>
+                <td>{{examQuestion.questiontype}}</td>
+
+                <td>
+                    <a href="javascript:void(0)" (click)="openQuestion(examQuestion.questionno)" class="icon-green">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</mat-card>
