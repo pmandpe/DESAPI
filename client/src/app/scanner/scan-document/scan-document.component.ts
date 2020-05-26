@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as Dynamsoft from 'dwt';
+import {SUCCESS_CODE, FAILURE_CODE} from '../../helpers/constants'
 import { ActivatedRoute } from '@angular/router';
 import { ScannerService } from '../../services/scanner.service';
 import { AlertService, AuthenticationService } from '../../services';
@@ -133,7 +134,7 @@ export class ScanDocumentComponent implements OnInit {
 
 
   uploadDocument() {
-
+    
     var strHTTPServer = environment.apiURL;//location.hostname; //The name of the HTTP server. 
     //var CurrentPathName = '/api/v1/scanner';
     //var CurrentPath = CurrentPathName.substring(0, CurrentPathName.lastIndexOf("/") + 1);
@@ -154,8 +155,8 @@ export class ScanDocumentComponent implements OnInit {
         '/api/v1/scanner/uploadscan',
         "imageData.pdf",
         this.OnHttpUploadSuccess,
-        this.OnHttpUploadFailure
-      );
+        this.OnHttpUploadFailure.bind(this)
+      )
     }
     catch (ex) {
       console.log("error occurred --------------------------------------" + ex);
@@ -173,25 +174,28 @@ export class ScanDocumentComponent implements OnInit {
 
     //this.DWObject.ClearAllHTTPFormField(); // Clear all fields first
     //this.alertService.success("Document uploaded successfully, Ready for Next Scanning ; ") ;
-    this.alertService.success("Document uploaded successfully, Ready for Next Scanning. ");
-    this.numberofsupplimentaries = 0;
-    this.rollnumber = "";
-    this.DWObject.RemoveAllImages();
-    /*setTimeout(function(){
-      location.reload();  
-    },2000);
-    */
-    this.setScannedCount() ; 
-    this.isScanning = false;
-    this.disableAllButtons = false;
 
 
   }
   OnHttpUploadFailure(errorCode, errorString, sHttpResponse) {
-    this.alertService.error(errorString);
-    //alert(errorString + sHttpResponse);
-    this.isScanning = false;
-    this.disableAllButtons = false;
+    let responseObject = JSON.parse(sHttpResponse) ;
+    if (responseObject && responseObject.code == SUCCESS_CODE ){
+      this.alertService.success("Document uploaded successfully, Ready for Next Scanning. ");
+      this.numberofsupplimentaries = 0;
+      this.rollnumber = "";
+      this.DWObject.RemoveAllImages();
+      
+      this.setScannedCount() ; 
+      this.isScanning = false;
+      this.disableAllButtons = false;
+    }
+    else{
+      this.alertService.error("Error in uploading the documents." + responseObject.message);  
+      this.DWObject.RemoveAllImages();
+      this.isScanning = false;
+      this.disableAllButtons = false;
+    }
+
   }
 
 

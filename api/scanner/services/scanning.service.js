@@ -1,5 +1,7 @@
 const config = require('config.json');
 var formidable = require('formidable');
+var desResponse = require('../../../model/des.response')
+var Constants = require('../../../_helpers/constants')
 var fs = require('fs-extra');
 var dbr = require('dynamsoft-javascript-barcode');
 var QrCode = require('qrcode-reader');
@@ -38,6 +40,7 @@ async function getUserScanningSummary(username, examcode) {
 
 async function uploadDocument(req) {
 
+    
     try{
         var form = new formidable.IncomingForm();
         var username = req.username;
@@ -72,13 +75,17 @@ async function uploadDocument(req) {
 
         //-- sepaarate the first page of pdf from rest of pdf
         var firstPagePath = await separateFirstPage(dirPath, pdfFilePath, answerCode) ;
-        if (returnValue != "" && firstPagePath != null ){
-        returnValue = await updateAnswers(fields, files, username,  pdfFilePath, firstPagePath, answerCode)  ;
+        if (returnValue != null && returnValue != "" && firstPagePath != null ){
+            returnValue = await updateAnswers(fields, files, username,  pdfFilePath, firstPagePath, answerCode)  ;
+            return {"code": Constants.SUCCESS_CODE, "message": "Data updated successfully."} ;
+            
         }
-        return 1 ; 
+        else{
+            return {"code": Constants.FAIULRE_CODE, "message": "Only 0 or 1 page in scanned answer sheet."} ;
+        }
     }
     catch (ex){
-        console.log("Error in uploading answer sheet " + ex) ;
+        return {"code": Constants.FAIULRE_CODE, "message": "Error in uploading document."} ;
         return -1 ; 
     }
 }
@@ -103,6 +110,8 @@ async function separateFirstPage(dirPath, pdfFilePath, answerCode){
         pdfWriter.end() ; 
         pdfWriter = hummus.createWriter(dirPath + answerCode + config.evaluatorextension + config.answerFileExtension) ; 
         if (pageCount > 1){
+            
+            
             for(var i=1;i< pageCount ;++i){
                 pdfWriter.createPDFCopyingContext(pdfReader).appendPDFPageFromPDF(i);
             }

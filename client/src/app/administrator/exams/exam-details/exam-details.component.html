@@ -6,7 +6,8 @@
         <mat-card-title-group>
           
             <div style="float:right">
-                <button type="button" class="btn btn-primary" (click)="open('SCANNER')" [disabled]="(examdetails && examdetails.totalcopiesassignedforscanning ? examdetails.totalcopiesassignedforscanning == examdetails.numberofcopies : true) || mode == 'NEW' || !paperApproved">Assign For Scanning</button>
+                <button type="button" class="btn btn-primary" (click)="open('SCANNER')" [disabled]=
+                "(examdetails && examdetails.totalcopiesassignedforscanning && examdetails.totalcopiesassignedforscanning == examdetails.numberofcopies || mode == 'NEW' || !paperApproved ? true : false )">Assign For Scanning</button>
                 
                 <button type="button" class="btn btn-primary" (click)="open('EVALUATOR')" 
                 [disabled]="
