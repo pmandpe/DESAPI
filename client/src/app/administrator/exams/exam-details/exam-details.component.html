@@ -7,7 +7,7 @@
           
             <div style="float:right">
                 <button type="button" class="btn btn-primary" (click)="open('SCANNER')" [disabled]=
-                "(examdetails && examdetails.totalcopiesassignedforscanning && examdetails.totalcopiesassignedforscanning == examdetails.numberofcopies || mode == 'NEW' || !paperApproved ? true : false )">Assign For Scanning</button>
+                "((examdetails && examdetails.totalcopiesassignedforscanning && examdetails.totalcopiesassignedforscanning == examdetails.numberofcopies) || mode == 'NEW' || !paperApproved ? true : false )">Assign For Scanning</button>
                 
                 <button type="button" class="btn btn-primary" (click)="open('EVALUATOR')" 
                 [disabled]="
