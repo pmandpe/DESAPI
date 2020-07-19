@@ -21,7 +21,12 @@
             "aot": false,
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "./node_modules/dwt/dist",
+                "output": "assets/dwt-resources"
+              }
             ],
             "styles": [
               "src/assets/scss/material-dashboard.scss",
@@ -30,7 +35,7 @@
               "node_modules/perfect-scrollbar/css/perfect-scrollbar.css"
             ],
             "scripts": [
-              "src/assets/js/doc-scanner.js"
+              
             ]
           },
           "configurations": {
@@ -86,7 +91,12 @@
             "karmaConfig": "karma.conf.js",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "./node_modules/dwt/dist",
+                "output": "assets/dwt-resources"
+              }
             ],
             "styles": [
               "src/styles.css"

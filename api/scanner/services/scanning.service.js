@@ -50,7 +50,6 @@ async function uploadDocument(req) {
                     reject(err);
                     return;
                 }
-                console.log("within form.parse method, subject field of fields object is: " + fields.subjects);
                 resolve([fields, files]);
             }); 
         });
@@ -70,22 +69,22 @@ async function uploadDocument(req) {
         var pdfFilePath = dirPath + answerCode + config.answerFileExtension ;
 
 
-        var returnValue = await fs.writeFile(pdfFilePath, data);
+        await fs.writeFile(pdfFilePath, data);
         //fs.close() ; 
 
         //-- sepaarate the first page of pdf from rest of pdf
         var firstPagePath = await separateFirstPage(dirPath, pdfFilePath, answerCode) ;
-        if (returnValue != null && returnValue != "" && firstPagePath != null ){
+        if (firstPagePath != null ){
             returnValue = await updateAnswers(fields, files, username,  pdfFilePath, firstPagePath, answerCode)  ;
             return {"code": Constants.SUCCESS_CODE, "message": "Data updated successfully."} ;
             
         }
         else{
-            return {"code": Constants.FAIULRE_CODE, "message": "Only 0 or 1 page in scanned answer sheet."} ;
+            return {"code": Constants.FAIULRE_CODE, "message": "Only 0 or 1 page in scanned answer sheet. Upload failed."} ;
         }
     }
     catch (ex){
-        return {"code": Constants.FAIULRE_CODE, "message": "Error in uploading document."} ;
+        return {"code": Constants.FAIULRE_CODE, "message": "Error in uploading document." + ex} ;
         return -1 ; 
     }
 }
@@ -126,11 +125,8 @@ async function separateFirstPage(dirPath, pdfFilePath, answerCode){
     }
     catch(ex){
         console.log("Error in creating files " + new Date() + ex ) ;
-        return "" ;
+        return null ;
     }
-
-    
-    return "" ; 
 
 }
 

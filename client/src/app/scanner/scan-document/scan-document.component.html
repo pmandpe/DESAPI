@@ -35,7 +35,8 @@
                 <tr>
                     <td>Assigned Date</td>
                     <td>
-                        <strong>{{(scannerSummaryData && scannerSummaryData.assigneddate ? (scannerSummaryData.assigneddate | date: 'mediumDate')  : "")}}
+                        <strong>{{(scannerSummaryData && scannerSummaryData.assigneddate ? (scannerSummaryData.assigneddate | date:
+                            'mediumDate') : "")}}
                         </strong>
                     </td>
                 </tr>
@@ -47,59 +48,66 @@
                 </tr>
             </table>
         </mat-card>
-        <mat-card>
+        <mat-card style="margin:7px">
 
-                <select id="sources"></select>
-                <!-- <select id="sources"></select> -->
-                <table class="example-full-width" cellspacing="0">
-                    <tr>
-                        <td>
-                            <mat-form-field class="example-full-width">
-                                <input matInput type="number" class="form-control" [(ngModel)]="numberofsupplimentaries" placeholder="# of supplementaries"
-                                />
-                            </mat-form-field>
-                        </td>
-                        <td>
-                            <mat-form-field class="example-full-width">
-                                <input matInput type="input" class="form-control" [(ngModel)]="rollnumber" placeholder="Roll Number" />
-                            </mat-form-field>
-                        </td>
-                        </tr>
-                        <tr>
-                        <td style="width:70%"> 
 
-                            <span>
-                                <button class="btn btn-success btn-circle" (click)="acquireImage()" [disabled]="disableAllButtons" [ngClass]="{'btn-danger': isScanning, 'btn-success' : !isScanning }">
-                                    <strong>SCAN</strong>
-                                    <br>
-                                    <i class="fa fa-4x fa-print"></i>
-                                </button>
-                                &nbsp;&nbsp;&nbsp;&nbsp;
-                                <button class="btn btn-success btn-circle" (click)="uploadDocument()" [ngClass]="{'btn-success': isScanning, 'btn-danger' : !isScanning }">
-                                    <strong>SUBMIT</strong>
-                                    <br>
-                                    <i class="fa fa-4x fa-print"></i>
-                                </button>
-                            </span>
-                        </td>
-                        <td style="text-align:right;width:30%">
-                                <div style="float:right">
-                                        <a class="btn btn-primary" [routerLink]="['/scanner/dashboard']">Dashboard</a>
-                                    </div>
-                        </td>
-                    </tr>
-                </table>
+            <select *ngIf="!bWASM" id="sources"></select>
+            <br/>
+            <!-- <select id="sources"></select> -->
+            <table class="example-full-width" cellspacing="0">
+                <tr>
+                    <td>
+                        <mat-form-field class="example-full-width">
+                            <input matInput type="number" class="form-control" [(ngModel)]="numberofsupplimentaries" placeholder="# of supplementaries"
+                            />
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field class="example-full-width">
+                            <input matInput type="input" class="form-control" [(ngModel)]="rollnumber" placeholder="Roll Number" />
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:70%">
+
+                        <span>
+                            <button class="btn btn-success btn-circle" (click)="acquireImage()" [disabled]="disableAllButtons" [ngClass]="{'btn-danger': isScanning, 'btn-success' : !isScanning }">
+                                <strong>SCAN</strong>
+                                <br>
+                                <i class="fa fa-4x fa-print"></i>
+                            </button>
+                            &nbsp;&nbsp;
+                            <button class="btn btn-warning btn-circle" (click)="openImage()" [disabled]="disableAllButtons" [ngClass]="{'btn-danger': isScanning, 'btn-warn' : !isScanning }">
+                                <strong>VIRTUAL SCAN</strong>
+                                <br>
+                                <i class="fa fa-4x fa-print"></i>
+                            </button>
+                            &nbsp;&nbsp;
+                            <button class="btn btn-success btn-circle" (click)="uploadDocument()" [ngClass]="{'btn-success': isScanning, 'btn-danger' : !isScanning }">
+                                <strong>SUBMIT</strong>
+                                <br>
+                                <i class="fa fa-4x fa-print"></i>
+                            </button>
+                        </span>
+                    </td>
+                    <td style="text-align:right;width:20%">
+                        <div style="float:right">
+                            <a class="btn btn-primary" [routerLink]="['/scanner/dashboard']">Dashboard</a>
+                        </div>
+                    </td>
+                </tr>
+            </table>
         </mat-card>
     </div>
 
 
     <div class="col-sm-6 col-lg-8 col-md-8" [hidden]="(scannerSummaryData && scannerSummaryData.assignedcopies && scannerSummaryData.assignedcopies == scannerSummaryData.scannedcopies)">
-      
-        <mat-card>
-
-            <!-- <select id="sources"></select> -->
-            <div id="dwtcontrolContainer" style="height:70vh; width:100%; border: 1px solid gray">&nbsp;</div>
-        </mat-card>
+        <div style="margin:5px ; ">
+            <mat-card>
+                <div id="dwtcontrolContainer" style="height:70vh; width:100%; border: 1px solid gray">&nbsp;</div>
+            </mat-card>
+        </div>
     </div>
     <div class="col-sm-6 col-lg-9 col-md-9 card" style="margin-top:20px ; display: table; height: 200px; overflow: hidden;" [hidden]="( !scannerSummaryData || !scannerSummaryData.assignedcopies || scannerSummaryData.assignedcopies != scannerSummaryData.scannedcopies)">
         <div style="display: table-cell; vertical-align: middle;">

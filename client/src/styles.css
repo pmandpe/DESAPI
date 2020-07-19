@@ -244,3 +244,11 @@ a:visited{
   color:rgb(78, 78, 78) !important;
   font-size: 16px !important; 
 }
+
+.form-control:focus {
+  color: #495057;
+  background-color: rgba(0, 0, 0, 0);
+  border-color: #d30c0c;
+  outline: 0;
+  box-shadow: none, 0 0 0 0.2rem rgba(33, 150, 243, 0.25);
+}

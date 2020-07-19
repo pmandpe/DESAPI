@@ -58,6 +58,9 @@ import { FileSelectDirective } from 'ng2-file-upload';
 import { PaperSettingComponent } from './evaluator/paper-setting/paper-setting.component';
 import { UploadService } from './services/upload.service';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { DwtComponent } from './scanner/dwt/dwt.component';
+import { CallbackPipe } from './scanner/Callback.pipe';
+import { SafeurlPipe } from './scanner/safeurl.pipe';
 
 
 const appRoutes: Routes = [
@@ -117,7 +120,10 @@ const appRoutes: Routes = [
     EvalMenuComponent,
     ChangePasswordComponent,
     PaperSettingComponent,
-    FileSelectDirective
+    FileSelectDirective,
+    DwtComponent,
+    CallbackPipe,
+    SafeurlPipe
   ],
   imports: [
     BrowserModule,
