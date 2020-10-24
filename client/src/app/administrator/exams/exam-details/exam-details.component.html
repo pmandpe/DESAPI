@@ -1,213 +1,285 @@
+<div style="height:80vh;">
 <form [formGroup]="examForm" (ngSubmit)="saveExam()" class="form-login">
+
     <mat-card class="des-mat-card">
-            <div style="float:left">
-                    <a (click)="downloadPaper()" class="icon-green">Download Question Paper</a>
-                </div>
+
         <mat-card-title-group>
-          
-            <div style="float:right">
-                <button type="button" class="btn btn-primary" (click)="open('SCANNER')" [disabled]=
-                "((examdetails && examdetails.totalcopiesassignedforscanning && examdetails.totalcopiesassignedforscanning == examdetails.numberofcopies) || mode == 'NEW' || !paperApproved ? true : false )">Assign For Scanning</button>
-                
-                <button type="button" class="btn btn-primary" (click)="open('EVALUATOR')" 
-                [disabled]="
-                ((examdetails && examdetails.totalscannedcopies ? examdetails.totalscannedcopies == 0 : true) || 
-                ((examdetails && examdetails.totalscannedcopies <= ( totalcopiesassignedforevaluation ?totalcopiesassignedforevaluation : 0)  )))">Assign For Evaluation</button>
-                &nbsp; &nbsp;
-                <button [disabled]="loading" class="btn btn-success">Save Exam</button>
+            <div style="width:100%">
+                <div class="card-title">
+                    Add/Edit Exams</div>
+
+                <div style="float:right">
+                    <button type="button" class="btn btn-primary" (click)="open('SCANNER')"
+                        [ngClass]="{'des-disabled': ((examdetails && examdetails.totalcopiesassignedforscanning && examdetails.totalcopiesassignedforscanning == examdetails.numberofcopies) || mode == 'NEW' || !paperApproved ? true : false )}"
+                        [disabled]="isScanningDisabled">Assign
+                        For Scanning</button>
+
+                    <button type="button" class="btn btn-primary" (click)="open('EVALUATOR')"
+                        [disabled]="isEvaluationDisabled">Assign For Evaluation</button>
+                    &nbsp; &nbsp;
+                    <button [disabled]="loading" class="btn btn-success">Save Exam</button>
+                </div>
             </div>
         </mat-card-title-group>
-        <mat-divider></mat-divider>
+    </mat-card>
+    <mat-card class="des-mat-card">
         <div [hidden]="!showUniqueCode">
             <h4>{{examcode}}</h4>
         </div>
 
-
-        <div class="row" style="margin-right:20px;">
-            <div class="col-lg-2 col-sm-6 col-md-3">
-                <div class="form-group">
-
-
-                    <mat-form-field style="margin-top:27px;">
-                        <mat-label style="margin-bottom:10px;">Subject</mat-label>
-                        <select required matNativeControl required formControlName="subjectcode" [readonly]="disableSubjectCode" [ngClass]="{ 'is-invalid': submitted && f.subjectcode.errors }">
-                            <option *ngFor="let subject of subjectlist" value="{{subject.subjectcode}}">
-                                {{subject.subjectname}} - {{subject.subjectcode}}
-                            </option>
-                        </select>
-                        <div *ngIf="submitted && f.subjectcode.errors" class="invalid-feedback">
-                            <div *ngIf="f.subjectcode.errors.required">Subject Code is required</div>
-                        </div>
-                    </mat-form-field>
-
-                </div>
-            </div>
-            <div class="col-lg-1 col-sm-2 col-md-2">
-                <div class="form-group">
-                    <label for="subjectcode">Class</label>
-                    <input type="text" formControlName="class" class="form-control" [readonly]="disableSubjectCode" [ngClass]="{ 'is-invalid': submitted && f.subjectcode.errors }"
-                    />
-                    <div *ngIf="submitted && f.subjectcode.errors" class="invalid-feedback">
-                        <div *ngIf="f.subjectcode.errors.required">Class is Required</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-1 col-sm-2 col-md-2">
-                <div class="form-group">
-                    <label for="semester">Semester</label>
-                    <input type="text" formControlName="semester" class="form-control" [readonly]="disableSubjectCode" />
-                </div>
-            </div>
-
-            <div class="col-lg-2 col-sm-6 col-md-3">
-                <div class="form-group">
-                    <label for="subjectname">Exam Name</label>
-                    <input type="input" formControlName="examname" maxlength="25" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.examname.errors }"
-                    />
-                    <div *ngIf="submitted && f.examname.errors" class="invalid-feedback">
-                        <div *ngIf="f.examname.errors.required">Exam Name is required</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-sm-6 col-md-3">
-
-                <label for="examdate">Exam Date</label>
-                <div class="input-group">
-                    <input id="examdate" formControlName="examdate" class="form-control" [readonly]="true" placeholder="yyyy-mm-dd" name="dpexamdate"
-                        ngbDatepicker #dpexamdate="ngbDatepicker">
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary calendar" (click)="dpexamdate.toggle()" type="button"></button>
-                    </div>
-                </div>
-
-                <div *ngIf="submitted && f.examdate.errors">
-                    <div *ngIf="f.examdate.errors.required" class="error">Exam Date is required</div>
-                </div>
-
-
-            </div>
-            <div class="col-lg-3 col-sm-6 col-md-3">
-
-
-                <label for="resultdate">Result Date</label>
-                <div class="input-group">
-                    <input id="resultdate" formControlName="resultdate" class="form-control" [readonly]="true" placeholder="yyyy-mm-dd" name="dpresultdate"
-                        ngbDatepicker #dpresultdate="ngbDatepicker">
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary calendar" (click)="dpresultdate.toggle()" type="button"></button>
-                    </div>
-                </div>
-
-                <div *ngIf="submitted && f.resultdate.errors">
-                    <div *ngIf="f.resultdate.errors.required" class="error">Result Date is required</div>
-                </div>
-
-
-
-            </div>
-
-        </div>
-        <div class="form-group ">
-            <div>
+        <div class="row">
+            <div class="col-lg-9 col-md-9 col-sm-12 des-box">
                 <div class="row">
+                    <div class="col-lg-2 col-sm-6 col-md-3">
+                        <div class="form-group">
 
+                            <mat-form-field class="field-60">
+                                <mat-label>Subject Code</mat-label>
+                                <mat-select formControlName="subjectcode" [disabled]="disableSubjectCode">
+                                    <mat-option *ngFor="let subject of subjectlist" [value]="subject.subjectcode">
+                                        {{subject.subjectcode}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
 
+                            <!-- <mat-form-field style="margin-top:27px;">
+                                <mat-label style="margin-bottom:10px;">Subject</mat-label>
+                                <select required matNativeControl required formControlName="subjectcode"
+                                    [readonly]="disableSubjectCode"
+                                    [ngClass]="{ 'is-invalid': submitted && f.subjectcode.errors }">
+                                    <option *ngFor="let subject of subjectlist" value="{{subject.subjectcode}}">
+                                        {{subject.subjectname}} - {{subject.subjectcode}}
+                                    </option>
+                                </select>
+                                <div *ngIf="submitted && f.subjectcode.errors" class="invalid-feedback">
+                                    <div *ngIf="f.subjectcode.errors.required">Subject Code is required</div>
+                                </div>
+                            </mat-form-field> -->
 
-                    <div class="col-lg-2 col-sm-6 col-md-4">
-                        <div>
-                            <label for="numberofcopies">Total Students/Copies</label>
                         </div>
-                        <div>
-                            <input type="number" formControlName="numberofcopies" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.numberofcopies.errors }"
-                            />
-                            <div *ngIf="submitted && f.numberofcopies.errors">
-                                <div *ngIf="f.numberofcopies.errors.required" class="error">Number of Copies is required</div>
+                    </div>
+                    <div class="col-lg-1 col-sm-2 col-md-2">
+                        <div class="form-group">
+                            <mat-form-field>
+                                <input matInput type="text" formControlName="class" required placeholder="Class">
+                            </mat-form-field>
+                        </div>
+
+                        <!-- <div class="form-group">
+                            <label for="subjectcode">Class</label>
+                            <input type="text" formControlName="class" class="form-control" [readonly]="disableSubjectCode"
+                                [ngClass]="{ 'is-invalid': submitted && f.subjectcode.errors }" />
+                            <div *ngIf="submitted && f.subjectcode.errors" class="invalid-feedback">
+                                <div *ngIf="f.subjectcode.errors.required">Class is Required</div>
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="col-lg-2 col-sm-2 col-md-2">
+                        <div class="form-group">
+                            <mat-form-field>
+                                <input matInput type="text" formControlName="semester" [disabled]="disableSubjectCode"
+                                    required placeholder="Semester">
+                            </mat-form-field>
+                        </div>
+                        <!-- <div class="form-group">
+                            <label for="semester">Semester</label>
+                            <input type="text" formControlName="semester" class="form-control"
+                                [readonly]="disableSubjectCode" />
+                        </div> -->
+                    </div>
+
+                    <div class="col-lg-3 col-sm-6 col-md-3">
+                        <div class="form-group">
+                            <mat-form-field>
+                                <input matInput type="text" formControlName="examname" required placeholder="Exam Name">
+                            </mat-form-field>
+                        </div>
+                        <!-- <div class="form-group">
+                            <label for="subjectname">Exam Name</label>
+                            <input type="input" formControlName="examname" maxlength="25" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.examname.errors }" />
+                            <div *ngIf="submitted && f.examname.errors" class="invalid-feedback">
+                                <div *ngIf="f.examname.errors.required">Exam Name is required</div>
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="col-lg-2 col-sm-6 col-md-3">
+
+                        <div class="form-group">
+                            <mat-form-field>
+                                <mat-label>Exam Date</mat-label>
+                                <input matInput value="examdate" [matDatepicker]="examdate"
+                                    formControlName="examdate" />
+                                <mat-datepicker-toggle matSuffix [for]="examdate"></mat-datepicker-toggle>
+                                <mat-datepicker #examdate></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <!-- 
+        
+                        <label for="examdate">Exam Date</label>
+                        <div class="input-group">
+                            <input id="examdate" formControlName="examdate" class="form-control" [readonly]="true"
+                                placeholder="yyyy-mm-dd" name="dpexamdate" ngbDatepicker #dpexamdate="ngbDatepicker">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary calendar" (click)="dpexamdate.toggle()"
+                                    type="button"></button>
+                            </div>
+                        </div>
+        
+                        <div *ngIf="submitted && f.examdate.errors">
+                            <div *ngIf="f.examdate.errors.required" class="error">Exam Date is required</div>
+                        </div> -->
+
+
+                    </div>
+                    <div class="col-lg-2 col-sm-6 col-md-3">
+                        <div class="form-group">
+                            <mat-form-field>
+                                <mat-label>Result Date</mat-label>
+                                <input matInput value="resultdate" [matDatepicker]="resultDate"
+                                    formControlName="resultdate" />
+                                <mat-datepicker-toggle matSuffix [for]="resultDate"></mat-datepicker-toggle>
+                                <mat-datepicker #resultDate></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+
+                        <!-- <label for="resultdate">Result Date</label>
+                        <div class="input-group">
+                            <input id="resultdate" formControlName="resultdate" class="form-control" [readonly]="true"
+                                placeholder="yyyy-mm-dd" name="dpresultdate" ngbDatepicker #dpresultdate="ngbDatepicker">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary calendar" (click)="dpresultdate.toggle()"
+                                    type="button"></button>
+                            </div>
+                        </div> -->
+
+                        <!-- <div *ngIf="submitted && f.resultdate.errors">
+                            <div *ngIf="f.resultdate.errors.required" class="error">Result Date is required</div>
+                        </div> -->
+
+
+
+                    </div>
+
+                </div>
+                <div class="form-group ">
+                    <div>
+                        <div class="row">
+
+
+
+                            <div class="col-lg-2 col-sm-3 col-md-4">
+
+
+                                <div class="form-group">
+                                    <mat-form-field>
+                                        <input matInput type="number" formControlName="numberofcopies" required
+                                            placeholder="Total Students/Copies">
+                                    </mat-form-field>
+                                </div>
+
+                                <!-- <div>
+                                    <label for="numberofcopies">Total Students/Copies</label>
+                                </div>
+                                <div>
+                                    <input type="number" formControlName="numberofcopies" class="form-control"
+                                        [ngClass]="{ 'is-invalid': submitted && f.numberofcopies.errors }" />
+                                    <div *ngIf="submitted && f.numberofcopies.errors">
+                                        <div *ngIf="f.numberofcopies.errors.required" class="error">Number of Copies is required
+                                        </div>
+                                    </div>
+        
+                                </div>
+         -->
+
+                            </div>
+
+                            <div class="col-lg-2 col-sm-3 col-md-4">
+
+                                <div class="form-group">
+                                    <mat-form-field>
+                                        <input matInput type="text" formControlName="totalmarks" required
+                                            placeholder="Total Marks">
+                                    </mat-form-field>
+                                </div>
+                                <!-- <div>
+                                    <label for="numberofcopies">Total Marks</label>
+                                </div>
+                                <div>
+                                    <input type="number" formControlName="totalmarks" class="form-control"
+                                        [ngClass]="{ 'is-invalid': submitted && f.totalmarks.errors }" />
+                                    <div *ngIf="submitted && f.totalmarks.errors">
+                                        <div *ngIf="f.totalmarks.errors.required" class="error">Total Marks is required</div>
+                                    </div>
+        
+                                </div> -->
+
+
+                            </div>
+
+                            <div class="col-lg-8 col-sm-12 col-md-12">
+                                <div class="form-group">
+                                    <mat-form-field>
+                                        <input matInput type="text" formControlName="comments" placeholder="Comments">
+                                    </mat-form-field>
+                                </div>
+                                <!-- <label for="comments">Comments</label>
+                                <input type="input" formControlName="comments" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && f.comments.errors }" /> -->
                             </div>
 
                         </div>
-
-
                     </div>
-                    <div class="col-lg-2 col-sm-6 col-md-4">
-                        <div>
-                            <label for="numberofcopies">Total Marks</label>
-                        </div>
-                        <div>
-                            <input type="number" formControlName="totalmarks" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.totalmarks.errors }"
-                            />
-                            <div *ngIf="submitted && f.totalmarks.errors">
-                                <div *ngIf="f.totalmarks.errors.required" class="error">Total Marks is required</div>
-                            </div>
-
-                        </div>
-
-
-                    </div>
-
-                    <div class="col-lg-2 col-sm-6 col-md-4">
-                        <div>
-                            <label for="resultdate">Assigned To Scan</label>
-                        </div>
-                        <div>
-                            <input type="number" [readonly]="true" formControlName="totalcopiesassignedforscanning" class="form-control" />
-                        </div>
-
-                    </div>
-                    <div class="col-lg-2 col-sm-6 col-md-4">
-                        <div>
-                            <label for="resultdate">Scanned</label>
-                        </div>
-                        <div>
-                            <input type="number" [readonly]="true" formControlName="totalscannedcopies" class="form-control" />
-                        </div>
-
-                    </div>
-                    <div class="col-lg-2 col-sm-6 col-md-4">
-                        <div>
-                            <label for="resultdate">Assigned To Evaluate</label>
-                        </div>
-                        <div>
-                            <input type="number" [readonly]="true" formControlName="totalcopiesassignedforevaluation" class="form-control" />
-                        </div>
-
-                    </div>
-
-                    <div class="col-lg-2 col-sm-6 col-md-4">
-                        <div>
-                            <label for="resultdate">Evaluated</label>
-                        </div>
-                        <div>
-                            <input type="number" [readonly]="true" formControlName="totalevaluatedcopies" class="form-control" />
-                        </div>
-
-                    </div>
-
                 </div>
+
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-12 des-box">
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Assigned to Scan</th>
+                        <td style="width:100px;">
+                            <input matInput type="text" formControlName="totalcopiesassignedforscanning" required
+                                placeholder="Evaluated" [readonly]="true">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Scanned</th>
+
+                        <td><input matInput type="text" formControlName="totalscannedcopies" required
+                                placeholder="Evaluated" [readonly]="true"></td>
+                    </tr>
+                    <tr>
+                        <th>Assigned to Evaluate</th>
+                        <td>
+                            <input matInput type="text" formControlName="totalcopiesassignedforevaluation" required
+                                placeholder="Evaluated" [readonly]="true">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Evaluated</th>
+                        <td>
+                            <input matInput type="text" formControlName="totalevaluatedcopies" required
+                                placeholder="Evaluated" [readonly]="true">
+                        </td>
+                    </tr>
+                </table>
+
             </div>
         </div>
 
 
-        <div class="form-group ">
-            <div>
-                <div class="row">
-                    <div class="col-lg-12 col-sm-12 col-md-12">
-                        <label for="comments">Comments</label>
-                        <input type="input" formControlName="comments" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.comments.errors }"
-                        />
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <div class="form-group">
-            <input type="hidden" formControlName="editmode" [(ngModel)]="mode" />
-            <input type="hidden" formControlName="scanningassignment" [(ngModel)]="scanningassignment" />
-            <input type="hidden" formControlName="evaluationassignment" [(ngModel)]="evaluationassignment" />
-        </div>
 
-        <div class="form-group">
-            <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
-            />
+
+
+
+        <input type="hidden" formControlName="editmode" [(ngModel)]="mode" />
+        <input type="hidden" formControlName="scanningassignment" [(ngModel)]="scanningassignment" />
+        <input type="hidden" formControlName="evaluationassignment" [(ngModel)]="evaluationassignment" />
+
+
+        <!-- <div class="form-group">
+            <img *ngIf="loading"
+                src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
             <span style="float:right">
             </span>
             <span style="width:20px;float:right;">&nbsp;</span>
@@ -215,19 +287,18 @@
 
 
             </span>
-        </div>
+        </div> -->
 
     </mat-card>
 </form>
 <mat-card class="des-mat-card mat-elevation-z8">
-
-
     <div *ngIf="mode=='EDIT'">
-        <app-exam-questions [examQuestions]="examQuestions" [examcode]="examcode" [grandTotal]="(examdetails ? examdetails.totalmarks : 0)"></app-exam-questions>
+        <app-exam-questions [examQuestions]="examQuestions" [examcode]="examcode"
+            [grandTotal]="(examdetails ? examdetails.totalmarks : 0)"></app-exam-questions>
     </div>
 
     <!-- Assigning Copies Popoup Window -->
-    <ng-template #testcontent let-modal>
+    <ng-template let-modal>
         <app-assign-scanner></app-assign-scanner>
     </ng-template>
 
@@ -241,3 +312,4 @@
 
     <div>{{closeResult}}</div>
 </mat-card>
+</div>

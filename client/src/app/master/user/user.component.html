@@ -1,16 +1,37 @@
+
+
 <mat-tab-group [selectedIndex]="selectedIndex" (selectedTabChange)="onTabChanged($event)">
+
+
+
+
     <mat-tab label="User List">
+
+        <mat-card class="des-mat-card mat-elevation-z8">
+            <mat-card-title-group>
+                <div style="width:100%">
+                    <div class="card-title">
+                        Manage Users</div>
+        
+                    <div style="float:right">
+                        <button class="btn btn-success" (click)="addNewUser()">Add New User</button>
+                    </div>
+                </div>
+            </mat-card-title-group>
+        </mat-card>
+
+
         <div style="max-width: 100%;margin:auto;">
-            <mat-card class="des-mat-card">
+            <!-- <mat-card class="des-mat-card">
                 <mat-card-title-group>
                     <div style="float:right">
                         <button class="btn btn-success" (click)="addNewUser()">Add New User</button>
                     </div>
                 </mat-card-title-group>
 
-            </mat-card>
+            </mat-card> -->
             <mat-card class="des-mat-card mat-elevation-z8">
-                <table class="table">
+                <table class="table table-bordered table-hover table-striped">
                     <thead>
                         <tr>
                             <th>Name</th>
@@ -31,7 +52,7 @@
                             <td>{{user.isactive}}</td>
                             <td style="text-align:center">
                                 <!-- <a [routerLink]="['../edit-subject', 'EDIT', subject.subjectcode]"> -->
-                                <i class="fa fa-edit" (click)="getUserDetails(user.username, 'EDIT')"></i>
+                                <i class="fa fa-edit icon-green" (click)="getUserDetails(user.username, 'EDIT')"></i>
                                 <!-- </a> -->
                             </td>
                         </tr>
@@ -42,41 +63,71 @@
 
     </mat-tab>
     <mat-tab label="User Details">
-        <div style="max-width: 70%;margin:auto;background-colo">
+        <div style="max-width: 100%;margin:auto;">
             <mat-card class="des-mat-card mat-elevation-z8">
+                <mat-card-title-group>
+                    <div style="width:100%">
+                        <div class="card-title">
+                            Add/Edit Users</div>
+            
+                        <div style="float:right">
+                            <button [disabled]="loading" class="btn btn-success" (click)= "userEditForm.ngSubmit.emit()">Save User</button>
+                        </div>
+                    </div>
+                </mat-card-title-group>
+            </mat-card>
+            
 
-                <form [formGroup]="userForm" (ngSubmit)="saveUser()" class="form-login">
+
+            <mat-card class="des-mat-card mat-elevation-z8">
+                
+                <form [formGroup]="userForm" (ngSubmit)="saveUser()" #userEditForm="ngForm">
                     <div class="row">
                         <div class="col-lg-4 col-md-4 col-sm-12">
                             <div class="form-group">
-                                <label for="name">Username</label>
+
+                                <mat-form-field>
+                                    <input type="text" matInput formControlName="username" [readonly]="disableUsername" required placeholder="User Name"/>
+                                </mat-form-field>
+
+                                <!-- <label for="name">Username</label>
                                 <input type="text" formControlName="username" class="form-control" [readonly]="disableUsername" maxlength="10" [ngClass]="{ 'is-invalid': submitted && f.username.errors }"
                                 />
                                 <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
                                     <div *ngIf="f.username.errors.required">Username is required</div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
 
                         <div class="col-lg-4 col-md-4 col-sm-12">
+                            
+
                             <div class="form-group">
+                                <mat-form-field>
+                                    <input type="text" matInput formControlName="name" required placeholder="Name"/>
+                                </mat-form-field>
+<!--     
                                 <label for="name">Name</label>
                                 <input type="input" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.name.errors }"
                                     maxlength="50" />
                                 <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
                                     <div *ngIf="f.name.errors.required">Name is required</div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
 
                         <div class="col-lg-4 col-md-4 col-sm-12">
                             <div class="form-group">
+                                <mat-form-field>
+                                    <input type="text" matInput formControlName="emailid" required placeholder="Email Id"/>
+                                </mat-form-field>
+<!--     
                                 <label for="name">Email Id</label>
                                 <input type="input" formControlName="emailid" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.emailid.errors }"
                                     maxlength="50" />
                                 <div *ngIf="submitted && f.emailid.errors" class="invalid-feedback">
                                     <div *ngIf="f.emailid.errors.required">Email Id is required</div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -87,11 +138,11 @@
 
                                 <mat-form-field style="margin-top:27px;">
                                     <mat-label style="margin-bottom:10px;">Role</mat-label>
-                                    <select matNativeControl required formControlName="role">
-                                        <option value="EVALUATOR">Evaluator</option>
-                                        <option value="SCANNER">Scanner</option>
+                                    <mat-select matNativeControl required formControlName="role">
+                                        <mat-option value="EVALUATOR">Evaluator</mat-option>
+                                        <mat-option value="SCANNER">Scanner</mat-option>
 
-                                    </select>
+                                    </mat-select>
                                 </mat-form-field>
 
                                 <!-- <input type="text" formControlName="role" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.role.errors }"
@@ -116,16 +167,24 @@
 
                         <div class="col-lg-6 col-md-6 col-sm-12">
                             <div class="form-group">
-                                <label for="pwd">Password</label>
-                                <input type="password" formControlName="pwd" class="form-control" />
+                                <mat-form-field>
+                                    <input type="password" matInput formControlName="pwd" required placeholder="Password"/>
+                                </mat-form-field>
+                                
+                                <!-- <label for="pwd">Password</label>
+                                <input type="password" formControlName="pwd" class="form-control" /> -->
                             </div>
                         </div>
 
 
                         <div class="col-lg-6 col-md-6 col-sm-12">
                             <div class="form-group">
-                                <label for="confirm_pwd">Confirm Password</label>
-                                <input type="password" formControlName="confirm_pwd" class="form-control" />
+                                <mat-form-field>
+                                    <input type="password" matInput formControlName="confirm_pwd"  required placeholder="Confirm Password"/>
+                                </mat-form-field>
+                                
+                                <!-- <label for="confirm_pwd">Confirm Password</label>
+                                <input type="password" formControlName="confirm_pwd" class="form-control" /> -->
 
                             </div>
                         </div>
@@ -136,13 +195,13 @@
 
                     </div>
 
-                    <div class="form-group" style="text-align:right">
+                    <!-- <div class="form-group" style="text-align:right">
                         <span>
                             <button [disabled]="loading" class="btn btn-success">Save User</button>
                         </span>
                         <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
                         />
-                    </div>
+                    </div> -->
 
                     
                     <mat-card class="des-mat-card mat-elevation-z8" [hidden]="userForm.value.role != 'SCANNER'">
@@ -152,20 +211,30 @@
                         <div class="row">
                             <div class="col-lg-4 col-sm-6 col-xs-12 col-md-6">
                                 <div class="form-group">
-                                    <label for="officecode">Office Code</label>
-                                    <input type="text" formControlName="officecode" class="form-control" />
+                                    <mat-form-field>
+                                        <input type="text" matInput formControlName="officecode" placeholder="Office Code"/>
+                                    </mat-form-field>
+                                    
+                                    <!-- <label for="officecode">Office Code</label>
+                                    <input type="text" formControlName="officecode" class="form-control" /> -->
                                 </div>
                             </div>
                             <div class="col-lg-4 col-sm-6 col-xs-12 col-md-6">
                                 <div class="form-group">
-                                    <label for="officename">Office Name</label>
-                                    <input type="officename" formControlName="officename" class="form-control" />
+                                    <mat-form-field>
+                                        <input type="text" matInput formControlName="officename"  placeholder="Office Name"/>
+                                    </mat-form-field>
+                                    <!-- <label for="officename">Office Name</label>
+                                    <input type="officename" formControlName="officename" class="form-control" /> -->
                                 </div>
                             </div>
                             <div class="col-lg-4 col-sm-6 col-xs-12 col-md-6">
                                 <div class="form-group">
-                                    <label for="contactperson">Contact Person</label>
-                                    <input type="contactperson" formControlName="contactperson" class="form-control" />
+                                    <mat-form-field>
+                                        <input type="text" matInput formControlName="contactperson"  placeholder="Contact Person"/>
+                                    </mat-form-field>
+                                    <!-- <label for="contactperson">Contact Person</label>
+                                    <input type="contactperson" formControlName="contactperson" class="form-control" /> -->
                                 </div>
                             </div>
 
@@ -173,20 +242,30 @@
                         <div class="row">
                                 <div class="col-lg-4 col-sm-6 col-xs-12 col-md-6">
                                     <div class="form-group">
-                                        <label for="address">Address</label>
-                                        <input type="text" formControlName="address" class="form-control" />
+                                        <mat-form-field>
+                                            <input type="text" matInput formControlName="address"  placeholder="Address"/>
+                                        </mat-form-field>
+                                        
+                                        <!-- <label for="address">Address</label>
+                                        <input type="text" formControlName="address" class="form-control" /> -->
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-sm-6 col-xs-12 col-md-6">
                                     <div class="form-group">
-                                        <label for="phone">Phone</label>
-                                        <input type="text" formControlName="phone" class="form-control" />
+                                        <mat-form-field>
+                                            <input type="text" matInput formControlName="phone"  placeholder="Phone"/>
+                                        </mat-form-field>
+                                        <!-- <label for="phone">Phone</label>
+                                        <input type="text" formControlName="phone" class="form-control" /> -->
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-sm-6 col-xs-12 col-md-6">
                                     <div class="form-group">
-                                        <label for="cell">Cell</label>
-                                        <input type="text" formControlName="cell" class="form-control" />
+                                        <mat-form-field>
+                                            <input type="text" matInput formControlName="cell" placeholder="Mobile Number"/>
+                                        </mat-form-field>
+                                        <!-- <label for="cell">Cell</label>
+                                        <input type="text" formControlName="cell" class="form-control" /> -->
                                     </div>
                                 </div>
     

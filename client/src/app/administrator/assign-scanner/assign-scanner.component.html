@@ -1,29 +1,46 @@
-<alert></alert>
+
+<mat-card class="des-mat-card">
+
+  <mat-card-title-group>
+    <div style="width:100%">
+      <div class="card-title">
+        Assign To {{(userType == "SCANNER"? "Scanner" : "Evaluator")}}
+      </div>
+      <div style="float:right">
+        <!-- <button type="button" class="btn btn-success" (click)="clearData()">Clear Data</button> -->
+        <button type="button" class="btn btn-success" (click)="save()">Save</button>
+        <button type="button" class="btn btn-danger" (click)="cancel()">Close</button>
+      </div>
+    </div>
+  </mat-card-title-group>
+</mat-card>
+
+
+
+
 <mat-card class="des-mat-card">
   <mat-card-title-group>
 
-    <mat-card-subtitle style="margin-bottom:2px" class="mat-h3">
+    <!-- <mat-card-subtitle style="margin-bottom:2px" class="mat-h3">
       <div fxLayout="row" fxLayoutGap="100px">
         <span class="mat-h1">
           Assign To {{(userType == "SCANNER"? "Scanner" : "Evaluator")}}
         </span>
       </div>
-    </mat-card-subtitle>
-    <div style="float:right">
-      Total Copies :
-      <strong>{{examFormValues.numberofcopies}}</strong>
-      | Assigned For Scanning :
-      <strong>{{ (examFormValues.totalcopiesassignedforscanning) }} </strong>
-        | Scanned :
-        <strong>{{examFormValues.totalscannedcopies}}</strong>
-        | Assigned for Evaluation :
-        <strong>{{examFormValues.totalcopiesassignedforevaluation}}</strong>
-        | Evaluated :
-        <strong>{{(examFormValues.totalevaluatedcopies ? examFormValues.totalevaluatedcopies : 0)}}</strong>
-        | To be assigned :
-        <strong>{{ (examFormValues.totalscannedcopies - examFormValues.totalcopiesassignedforevaluation)}}</strong>
-    </div>
-
+    </mat-card-subtitle> -->
+    <table class="table table-bordered">
+      <tr>
+        <td>Total Copies :<strong>{{examFormValues.numberofcopies}}</strong></td>
+        <td>Assigned For Scanning :<strong>{{ (examFormValues.totalcopiesassignedforscanning)  | number : '.2-2'}} </strong></td>
+        <td>Scanned :<strong>{{examFormValues.totalscannedcopies}}</strong></td>
+        <td>Assigned for Evaluation ::<strong>{{examFormValues.totalcopiesassignedforevaluation | number : '.2-2'}}</strong></td>
+        <td>Evaluated :
+          <strong>{{(examFormValues.totalevaluatedcopies ? examFormValues.totalevaluatedcopies : 0) | number : '.2-2'}}</strong></td>
+        <td>To be assigned :
+          <strong>{{ (examFormValues.totalscannedcopies - examFormValues.totalcopiesassignedforevaluation) | number : '.2-2'}}</strong>
+        </td>
+      </tr>
+    </table>
   </mat-card-title-group>
 </mat-card>
 
@@ -36,7 +53,7 @@
 
 
     <div *ngIf="userType == 'SCANNER'">
-      <table class="table table table-hover table-striped">
+      <table class="table table-bordered table-hover table-striped">
         <thead>
           <tr>
             <th>Scanning Office</th>
@@ -66,14 +83,21 @@
               <app-inline-edit [(ngModel)]="user.additionalcopies" type="text"> </app-inline-edit>
             </td>
             <td>
-
               <div class="input-group">
-                <input class="form-control" placeholder="yyyy-mm-dd" ngbDatepicker #dpresultdate="ngbDatepicker" [readonly]="true" [(ngModel)]="user.targetdate"
-                />
+                <mat-form-field>
+                  <input matInput [(ngModel)]="user.targetdate"   [readonly]="true" [matDatepicker]="targetdate" formControlName="targetdate" />
+                  <mat-datepicker-toggle matSuffix [for]="targetdate"></mat-datepicker-toggle>
+                  <mat-datepicker #targetdate></mat-datepicker>
+                </mat-form-field>
+
+
+                <!-- <input class="form-control" placeholder="yyyy-mm-dd" ngbDatepicker #dpresultdate="ngbDatepicker"
+                  [readonly]="true" [(ngModel)]="user.targetdate" />
 
                 <div class="input-group-append">
-                  <button class="btn btn-outline-secondary calendar" (click)="dpresultdate.toggle()" type="button"></button>
-                </div>
+                  <button class="btn btn-outline-secondary calendar" (click)="dpresultdate.toggle()"
+                    type="button"></button> 
+                </div>-->
               </div>
             </td>
           </tr>
@@ -82,7 +106,7 @@
     </div>
 
     <div *ngIf="userType == 'EVALUATOR'">
-      <table class="table table table-hover table-striped">
+      <table class="table table-bordered table-hover table-striped">
         <thead>
           <tr>
             <th>Name</th>
@@ -111,8 +135,3 @@
   </div>
 
 </mat-card>
-<div class="modal-footer">
-  <button type="button" class="btn btn-success" (click)="clearData()">Clear Data</button>
-  <button type="button" class="btn btn-success" (click)="save()">Save</button>
-  <button type="button" class="btn btn-danger" (click)="cancel()">Close</button>
-</div>

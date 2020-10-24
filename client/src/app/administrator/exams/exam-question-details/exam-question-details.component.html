@@ -1,4 +1,25 @@
-<mat-card class="des-mat-card">
+<mat-card class="des-mat-card mat-elevation-z8">
+    <mat-card-title-group>
+        <div style="width:100%">
+            <div class="card-title">
+                Edit Question</div>
+
+            <div style="float:right">
+                <button type="button" class="btn btn-success" (click)="save(examQuestion.questionno)">
+                    Save
+                </button>
+
+                <button type="button" class="btn btn-danger" (click)="closeModal()">
+                    Close
+                </button>
+            </div>
+        </div>
+    </mat-card-title-group>
+</mat-card>
+
+
+
+<!-- <mat-card class="des-mat-card">
     <mat-card-title-group>
 
         <mat-card-subtitle style="margin-bottom:2px" class="mat-h3">
@@ -18,7 +39,7 @@
             </button>
         </div>
     </mat-card-title-group>
-</mat-card>
+</mat-card> -->
 
 
 
@@ -27,48 +48,93 @@
         <div class="row">
             <div class="col-sm-3 col-lg-2">
 
-                <label for="questionno">Question #</label>
-                <input type="input" [disabled]="true" class="form-control" [(ngModel)]="examQuestion.questionno" />
+                <!-- <label for="questionno">Question #</label> -->
+                <mat-form-field>
+                    <input matInput type="input" [disabled]="true" [(ngModel)]="examQuestion.questionno"
+                        placeholder="Question #" />
+                </mat-form-field>
             </div>
 
             <div class="col-sm-2 col-lg-3">
-                <label for="questiontype">Question Type</label>
-                <input type="input" class="form-control" [(ngModel)]="examQuestion.questiontype" />
+                <mat-form-field>
+                    <mat-label>Question Type</mat-label>
+                    <mat-select [(ngModel)]="examQuestion.questiontype">
+                        <mat-option value="Subjective">Subjective</mat-option>
+                        <mat-option value="Objective">Objective</mat-option>
+                    </mat-select>
+                <!-- <input matInput type="input" [(ngModel)]="examQuestion.questiontype" placeholder="Question Type" /> -->
+                </mat-form-field>
+
+                <!-- <label for="questiontype">Question Type</label>
+                <input type="input" class="form-control" [(ngModel)]="examQuestion.questiontype" /> -->
             </div>
             <div class="col-sm-5 col-lg-3">
-                <label for="questionno">Main Question Marks</label>
-                <input type="input" type="number" step="0.5" class="form-control" [(ngModel)]="examQuestion.totalmarks" (input)="setTotalMarks()"
-                />
+                <mat-form-field>
+                    <input matInput type="number" [(ngModel)]="examQuestion.totalmarks" placeholder="Main Question Marks" (input)="setTotalMarks()" />
+                </mat-form-field>
+                <!-- <label for="questionno">Main Question Marks</label>
+                <input type="input" type="number" step="0.5" class="form-control" [(ngModel)]="examQuestion.totalmarks"
+                    (input)="setTotalMarks()" /> -->
             </div>
 
             <div class="col-sm-1 col-lg-2">
-                <label for="questionno">Sub Question Total</label>
-                <input type="input" [readonly]="true" class="form-control" [(ngModel)]="subquestiontotal" />
+                <mat-form-field>
+                    <input matInput type="number" [disabled]="true" [(ngModel)]="subquestiontotal"
+                        placeholder="Sub Question Total" />
+                </mat-form-field>
+                <!-- <label for="questionno">Sub Question Total</label>
+                <input type="input" [readonly]="true" class="form-control" [(ngModel)]="subquestiontotal" /> -->
             </div>
 
             <div class="col-sm-1 col-lg-2">
-                <label for="questionno">Total Marks</label>
-                <input type="input" [readonly]="true" class="form-control" [(ngModel)]="totalquestionmarks" />
+                <mat-form-field>
+                    <input matInput type="number" [(ngModel)]="totalquestionmarks" placeholder="Total Marks"  [disabled]="true"/>
+                </mat-form-field>
+                <!-- <label for="questionno">Total Marks</label>
+                <input type="input" [readonly]="true" class="form-control" [(ngModel)]="totalquestionmarks" /> -->
             </div>
 
         </div>
         <div class="row">
             <div class="col-sm-12 col-lg-12">
-
-                <label for="questiontext">Question</label>
+                <mat-form-field>
+                    <input matInput type="input" [(ngModel)]="examQuestion.questiontext" placeholder="Question" />
+                </mat-form-field>
+                <!-- <label for="questiontext">Question</label>
                 <textarea type="input" class="form-control" [(ngModel)]="examQuestion.questiontext">
-                    </textarea>
+                    </textarea> -->
             </div>
             <div class="col-sm-12 col-lg-12">
-                <label for="questiontext">Ideal Answer</label>
+                <mat-form-field>
+                    <textarea matInput type="input" [(ngModel)]="examQuestion.idealanswer" placeholder="Ideal Answer">
+                    </textarea>
+
+                </mat-form-field>
+                <!-- <label for="questiontext">Ideal Answer</label>
                 <textarea type="input" class="form-control" [(ngModel)]="examQuestion.idealanswer">
-                        </textarea>
+                        </textarea> -->
             </div>
         </div>
     </div>
 </mat-card>
 
+<mat-divider></mat-divider>
 
+<mat-card class="des-mat-card mat-elevation-z8">
+    <mat-card-title-group>
+        <div style="width:100%">
+            <div class="card-title">
+                Sub Questions</div>
+
+            <div style="float:right">
+                <div style="float:right">
+                    <button class="btn btn-primary" (click)="addNewSubQuestion()">Add Sub Question</button>
+                </div>
+            </div>
+        </div>
+    </mat-card-title-group>
+</mat-card>
+<!-- 
 <mat-card class="des-mat-card">
     <mat-card-title-group>
 
@@ -83,39 +149,62 @@
             <button class="btn btn-primary" (click)="addNewSubQuestion()">Add Sub Question</button>
         </div>
     </mat-card-title-group>
-</mat-card>
+</mat-card> -->
 
 <mat-card class="des-mat-card mat-elevation-z8">
-    <mat-card-content [style.overflow]="'auto'"  [style.height.vh]="'30'">
-            <div *ngIf="!examQuestion.sections || examQuestion.sections.length == 0" class="center-container">
-                <h3>There are no sub questions added.</h3>
-            </div>
-        <div *ngIf="examQuestion.sections && examQuestion.sections.length > 0" class="table table-striped">
+    <mat-card-content [style.overflow]="'auto'" [style.height.vh]="'30'">
+        <div *ngIf="!examQuestion.sections || examQuestion.sections.length == 0" class="center-container">
+            <h3>There are no sub questions added.</h3>
+        </div>
+        <div *ngIf="examQuestion.sections && examQuestion.sections.length > 0"
+            class="table table-bordered table-striped">
 
             <mat-card *ngFor="let section of examQuestion.sections" class="des-mat-card mat-elevation-z8">
                 <div class="row">
                     <div class="col-sm-4 col-lg-4">
-                        <label for="subquestionid">Sub Question Id</label>
-                        <input type="input" class="form-control" [(ngModel)]="section.subquestionid" />
+                        <mat-form-field>
+                            <input type="input" matInput [(ngModel)]="section.subquestionid"
+                                placeholder="Sub Question Id" />
+                        </mat-form-field>
+                        <!-- <label for="subquestionid">Sub Question Id</label>
+                        <input type="input" class="form-control" [(ngModel)]="section.subquestionid" /> -->
                     </div>
                     <div class="col-sm-4 col-lg-4">
-                        <label for="subquestiontype">Sub Question Type</label>
-                        <input type="input" class="form-control" [(ngModel)]="section.subquestiontype" />
+                        <mat-form-field>
+                            <input type="input" matInput [(ngModel)]="section.subquestiontype"
+                                placeholder="Sub Question Type" />
+                        </mat-form-field>
+                        <!-- <label for="subquestiontype">Sub Question Type</label>
+                        <input type="input" class="form-control" [(ngModel)]="section.subquestiontype" /> -->
                     </div>
                     <div class="col-sm-4 col-lg-4">
-                        <label for="questiontext">Sub Question Marks</label>
-                        <input type="number" step="0.5" class="form-control" [(ngModel)]="section.subquestionmarks" (input)="setTotalMarks()" />
+                        <mat-form-field>
+                            <input type="input" matInput [(ngModel)]="section.subquestionmarks" placeholder="Sub Question Marks" (input)="setTotalMarks()"/>
+                        </mat-form-field>
+                        <!-- <label for="questiontext">Sub Question Marks</label>
+                        <input type="number" step="0.5" class="form-control" [(ngModel)]="section.subquestionmarks"
+                            (input)="setTotalMarks()" /> -->
                     </div>
 
                     <div class="col-sm-6 col-lg-6">
-                        <label for="questiontext">Sub Question</label>
+                        <mat-form-field>
+                            <textarea type="input" matInput [(ngModel)]="section.subquestiontext"
+                                placeholder="Sub Question">
+                            </textarea>
+                        </mat-form-field>
+                        <!-- <label for="questiontext">Sub Question</label>
                         <textarea type="input" class="form-control" [(ngModel)]="section.subquestiontext">
-                        </textarea>
+                        </textarea> -->
                     </div>
                     <div class="col-sm-6 col-lg-6">
-                        <label for="questiontext">Ideal Answer</label>
-                        <textarea type="input" class="form-control" [(ngModel)]="section.idealanswer">
+                        <mat-form-field>
+                            <textarea type="input" matInput [(ngModel)]="section.idealanswer"
+                                placeholder="Ideal Answer">
                             </textarea>
+                        </mat-form-field>
+                        <!-- <label for="questiontext">Ideal Answer</label>
+                        <textarea type="input" class="form-control" [(ngModel)]="section.idealanswer">
+                            </textarea> -->
                     </div>
                 </div>
 

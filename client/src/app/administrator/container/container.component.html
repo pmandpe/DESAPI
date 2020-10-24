@@ -24,14 +24,30 @@
     <mat-sidenav-content>Main content</mat-sidenav-content>
  </mat-sidenav-container>
 -->
-<app-header></app-header>
-<!--<button mat-button (click)="sidenav.toggle()">Toggle</button>-->
-<mat-sidenav-container>
-  <mat-sidenav #sidenav mode="side" opened style="width: 200px;" [fixedInViewport]="true" [fixedTopGap]="70">
-    <app-admin-menu></app-admin-menu>
-  </mat-sidenav>
+<!-- <div class="wrapper">
+  <button mat-button (click)="sidenav.toggle()">Toggle</button>
+  <mat-sidenav-container>
+    
+    <mat-sidenav #sidenav mode="side" opened style="width: 200px;" [fixedInViewport]="true" [fixedTopGap]="70">
+      
+    </mat-sidenav>
+  
+    <mat-sidenav-content [formGroup]="options" class="main-panel">
+      <app-header></app-header>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  </div>
+   -->
 
-  <mat-sidenav-content [formGroup]="options">
-    <router-outlet></router-outlet>
-  </mat-sidenav-content>
+   <app-header  [inputSideNav]="sideNav"></app-header>
+<mat-sidenav-container>
+
+    <mat-sidenav #sideNav  mode="side" opened style="width:200px; ">
+        <mat-divider></mat-divider>
+        <app-admin-menu></app-admin-menu>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
 </mat-sidenav-container>

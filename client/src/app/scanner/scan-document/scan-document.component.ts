@@ -27,6 +27,7 @@ export class ScanDocumentComponent implements OnInit {
   isScanning: boolean;
   numberofsupplimentaries: any;
   rollnumber: any;
+  scannerOptions = [] ;
 
 
   constructor(private _Activatedroute: ActivatedRoute, private scannerService: ScannerService, private alertService: AlertService, private authenctationService: AuthenticationService) {
@@ -80,7 +81,7 @@ export class ScanDocumentComponent implements OnInit {
   initializeDWT() {
     Dynamsoft.WebTwainEnv.Containers = [{ WebTwainId: 'dwtObject', ContainerId: this.containerId, Width: '100%', Height: '100%' }];
     Dynamsoft.WebTwainEnv.RegisterEvent('OnWebTwainReady', () => { this.Dynamsoft_OnReady(); });
-    Dynamsoft.WebTwainEnv.ProductKey = "t0068MgAAAD2O6ttiwad2ydEavAGruJNPqDthsaAPqW45N+523bkhT5XQ5qwpEQxiPRgkuaCjx+M0kExGSvjIvNtC/N6e7sY=" ;
+    Dynamsoft.WebTwainEnv.ProductKey = environment.Dynamsoft.dwtProductKey ; 
     Dynamsoft.WebTwainEnv.ResourcesPath = '/assets/dwt-resources';
     let checkScript = () => {
       if (Dynamsoft.Lib.detect.scriptLoaded) {
@@ -108,9 +109,12 @@ export class ScanDocumentComponent implements OnInit {
     } else {
       let count = this.DWObject.SourceCount;
       this.selectSources = <HTMLSelectElement>document.getElementById("sources");
-      this.selectSources.options.length = 0;
+      //this.selectSources.options.length = 0;
       for (let i = 0; i < count; i++) {
-        this.selectSources.options.add(new Option(this.DWObject.GetSourceNameItems(i), i.toString()));
+        let displayValue = this.DWObject.GetSourceNameItems(i) ;
+        let dataValue = i ; 
+        this.scannerOptions.push({"displayValue": displayValue, "dataValue": dataValue})
+        //this.selectSources.options.add(new Option(, i.toString()));
       }
     }
   }
@@ -196,7 +200,9 @@ export class ScanDocumentComponent implements OnInit {
         this.DWObject.OpenSource();
         this.DWObject.AcquireImage({}, onAcquireImageSuccess, onAcquireImageFailure);
       } else {
-        alert("No Source Available!");
+        this.alertService.error("Selected Source is not available!");
+        this.disableAllButtons = false ; 
+        this.isScanning = false ; 
       }
 
     }

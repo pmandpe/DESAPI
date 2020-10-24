@@ -33,6 +33,8 @@ export class ExamDetailsComponent implements OnInit {
   showUniqueCode = false;
   closeResult: string;
   paperApproved : boolean ; 
+  isScanningDisabled = false ; 
+  isEvaluationDisabled = true  ; 
   @Input() public passedExamCode;
   @ViewChild(ExamQuestionsComponent, {static: false}) examQuestionChildComponent:ExamQuestionsComponent;
   constructor(private formBuilder: FormBuilder,
@@ -116,12 +118,13 @@ export class ExamDetailsComponent implements OnInit {
 
           this.examForm.patchValue({ examname: this.examdetails.examname });
           this.examForm.patchValue({ subjectcode: this.examdetails.subjectcode });
-          this.examForm.patchValue({ examdate: exDate });
+          this.examForm.patchValue({ examdate: this.utilService.getJoinedDate(exDate) });
           this.examForm.patchValue({ numberofcopies: (this.examdetails.numberofcopies ? this.examdetails.numberofcopies : 0) });
           this.examForm.patchValue({ totalmarks: (this.examdetails.totalmarks ? this.examdetails.totalmarks : 0) });
           this.examForm.patchValue({ totalcopiesassignedforscanning: (this.examdetails.totalcopiesassignedforscanning ? this.examdetails.totalcopiesassignedforscanning : 0) });
           this.examForm.patchValue({ totalcopiesassignedforevaluation: (this.examdetails.totalcopiesassignedforevaluation ? this.examdetails.totalcopiesassignedforevaluation : 0) });
-          this.examForm.patchValue({ resultdate: reDate });
+          
+          this.examForm.patchValue({ resultdate: this.utilService.getJoinedDate(reDate) });
           this.examForm.patchValue({ comments: this.examdetails.comments });
           this.examForm.patchValue({ scanningassignment: this.examdetails.scanningassignment })
           this.examForm.patchValue({ evaluationassignment: this.examdetails.evaluationassignment });
@@ -134,6 +137,8 @@ export class ExamDetailsComponent implements OnInit {
           //-- set the exam questions and total marks on child component
           this.examQuestionChildComponent.setExamQuestions(this.examQuestions) ;
           this.examQuestionChildComponent.setTotalMarks() ; 
+          this.disableScanning() ;
+          this.disableEvaluation() ;
 
 
         }
@@ -158,10 +163,10 @@ export class ExamDetailsComponent implements OnInit {
 
     var params = this.examForm.value;
     params.examcode = this.examcode;
-    var resultdateValue = this.examForm.value.resultdate.year.toString().padStart(2, '0') + "-" + this.examForm.value.resultdate.month.toString().padStart(2, '0') + "-" + this.examForm.value.resultdate.day.toString().padStart(2, '0');
-    var examdateValue = this.examForm.value.examdate.year + "-" + this.examForm.value.examdate.month.toString().padStart(2, '0') + "-" + this.examForm.value.examdate.day.toString().padStart(2, '0');
-    params.resultdate = resultdateValue;
-    params.examdate = examdateValue;
+    //var resultdateValue = //this.examForm.value.resultdate.year.toString().padStart(2, '0') + "-" + this.examForm.value.resultdate.month.toString().padStart(2, '0') + "-" + this.examForm.value.resultdate.day.toString().padStart(2, '0');
+    //var examdateValue = this.examForm.value.examdate.year + "-" + this.examForm.value.examdate.month.toString().padStart(2, '0') + "-" + this.examForm.value.examdate.day.toString().padStart(2, '0');
+    //params.resultdate = resultdateValue;
+    //params.examdate = examdateValue;
     /*
     if (this.examForm.value.numberofcopies < this.examForm.value.totalcopiesassignedforscanning) {
       this.alertService.error("Total Number of copies cannot be less than already assigned for scanning");
@@ -263,4 +268,30 @@ export class ExamDetailsComponent implements OnInit {
    
   }
 
+  public disableScanning(){
+    let scannedCopies = (this.examdetails && this.examdetails.totalscannedcopies ? this.examdetails.totalscannedcopies : 0 ) ;
+    let assignedForScanning = (this.examdetails && this.examdetails.totalcopiesassignedforscanning ? this.examdetails.totalcopiesassignedforscanning : 0 ) ;
+    let totalCopies = (this.examdetails && this.examdetails.numberofcopies  ? this.examdetails.numberofcopies : 0 ) ;
+
+    if ( (scannedCopies + assignedForScanning) >= totalCopies ){
+      this.isScanningDisabled = true ; 
+    }
+    if (this.mode == 'NEW'){
+      this.isScanningDisabled = true ; 
+    }
+    if (this.paperApproved == false){
+      this.isScanningDisabled = true ; 
+    }
+  }
+
+  public disableEvaluation(){
+
+    if(this.examdetails && this.examdetails.totalscannedcopies && this.examdetails.totalscannedcopies == 0){
+      this.isEvaluationDisabled = true ; 
+    } 
+
+    if (this.examdetails && this.examdetails.totalscannedcopies <=  this.examdetails.totalcopiesassignedforevaluation ){
+      this.isEvaluationDisabled = false ; 
+    }
+  }
 }

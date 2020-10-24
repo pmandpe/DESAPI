@@ -10,14 +10,15 @@
             <div fxLayout="row" fxLayoutGap="100px">
                 <span class="mat-h3">Total Marks : <strong>{{totalMarks}}</strong></span>
                 <span style="margin-left:10px; margin-right:10px;">|</span>
-                <span  class="mat-h3">
+                <span class="mat-h3">
                     Evaluating : <strong>{{answerCode}}</strong>
                 </span>
             </div>
         </mat-card-subtitle>
         <mat-card-subtitle style="margin-bottom:-7px !important" class="mat-h3">
             <span class="mat-h3">Total Obtained Marks :</span>&nbsp;
-            <span [ngClass]="{ 'mat-h3 green':totalObtainedMarks > 33,'mat-h3 red':totalObtainedMarks <= 33  }"><strong>{{totalObtainedMarks}}</strong></span>
+            <span
+                [ngClass]="{ 'mat-h3 green':totalObtainedMarks > 33,'mat-h3 red':totalObtainedMarks <= 33  }"><strong>{{totalObtainedMarks}}</strong></span>
 
         </mat-card-subtitle>
         <mat-card-content>
@@ -25,68 +26,303 @@
         </mat-card-content>
         <div style="float:right">
             <button class="btn btn-success" (click)="validateAndSave('N')" [disabled]="disableSaveButton">Save</button>
-            <button class="btn btn-success" (click)="validateAndSave('Y')" [disabled]="disableSaveButton">Save & Submit</button>
+            <button class="btn btn-success" (click)="validateAndSave('Y')" [disabled]="disableSaveButton">Save &
+                Submit</button>
 
         </div>
     </mat-card-title-group>
 </mat-card>
 
-<div style="margin:2px;height:90vh;">
-    <mat-grid-list cols="5" rowHeight="1:2" [gutterSize]="'12px'" class="des-mat-card">
-        <mat-grid-tile [colspan]="2">
-            <mat-card *ngFor="let question of questionData" class="des-mat-card">
-                <mat-card-title-group>
+<div style="margin:2px;height:100vh;">
+    <mat-grid-list cols="8" rowHeight="1:2" [gutterSize]="'12px'" class="des-mat-card">
+        <mat-grid-tile [colspan]="3" style="height:75vh">
 
-                    <mat-card-title>
-                        Question # : {{question.questionno}}
-                    </mat-card-title>
-                    <div class="card-container">
-                        <mat-card-title>
-                            <i class="fa fa-eye green" title="View Question"></i>
-                        </mat-card-title>
-                    </div>
-                    <mat-card-subtitle>
-                        Total Marks : {{question.totalmarks}}
-                    </mat-card-subtitle>
-                </mat-card-title-group>
-                <mat-card-content>
-                    <div>
-                        <mat-form-field>
-                            <input matInput type="number" max="{{question.totalmarks}}" step="0.25" placeholder="Marks Obtained" [(ngModel)]="question.marksobtained"
-                                (input)="setTotalMarks(question.totalmarks)" [ngClass]="{ 'is-green success':question.marksobtained > 0,'is-red error':question.marksobtained <= 0, 'is-red error':question.marksobtained > question.totalmarks  }">
-                        </mat-form-field>
 
-                    </div>
-                    <mat-card *ngFor="let subquestion of question.sections" class="mat-elevation-z8" style="margin-top:5px;">
+            <div class="row" style="width:100%;margin:auto;" >
+                <div class="col-lg-6 col-sm-6 col-md-6" *ngFor="let question of questionData">
+                    <mat-card class="des-mat-card">
                         <mat-card-title-group>
                             <mat-card-title>
-                                Sub Question # : {{subquestion.subquestionid}}
+                                Question # : {{question.questionno}}
                             </mat-card-title>
                             <div class="card-container">
                                 <mat-card-title>
                                     <i class="fa fa-eye green" title="View Question"></i>
                                 </mat-card-title>
                             </div>
-
                             <mat-card-subtitle>
-                                Total Marks : {{subquestion.subquestionmarks}}
+                                Total Marks : {{question.totalmarks}}
                             </mat-card-subtitle>
                         </mat-card-title-group>
                         <mat-card-content>
-                            <mat-form-field>
-                                <input matInput type="number" max="{{subquestion.subquestionmarks}}" step="0.25" placeholder="Marks Obtained" [(ngModel)]="subquestion.marksobtained"
-                                    (input)="setTotalMarks(subquestion.subquestionmarks)" [ngClass]="{ 'green':subquestion.marksobtained > 0,'red':subquestion.marksobtained <= 0  }">
-                            </mat-form-field>
+                            <div>
+                                <mat-form-field>
+                                    <input matInput type="number" max="{{question.totalmarks}}" step="0.25"
+                                        placeholder="Marks Obtained" [(ngModel)]="question.marksobtained"
+                                        (input)="setTotalMarks(question.totalmarks)"
+                                        [ngClass]="{ 'is-green success':question.marksobtained > 0,'is-red error':question.marksobtained <= 0, 'is-red error':question.marksobtained > question.totalmarks  }">
+                                </mat-form-field>
+
+                            </div>
+                            <mat-card *ngFor="let subquestion of question.sections" class="mat-elevation-z8"
+                                style="margin-top:5px;">
+                                <mat-card-title-group>
+                                    <mat-card-title>
+                                        Sub Question # : {{subquestion.subquestionid}}
+                                    </mat-card-title>
+                                    <div class="card-container">
+                                        <mat-card-title>
+                                            <i class="fa fa-eye green" title="View Question"></i>
+                                        </mat-card-title>
+                                    </div>
+
+                                    <mat-card-subtitle>
+                                        Total Marks : {{subquestion.subquestionmarks}}
+                                    </mat-card-subtitle>
+                                </mat-card-title-group>
+                                <mat-card-content>
+                                    <mat-form-field>
+                                        <input matInput type="number" max="{{subquestion.subquestionmarks}}" step="0.25"
+                                            placeholder="Marks Obtained" [(ngModel)]="subquestion.marksobtained"
+                                            (input)="setTotalMarks(subquestion.subquestionmarks)"
+                                            [ngClass]="{ 'green':subquestion.marksobtained > 0,'red':subquestion.marksobtained <= 0  }">
+                                    </mat-form-field>
+                                </mat-card-content>
+                            </mat-card>
                         </mat-card-content>
                     </mat-card>
+                </div>
 
 
-                </mat-card-content>
-            </mat-card>
+
+                <div class="col-lg-6 col-sm-6 col-md-6" *ngFor="let question of questionData">
+                    <mat-card class="des-mat-card">
+                        <mat-card-title-group>
+                            <mat-card-title>
+                                Question # : {{question.questionno}}
+                            </mat-card-title>
+                            <div class="card-container">
+                                <mat-card-title>
+                                    <i class="fa fa-eye green" title="View Question"></i>
+                                </mat-card-title>
+                            </div>
+                            <mat-card-subtitle>
+                                Total Marks : {{question.totalmarks}}
+                            </mat-card-subtitle>
+                        </mat-card-title-group>
+                        <mat-card-content>
+                            <div>
+                                <mat-form-field>
+                                    <input matInput type="number" max="{{question.totalmarks}}" step="0.25"
+                                        placeholder="Marks Obtained" [(ngModel)]="question.marksobtained"
+                                        (input)="setTotalMarks(question.totalmarks)"
+                                        [ngClass]="{ 'is-green success':question.marksobtained > 0,'is-red error':question.marksobtained <= 0, 'is-red error':question.marksobtained > question.totalmarks  }">
+                                </mat-form-field>
+
+                            </div>
+                            <mat-card *ngFor="let subquestion of question.sections" class="mat-elevation-z8"
+                                style="margin-top:5px;">
+                                <mat-card-title-group>
+                                    <mat-card-title>
+                                        Sub Question # : {{subquestion.subquestionid}}
+                                    </mat-card-title>
+                                    <div class="card-container">
+                                        <mat-card-title>
+                                            <i class="fa fa-eye green" title="View Question"></i>
+                                        </mat-card-title>
+                                    </div>
+
+                                    <mat-card-subtitle>
+                                        Total Marks : {{subquestion.subquestionmarks}}
+                                    </mat-card-subtitle>
+                                </mat-card-title-group>
+                                <mat-card-content>
+                                    <mat-form-field>
+                                        <input matInput type="number" max="{{subquestion.subquestionmarks}}" step="0.25"
+                                            placeholder="Marks Obtained" [(ngModel)]="subquestion.marksobtained"
+                                            (input)="setTotalMarks(subquestion.subquestionmarks)"
+                                            [ngClass]="{ 'green':subquestion.marksobtained > 0,'red':subquestion.marksobtained <= 0  }">
+                                    </mat-form-field>
+                                </mat-card-content>
+                            </mat-card>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+
+                <div class="col-lg-6 col-sm-6 col-md-6" *ngFor="let question of questionData">
+                    <mat-card class="des-mat-card">
+                        <mat-card-title-group>
+                            <mat-card-title>
+                                Question # : {{question.questionno}}
+                            </mat-card-title>
+                            <div class="card-container">
+                                <mat-card-title>
+                                    <i class="fa fa-eye green" title="View Question"></i>
+                                </mat-card-title>
+                            </div>
+                            <mat-card-subtitle>
+                                Total Marks : {{question.totalmarks}}
+                            </mat-card-subtitle>
+                        </mat-card-title-group>
+                        <mat-card-content>
+                            <div>
+                                <mat-form-field>
+                                    <input matInput type="number" max="{{question.totalmarks}}" step="0.25"
+                                        placeholder="Marks Obtained" [(ngModel)]="question.marksobtained"
+                                        (input)="setTotalMarks(question.totalmarks)"
+                                        [ngClass]="{ 'is-green success':question.marksobtained > 0,'is-red error':question.marksobtained <= 0, 'is-red error':question.marksobtained > question.totalmarks  }">
+                                </mat-form-field>
+
+                            </div>
+                            <mat-card *ngFor="let subquestion of question.sections" class="mat-elevation-z8"
+                                style="margin-top:5px;">
+                                <mat-card-title-group>
+                                    <mat-card-title>
+                                        Sub Question # : {{subquestion.subquestionid}}
+                                    </mat-card-title>
+                                    <div class="card-container">
+                                        <mat-card-title>
+                                            <i class="fa fa-eye green" title="View Question"></i>
+                                        </mat-card-title>
+                                    </div>
+
+                                    <mat-card-subtitle>
+                                        Total Marks : {{subquestion.subquestionmarks}}
+                                    </mat-card-subtitle>
+                                </mat-card-title-group>
+                                <mat-card-content>
+                                    <mat-form-field>
+                                        <input matInput type="number" max="{{subquestion.subquestionmarks}}" step="0.25"
+                                            placeholder="Marks Obtained" [(ngModel)]="subquestion.marksobtained"
+                                            (input)="setTotalMarks(subquestion.subquestionmarks)"
+                                            [ngClass]="{ 'green':subquestion.marksobtained > 0,'red':subquestion.marksobtained <= 0  }">
+                                    </mat-form-field>
+                                </mat-card-content>
+                            </mat-card>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+
+                <div class="col-lg-6 col-sm-6 col-md-6" *ngFor="let question of questionData">
+                    <mat-card class="des-mat-card">
+                        <mat-card-title-group>
+                            <mat-card-title>
+                                Question # : {{question.questionno}}
+                            </mat-card-title>
+                            <div class="card-container">
+                                <mat-card-title>
+                                    <i class="fa fa-eye green" title="View Question"></i>
+                                </mat-card-title>
+                            </div>
+                            <mat-card-subtitle>
+                                Total Marks : {{question.totalmarks}}
+                            </mat-card-subtitle>
+                        </mat-card-title-group>
+                        <mat-card-content>
+                            <div>
+                                <mat-form-field>
+                                    <input matInput type="number" max="{{question.totalmarks}}" step="0.25"
+                                        placeholder="Marks Obtained" [(ngModel)]="question.marksobtained"
+                                        (input)="setTotalMarks(question.totalmarks)"
+                                        [ngClass]="{ 'is-green success':question.marksobtained > 0,'is-red error':question.marksobtained <= 0, 'is-red error':question.marksobtained > question.totalmarks  }">
+                                </mat-form-field>
+
+                            </div>
+                            <mat-card *ngFor="let subquestion of question.sections" class="mat-elevation-z8"
+                                style="margin-top:5px;">
+                                <mat-card-title-group>
+                                    <mat-card-title>
+                                        Sub Question # : {{subquestion.subquestionid}}
+                                    </mat-card-title>
+                                    <div class="card-container">
+                                        <mat-card-title>
+                                            <i class="fa fa-eye green" title="View Question"></i>
+                                        </mat-card-title>
+                                    </div>
+
+                                    <mat-card-subtitle>
+                                        Total Marks : {{subquestion.subquestionmarks}}
+                                    </mat-card-subtitle>
+                                </mat-card-title-group>
+                                <mat-card-content>
+                                    <mat-form-field>
+                                        <input matInput type="number" max="{{subquestion.subquestionmarks}}" step="0.25"
+                                            placeholder="Marks Obtained" [(ngModel)]="subquestion.marksobtained"
+                                            (input)="setTotalMarks(subquestion.subquestionmarks)"
+                                            [ngClass]="{ 'green':subquestion.marksobtained > 0,'red':subquestion.marksobtained <= 0  }">
+                                    </mat-form-field>
+                                </mat-card-content>
+                            </mat-card>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+
+                <div class="col-lg-6 col-sm-6 col-md-6" *ngFor="let question of questionData">
+                    <mat-card class="des-mat-card">
+                        <mat-card-title-group>
+                            <mat-card-title>
+                                Question # : {{question.questionno}}
+                            </mat-card-title>
+                            <div class="card-container">
+                                <mat-card-title>
+                                    <i class="fa fa-eye green" title="View Question"></i>
+                                </mat-card-title>
+                            </div>
+                            <mat-card-subtitle>
+                                Total Marks : {{question.totalmarks}}
+                            </mat-card-subtitle>
+                        </mat-card-title-group>
+                        <mat-card-content>
+                            <div>
+                                <mat-form-field>
+                                    <input matInput type="number" max="{{question.totalmarks}}" step="0.25"
+                                        placeholder="Marks Obtained" [(ngModel)]="question.marksobtained"
+                                        (input)="setTotalMarks(question.totalmarks)"
+                                        [ngClass]="{ 'is-green success':question.marksobtained > 0,'is-red error':question.marksobtained <= 0, 'is-red error':question.marksobtained > question.totalmarks  }">
+                                </mat-form-field>
+
+                            </div>
+                            <mat-card *ngFor="let subquestion of question.sections" class="mat-elevation-z8"
+                                style="margin-top:5px;">
+                                <mat-card-title-group>
+                                    <mat-card-title>
+                                        Sub Question # : {{subquestion.subquestionid}}
+                                    </mat-card-title>
+                                    <div class="card-container">
+                                        <mat-card-title>
+                                            <i class="fa fa-eye green" title="View Question"></i>
+                                        </mat-card-title>
+                                    </div>
+
+                                    <mat-card-subtitle>
+                                        Total Marks : {{subquestion.subquestionmarks}}
+                                    </mat-card-subtitle>
+                                </mat-card-title-group>
+                                <mat-card-content>
+                                    <mat-form-field>
+                                        <input matInput type="number" max="{{subquestion.subquestionmarks}}" step="0.25"
+                                            placeholder="Marks Obtained" [(ngModel)]="subquestion.marksobtained"
+                                            (input)="setTotalMarks(subquestion.subquestionmarks)"
+                                            [ngClass]="{ 'green':subquestion.marksobtained > 0,'red':subquestion.marksobtained <= 0  }">
+                                    </mat-form-field>
+                                </mat-card-content>
+                            </mat-card>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+
+
+            </div>
+
+
+
+
+
         </mat-grid-tile>
-        <mat-grid-tile [colspan]="3">
+        <mat-grid-tile [colspan]="5" style="height:75vh;">
             <div style="overflow-y: auto; max-height:75vh;width:100%;">
-                <pdf-viewer [show-borders]="true" [src]="answerpdf" [render-text]="true" style="overflow-y:hidden"></pdf-viewer>
+                <pdf-viewer [show-borders]="true" [src]="answerpdf" [render-text]="true" style="overflow-y:hidden">
+                </pdf-viewer>
             </div>
         </mat-grid-tile>
     </mat-grid-list>

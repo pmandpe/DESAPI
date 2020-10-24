@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      margin: 0px;
+      padding: 0px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+    .column .logo img {
+      width: 175px;
+      margin-top: 0px;
+    }
+    
+
+    .row {
+      height: 100vh;
+    }
+
+    /* Create two equal columns that floats next to each other */
+    .column {
+
+
+      box-sizing: border-box;
+      float: left;
+      height: 100%;
+      width: 50%;
+      padding: 10px;
+     
+
+
+    }
+
+    .column img {
+      margin-top: 90px;
+      margin-left: 40px;
+      width: 100%;
+    }
+
+    .column2 {
+      
+      text-align: center;
+      box-sizing: border-box;
+      float: left;
+      height: 100%;
+      width: 50%;
+      padding: 10px;
+      background-image: url('Group 13.png');
+    }
+
+    .row .btn {
+      text-align: center;
+      width: 50%;
+      height: 60px;
+      border-radius: 50px;
+      background-color: #038081;
+      color: white;
+      font-size: 20px;
+      margin-top: 66px;
+    }
+
+    .row .column2 .form {
+      text-align: center;
+      margin-top: 300px;
+    }
+
+    .form h2 {
+      text-align: center;
+      color: #038081;
+      font-size: 50px;
+    }
+
+    .form-control {
+
+      padding-left: 10px;
+      box-sizing: border-box;
+      border-left: 8px solid;
+      border-right: 0px;
+      border-bottom: 0px;
+      border-top: 0px;
+      width: 55%;
+      height: 45px;
+      font-family: sans-serif;
+      font-size: 20px;
+      background-color: white;
+     
+      margin-bottom: 20px;
+      border-color: #038081;
+      
+      /*border-width: 0px;*/
+
+    }
+
+    ::placeholder {
+      color: #008080;
+      opacity: .3;
+      /* Firefox */
+    }
+
+    :-ms-input-placeholder {
+      /* Internet Explorer 10-11 */
+      color: #008080;
+      opacity: .3;
+    }
+
+    ::-ms-input-placeholder {
+      /* Microsoft Edge */
+      color: #008080;
+      opacity: .3;
+    }
+
+    .form-check-label {
+      color: #028181;
+      margin-right: 150px;
+      
+    }
+
+    .form-text {
+      text-align: right;
+      color: #028181;
+      
+    }
+  </style>
+</head>
+
+<body>  
+ </div>
+  <div class="row">
+    <div class="column">
+      <div class="logo">
+        <img src="logo-old.png" alt="">
+      </div>
+      <div><img src="Log In_Teal.png" alt=""></div>
+    </div>
+    <div class="column2">
+
+      <div class="form">
+        <h2>WELCOME USER</h2>
+        <div class="form-group">
+          <label for="InputEmail1"></label>
+          <input type="email" class="form-control" id="InputEmail1" aria-describedby="emailHelp" placeholder="Email ID">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1"></label>
+          <input type="password" class="form-control" id="InputPassword1" placeholder="Password">
+        </div>
+        <div class="form-group form-check">
+          <input type="checkbox" class="form-check-input" id="Keep me signed in">
+          <label class="form-check-label" for="Keep me signed in">Keep me signed in</label>
+          <small id="emailHelp" class="form-text">Already a member</small>
+        </div>
+        <button type="submit" class="btn">Submit</button>
+
+      </div>
+    </div>
+
+
+
+</body>
+
+</html>

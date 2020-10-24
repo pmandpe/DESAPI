@@ -31,6 +31,11 @@ export class ExamListComponent implements OnInit {
   }
   onTabChanged(event){
     this.selectedIndex = event.index ; 
+    if (this.selectedIndex == 1){
+      this.examDetails.disableScanning() ; 
+      this.examDetails.disableEvaluation() ; 
+    }
+
   }
 
   setExamCode(exCode, exMode){

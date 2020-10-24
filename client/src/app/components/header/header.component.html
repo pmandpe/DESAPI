@@ -24,20 +24,39 @@
     </ul>
 </nav>
 -->
-<mat-toolbar color="primary">
+
+<!--<mat-toolbar color="primary">
+    <span (click)="inputSideNav.toggle()">
+        <i class="fa fa-bars"></i>
+    </span>
     <span class="gap">
-        <h3>Digital Evaluation System
-            </h3>
-        </span>
+       
+    </span>
     <span class="filler"></span>
     <span style="font-weight:normal; font-size:14px;">
-        Currently Logged in as <strong>{{currUser.username}}</strong> &nbsp;&nbsp;&nbsp;
+        Logged in as <strong>{{currUser.username}}</strong> &nbsp;&nbsp;&nbsp;
     </span>
     <span>
+        <i class="fa fa-bars" (click)="sidenav.toggle()"></i>
         <a (click)="logout()" class="gap">
-            
+
             <i class="fa fa-lg fa-sign-out gap"></i>
         </a>
     </span>
+
+</mat-toolbar> -->
+
+<mat-toolbar color="primary">
+
+    <button mat-icon-button (click)="inputSideNav.toggle()">
+        <i class="fa fa-bars" *ngIf="inputSideNav && !inputSideNav.opened"></i>
+        <i class="fa fa-chevron-left" *ngIf="inputSideNav && inputSideNav.opened"></i>
+    </button>
+    
+    <span>
+        Digital Evaluation System
+    </span>
+    <span class="spacer"></span>
+    <i class="fa fa-lg fa-sign-out gap" (click)="logout()"></i>
 
 </mat-toolbar>

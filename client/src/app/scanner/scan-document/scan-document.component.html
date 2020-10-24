@@ -7,12 +7,21 @@
 <div class="row">
 
     <div class="col-sm-6 col-lg-4 col-md-4">
-        <mat-card class="des-mat-card">
-            <mat-card-title>
-                Examination Summary
-            </mat-card-title>
+        <mat-card class="des-mat-card mat-elevation-z8 ">
+            <mat-card-title-group>
+                <div style="width:100%">
+                    <div class="card-title">
+                        Examination Summary</div>
+                </div>
+                <div style="float:right">
+                    <a class="btn btn-primary" [routerLink]="['/scanner/dashboard']">Dashboard</a>
+                </div>
+            </mat-card-title-group>
+        </mat-card>
 
-            <table class="table table-bordered border border-primary" style="width:100%;margin-top:20px;">
+        <mat-card class="des-mat-card">
+
+            <table class="table table-bordered border border-primary">
                 <tr>
                     <td width="40%">Exam Code</td>
                     <td width="60%">
@@ -43,58 +52,67 @@
                 <tr>
                     <td>Target Date</td>
                     <td>
-                        <strong>{{(scannerSummaryData && scannerSummaryData.targetdate ? scannerSummaryData.targetdate : "")}}</strong>
+                        <strong>{{(scannerSummaryData && scannerSummaryData.targetdate ? ( scannerSummaryData.targetdate | date:'mediumDate') : "")}}</strong>
                     </td>
                 </tr>
             </table>
         </mat-card>
-        <mat-card style="margin:7px">
+        <mat-card class="des-mat-card mat-elevation-z8 ">
 
 
-            <select *ngIf="!bWASM" id="sources"></select>
-            <br/>
-            <!-- <select id="sources"></select> -->
-            <table class="example-full-width" cellspacing="0">
+            <!-- <select *ngIf="!bWASM" id="sources"></select> -->
+            <br />
+           
+            <table cellspacing="0">
                 <tr>
-                    <td>
-                        <mat-form-field class="example-full-width">
-                            <input matInput type="number" class="form-control" [(ngModel)]="numberofsupplimentaries" placeholder="# of supplementaries"
-                            />
-                        </mat-form-field>
-                    </td>
-                    <td>
-                        <mat-form-field class="example-full-width">
-                            <input matInput type="input" class="form-control" [(ngModel)]="rollnumber" placeholder="Roll Number" />
+                    <td colspan="2">
+                        <mat-form-field>
+                            <mat-label>Select Scanning Source</mat-label>
+                            <mat-select matNativeControl required id="sources">
+                                <mat-option *ngFor="let opt of scannerOptions" value="opt.dataValue">
+                                    {{opt.displayValue}}
+                                </mat-option>
+                            </mat-select>
                         </mat-form-field>
                     </td>
                 </tr>
                 <tr>
-                    <td style="width:70%">
-
-                        <span>
-                            <button class="btn btn-success btn-circle" (click)="acquireImage()" [disabled]="disableAllButtons" [ngClass]="{'btn-danger': isScanning, 'btn-success' : !isScanning }">
-                                <strong>SCAN</strong>
-                                <br>
-                                <i class="fa fa-4x fa-print"></i>
-                            </button>
-                            &nbsp;&nbsp;
-                            <button class="btn btn-warning btn-circle" (click)="openImage()" [disabled]="disableAllButtons" [ngClass]="{'btn-danger': isScanning, 'btn-warn' : !isScanning }">
-                                <strong>VIRTUAL SCAN</strong>
-                                <br>
-                                <i class="fa fa-4x fa-print"></i>
-                            </button>
-                            &nbsp;&nbsp;
-                            <button class="btn btn-success btn-circle" (click)="uploadDocument()" [ngClass]="{'btn-success': isScanning, 'btn-danger' : !isScanning }">
-                                <strong>SUBMIT</strong>
-                                <br>
-                                <i class="fa fa-4x fa-print"></i>
-                            </button>
-                        </span>
+                    <td>
+                        <mat-form-field>
+                            <input matInput type="number" [(ngModel)]="numberofsupplimentaries" placeholder="# of supplementaries" />
+                        </mat-form-field>
                     </td>
-                    <td style="text-align:right;width:20%">
-                        <div style="float:right">
-                            <a class="btn btn-primary" [routerLink]="['/scanner/dashboard']">Dashboard</a>
-                        </div>
+                    <td>
+                        <mat-form-field>
+                            <input matInput type="input"  [(ngModel)]="rollnumber" placeholder="Roll Number" />
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:70%" colspan="2">
+                            <button class="btn btn-success btn-circle" (click)="acquireImage()"
+                                [disabled]="disableAllButtons"
+                                [ngClass]="{'btn-danger': isScanning, 'btn-success' : !isScanning }">
+                                <strong>SCAN</strong>
+                                <!-- <br>
+                                <i class="fa fa-4x fa-print"></i> -->
+                            </button>
+                            &nbsp;&nbsp;
+                            <button class="btn btn-warning btn-circle" (click)="openImage()"
+                                [disabled]="disableAllButtons"
+                                [ngClass]="{'btn-danger': isScanning, 'btn-warn' : !isScanning }">
+                                <strong>VIRTUAL SCAN</strong>
+                                <!-- <br>
+                                <i class="fa fa-4x fa-print"></i> -->
+                            </button>
+                            &nbsp;&nbsp;
+                            <button class="btn btn-success btn-circle" (click)="uploadDocument()"
+                                [ngClass]="{'btn-success': isScanning, 'btn-danger' : !isScanning }">
+                                <strong>SUBMIT</strong>
+                                <!-- <br>
+                                <i class="fa fa-4x fa-print"></i> -->
+                            </button>
+                   
                     </td>
                 </tr>
             </table>
@@ -102,14 +120,17 @@
     </div>
 
 
-    <div class="col-sm-6 col-lg-8 col-md-8" [hidden]="(scannerSummaryData && scannerSummaryData.assignedcopies && scannerSummaryData.assignedcopies == scannerSummaryData.scannedcopies)">
+    <div class="col-sm-6 col-lg-8 col-md-8"
+        [hidden]="(scannerSummaryData && scannerSummaryData.assignedcopies && scannerSummaryData.assignedcopies == scannerSummaryData.scannedcopies)">
         <div style="margin:5px ; ">
             <mat-card>
                 <div id="dwtcontrolContainer" style="height:70vh; width:100%; border: 1px solid gray">&nbsp;</div>
             </mat-card>
         </div>
     </div>
-    <div class="col-sm-6 col-lg-9 col-md-9 card" style="margin-top:20px ; display: table; height: 200px; overflow: hidden;" [hidden]="( !scannerSummaryData || !scannerSummaryData.assignedcopies || scannerSummaryData.assignedcopies != scannerSummaryData.scannedcopies)">
+    <div class="col-sm-6 col-lg-9 col-md-9 card"
+        style="margin-top:20px ; display: table; height: 200px; overflow: hidden;"
+        [hidden]="( !scannerSummaryData || !scannerSummaryData.assignedcopies || scannerSummaryData.assignedcopies != scannerSummaryData.scannedcopies)">
         <div style="display: table-cell; vertical-align: middle;">
             <div style="text-align:center">
                 <h4>All Documents for this Exam assigned to you are already scanned.

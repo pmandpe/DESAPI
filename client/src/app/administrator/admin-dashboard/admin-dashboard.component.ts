@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ExamService } from '../../services/exams.service';
 import { AlertService } from '../../services';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-admin-dashboard',
+  
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.css']
 })

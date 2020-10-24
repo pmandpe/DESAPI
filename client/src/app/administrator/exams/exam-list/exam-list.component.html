@@ -15,8 +15,8 @@
       </mat-card-title-group>
     </mat-card>
     <mat-card class="des-mat-card mat-elevation-z8">
-        <div class="no-data"   [hidden]="Exams && Exams.length > 0">No Exams are added. Please add New Exams.</div>
-      <table class="table table table-hover table-striped" [hidden]="Exams && Exams.length <= 0">
+      <div class="no-data" [hidden]="Exams && Exams.length > 0">No Exams are added. Please add New Exams.</div>
+      <table class="table table-bordered table-hover table-striped" [hidden]="Exams && Exams.length <= 0">
         <thead>
           <tr>
             <th>Exam Code</th>
@@ -53,6 +53,9 @@
     </mat-card>
   </mat-tab>
   <mat-tab label="Exams Details" [disabled]='true'>
-    <app-exam-details [passedExamCode]="examCode"></app-exam-details>
+    
+      <app-exam-details [passedExamCode]="examCode"></app-exam-details>
+      
+    
   </mat-tab>
 </mat-tab-group>

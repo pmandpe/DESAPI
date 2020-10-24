@@ -13,33 +13,20 @@ export class AdminMenuComponent implements OnInit {
 
 
   ngOnInit() {
-    /*this.menus = [] ;
-    this.menus.push({"label": "Dashboard", "link": "./dashboard"}) ;
-    this.menus.push({"label": "Manage Subject", "link": "./subject"}) ;
-    this.menus.push({"label": "Manage Exams", "link": "./exams"}) ;
-    
-    this.selectedMenu = this.menus[0]  ;
-    */
     this.menuItems = ROUTES.filter(menuItem => menuItem);
   }
 
   
   isMobileMenu() {
-  //  if ($(window).width() > 991) {
       return false;
-    //}
-    //return true;
   };
   
 
   listClick(event, newValue) {
     this.selectedMenu = newValue;  // don't forget to update the model here
-    // ... do other stuff here ...
   }
 
 }
-
-
 
 declare interface RouteInfo {
   path: string;

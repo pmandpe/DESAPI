@@ -25,8 +25,9 @@ export class SaDashboardComponent implements OnInit {
 
   getWidth(value, totalValue){
     let dividedBy = this.checkNull(totalValue) ;
-
-    return (this.checkNull(value) * 100 / ( dividedBy == 0 ? 1 : dividedBy) + "%" ) ;
+    let percentvalue = this.checkNull(value) * 100 / ( dividedBy == 0 ? 1 : dividedBy)  + "" ;
+    let returnValue = parseFloat(percentvalue).toFixed(2)
+    return (returnValue + "%" ) ;
   }
 
   checkNull(input){

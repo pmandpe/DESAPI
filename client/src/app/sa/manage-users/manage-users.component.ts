@@ -137,12 +137,14 @@ export class ManageUsersComponent implements OnInit {
   get f() { return this.userForm.controls; }
 
   addNewUser() {
+    
+    
     this.createNewUserForm() ;
     this.userForm.patchValue({ editmode: 'NEW' });
     this.userForm.patchValue({ username: '' });
     this.userForm.patchValue({ isactive: 'Y' });
-    this.createNewUserForm();
-    this.selectedIndex = 2;
+    this.selectedIndex = 2 ;
+    
 
   }
 

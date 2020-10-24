@@ -1,17 +1,18 @@
-<mat-tab-group [selectedIndex]="selectedIndex" (selectedTabChange)="onTabChanged($event)">
+<mat-tab-group  [(selectedIndex)]="selectedIndex" (selectedTabChange)="onTabChanged($event)">
     <mat-tab label="Approve Users">
-        <mat-card class="des-mat-card mat-elevation-z8">
+        <mat-card class="des-mat-card mat-elevation-z8 ">
             <mat-card-title-group>
-                <mat-card-title>
-                    Approve Evaluators
-                </mat-card-title>
-
-                <div style="float:right">
-                    <button class="btn btn-success" (click)="saveUsers()">Save</button>
+                <div style="width:100%">
+                    <div class="card-title">
+                        Approve Evaluators</div>
+                    <div style="float:right">
+                        <button class="btn btn-success" (click)="saveUsers()">Save</button>
+                    </div>
                 </div>
             </mat-card-title-group>
+        </mat-card>
 
-
+        <mat-card class="des-mat-card mat-elevation-z8">
             <table class="table table-hover table-striped">
                 <tr>
 
@@ -25,7 +26,8 @@
                     <td>
 
                         <!-- <input type="checkbox" name="isactive" [checked]="user.isactive=='Y'" (change)="checkChanged($event, i)" /> -->
-                        <mat-checkbox type="checkbox" name="isactive" [checked]="user.isactive=='Y'" (change)="checkChanged($event, i)">
+                        <mat-checkbox type="checkbox" name="isactive" [checked]="user.isactive=='Y'"
+                            (change)="checkChanged($event, i)">
                         </mat-checkbox>
                         <!-- <input class="form-control" class="des-checkbox" type="checkbox" id="{{user.isactive}}" name="isActive" (change)="changeCheckbox(i)" [checked]="user.isactive == 'Y'"> -->
                     </td>
@@ -44,20 +46,21 @@
         </mat-card>
     </mat-tab>
     <mat-tab label="Admin Users">
-        <mat-card class="des-mat-card mat-elevation-z8">
-            <mat-card-title-group>
-                <mat-card-title>
-                    Manage Administrators
-                </mat-card-title>
 
-                <div style="float:right">
-                    <button class="btn btn-success" (click)="addNewUser()">Add New User</button>
+        <mat-card class="des-mat-card mat-elevation-z8 ">
+            <mat-card-title-group>
+                <div style="width:100%">
+                    <div class="card-title">
+                        Manage Administrators</div>
+                    <div style="float:right">
+                        <button class="btn btn-success" (click)="addNewUser()">Add New User</button>
+                    </div>
                 </div>
             </mat-card-title-group>
-
-
+        </mat-card>
+        <mat-card class="des-mat-card mat-elevation-z8">
             <mat-card-content>
-                <table class="table">
+                <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>Name</th>
@@ -78,7 +81,7 @@
                             <td>{{user.isactive}}</td>
                             <td style="text-align:center">
                                 <!-- <a [routerLink]="['../edit-subject', 'EDIT', subject.subjectcode]"> -->
-                                <i class="fa fa-edit" (click)="getUserDetails(user.username, 'EDIT')"></i>
+                                <i class="fa fa-edit icon-green" (click)="getUserDetails(user.username, 'EDIT')"></i>
                                 <!-- </a> -->
                             </td>
                         </tr>
@@ -103,72 +106,88 @@
                     <div class="row">
                         <div class="col-lg-4 col-md-4 col-sm-12">
                             <div class="form-group">
-                                <label for="name">Username</label>
-                                <input type="text" formControlName="username" class="form-control" [readonly]="disableUsername" maxlength="10" [ngClass]="{ 'is-invalid': submitted && f.username.errors }"
-                                />
+                                <mat-form-field>
+                                    <input type="text" matInput formControlName="username" [readonly]="disableUsername" required placeholder="User Name"/>    
+                                </mat-form-field>
+                                <!-- <label for="name">Username</label>
+                                <input type="text" formControlName="username" class="form-control"
+                                    [readonly]="disableUsername" maxlength="10"
+                                    [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
                                 <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
                                     <div *ngIf="f.username.errors.required">Username is required</div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
 
                         <div class="col-lg-4 col-md-4 col-sm-12">
                             <div class="form-group">
-                                <label for="name">Name</label>
-                                <input type="input" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.name.errors }"
-                                    maxlength="50" />
+                                <mat-form-field>
+                                    <input type="text" matInput formControlName="name" required placeholder="Name"/>    
+                                </mat-form-field>
+
+                                <!-- <label for="name">Name</label>
+                                <input type="input" formControlName="name" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && f.name.errors }" maxlength="50" />
                                 <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
                                     <div *ngIf="f.name.errors.required">Name is required</div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
 
                         <div class="col-lg-4 col-md-4 col-sm-12">
                             <div class="form-group">
-                                <label for="name">Email Id</label>
-                                <input type="input" formControlName="emailid" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.emailid.errors }"
-                                    maxlength="50" />
+                                <mat-form-field>
+                                    <input type="text" matInput formControlName="emailid" required placeholder="User Email"/>    
+                                </mat-form-field>
+
+                                <!-- <label for="name">Email Id</label>
+                                <input type="input" formControlName="emailid" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && f.emailid.errors }" maxlength="50" />
                                 <div *ngIf="submitted && f.emailid.errors" class="invalid-feedback">
                                     <div *ngIf="f.emailid.errors.required">Email Id is required</div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
 
                         <div class="col-lg-4 col-md-4 col-sm-6">
                             <div class="form-group">
 
-                                <mat-form-field style="margin-top:27px;">
-                                    <mat-label style="margin-bottom:10px;">Role</mat-label>
-                                    <select matNativeControl required formControlName="role">
-                                        <option value="EVALUATOR">Evaluator</option>
-                                        <option value="SCANNER">Scanner</option>
-                                        <option value="ADMIN">Admin</option>
-                                    </select>
+                                <mat-form-field>
+                                    <mat-label>Role</mat-label>
+                                    <mat-select matNativeControl required formControlName="role">
+                                        <mat-option value="EVALUATOR">Evaluator</mat-option>
+                                        <mat-option value="SCANNER">Scanner</mat-option>
+                                        <mat-option value="ADMIN">Admin</mat-option>
+                                    </mat-select>
                                 </mat-form-field>
 
                                 <!-- <input type="text" formControlName="role" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.role.errors }"
                           /> -->
-                                <div *ngIf="submitted && f.role.errors" class="invalid-feedback">
+                                <!-- <div *ngIf="submitted && f.role.errors" class="invalid-feedback">
                                     <div *ngIf="f.role.errors.required">Role</div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-6">
                             <div class="form-group">
-                                <label for="isactive">Password</label>
-                                <input type="text" formControlName="pwd" class="form-control" />
+                                <mat-form-field>
+                                    <input type="text" matInput formControlName="pwd" required placeholder="Password"/>    
+                                </mat-form-field>
+
+                                <!-- <label for="isactive">Password</label>
+                                <input matInput type="password" formControlName="pwd" /> -->
                             </div>
                         </div>
 
                         <div class="col-lg-4 col-md-4 col-sm-6">
                             <div class="form-group">
-                                <mat-form-field style="margin-top:27px;">
-                                    <mat-label style="margin-bottom:10px;">Is Active</mat-label>
-                                    <select matNativeControl required formControlName="isactive">
-                                        <option value="Y">Yes</option>
-                                        <option value="N">No</option>
+                                <mat-form-field>
+                                    <mat-label>Is Active</mat-label>
+                                    <mat-select matNativeControl required formControlName="isactive">
+                                        <mat-option value="Y">Yes</mat-option>
+                                        <mat-option value="N">No</mat-option>
 
-                                    </select>
+                                    </mat-select>
                                 </mat-form-field>
 
                             </div>
@@ -185,8 +204,8 @@
                         <span>
                             <button [disabled]="loading" class="btn btn-success">Save User</button>
                         </span>
-                        <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
-                        />
+                        <img *ngIf="loading"
+                            src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
                     </div>
                 </form>
             </mat-card>

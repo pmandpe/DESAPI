@@ -61,6 +61,9 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
 import { DwtComponent } from './scanner/dwt/dwt.component';
 import { CallbackPipe } from './scanner/Callback.pipe';
 import { SafeurlPipe } from './scanner/safeurl.pipe';
+import { LoaderComponent } from './components/loader/loader.component';
+import { SpinnerService } from './services';
+import { MAT_DATE_LOCALE } from '@angular/material';
 
 
 const appRoutes: Routes = [
@@ -123,7 +126,8 @@ const appRoutes: Routes = [
     FileSelectDirective,
     DwtComponent,
     CallbackPipe,
-    SafeurlPipe
+    SafeurlPipe,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,
@@ -145,9 +149,11 @@ const appRoutes: Routes = [
     
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+      {provide: MAT_DATE_LOCALE, useValue: 'en-GB'     },
     NgbActiveModal,
     ConfirmationDialogService,
-    UploadService
+    UploadService,
+    SpinnerService
   ],
   bootstrap: [AppComponent],
   entryComponents: [

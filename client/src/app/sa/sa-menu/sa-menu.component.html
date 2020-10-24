@@ -1,4 +1,4 @@
-<div class="des-sidebar-wrapper">
+<!-- <div class="des-sidebar-wrapper">
         <ul class="nav">
             <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{menuItem.class}} nav-item">
                 <a class="nav-link" [routerLink]="[menuItem.path]">
@@ -7,4 +7,32 @@
                 </a>
             </li>
         </ul>
-    </div>
+    </div> -->
+
+    <mat-nav-list>
+        <a *ngFor="let menuItem of menuItems"
+            class="nav-link sidebar" 
+           mat-list-item
+           mat-ripple
+           [style.position]="'relative'"
+           [routerLinkActive]="['active']"
+           [routerLink]="[menuItem.path]">
+          <!-- <mat-icon mat-list-icon *ngIf="menuItem.icon">{{menuItem.icon}}</mat-icon> -->
+          <i class="fa {{menuItem.icon}} {{menuItem.class}}"></i>
+          <span style="padding-left:4px; ">{{menuItem.title}}</span>
+        </a>
+      </mat-nav-list>
+<!--     
+<div class="sidebar" data-color="orange">
+    <div class="logo"><a href="" class="simple-text logo-normal">
+            <img src="/assets/images/logo-without-text.png" style="width:52px; height:52px">
+        </a></div>
+    <ul class="nav">
+        <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{menuItem.class}} nav-item">
+            <a class="nav-link" [routerLink]="[menuItem.path]">
+                <i class="fa {{menuItem.icon}} {{menuItem.class}}"></i>
+                {{menuItem.title}}
+            </a>
+        </li>
+    </ul>
+</div> -->

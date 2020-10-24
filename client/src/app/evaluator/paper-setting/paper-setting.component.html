@@ -1,17 +1,25 @@
 <alert></alert>
+
+
+<mat-card class="des-mat-card mat-elevation-z8 ">
+    <mat-card-title-group>
+      <div style="width:100%">
+        <div class="card-title">
+          My Allocations</div>
+      </div>
+    </mat-card-title-group>
+  </mat-card>
+
 <mat-card class="des-mat-card mat-elevation-z8">
-    <mat-card-title>
-        My Allocations
-    </mat-card-title>
     <mat-card-content>
         <mat-accordion class="example-headers-align">
             <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
-                <mat-expansion-panel-header>
+                <mat-expansion-panel-header style="background-color: #0090b81a;">
                     <mat-panel-title>
                         Examination List
                     </mat-panel-title>
                 </mat-expansion-panel-header>
-                <table class="table table table-hover table-striped">
+                <table class="table table-bordered table-hover table-striped">
                     <thead>
                         <tr>
                             <th>Exam Code</th>
@@ -35,16 +43,17 @@
                 </table>
             </mat-expansion-panel>
             <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
-                <mat-expansion-panel-header>
+                <mat-expansion-panel-header  style="background-color: #b5e4c259;">
                     <mat-panel-title>
                         My Paper &nbsp; &nbsp; - &nbsp; &nbsp; {{examName}}
                         <strong> {{(selectedExam ? selectedExam.examname :"")}}</strong>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
+                <br>
                 <div>
                     <form [formGroup]="PaperUploadForm" class="form-login" (ngSubmit)="uploadForm()">
                         <div class="row">
-                            <div class="col-lg-12 col-sm-12 col-xs-12">
+                            <div class="col-lg-6 col-sm-6 col-xs-12">
                                 <mat-form-field>
                                     <mat-label>Exam Code</mat-label>
                                     <input matInput [readonly]="true" formControlName="examcode">
@@ -52,15 +61,13 @@
 
 
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-5 col-sm-10 col-xs-10">
+                            <div class="col-lg-5 col-sm-5 col-xs-10">
                                 <mat-form-field>
                                     <mat-label>Upload Paper</mat-label>
                                     <input matInput [readonly]="true" formControlName="uploadpaper">
                                 </mat-form-field>
                             </div>
-                            <div class="col-lg-7 col-sm-2 col-xs-2">
+                            <div class="col-lg-1 col-sm-1 col-xs-1" style="text-align: center;">
                                 <button mat-button type="button" color="warn" mat-mini-fab (click)="uploadPaper.click()">
                                     <i class="fa fa-paperclip" aria-hidden="true"></i>
                                 </button>

@@ -56,11 +56,13 @@ export class ExamQuestionDetailsComponent implements OnInit {
 
   setTotalMarks() {
 
-    var mainQuestionMarks = this.examQuestion.totalmarks;
-    var subQuestionMarks = 0.0;
-    this.examQuestion.sections.forEach(element => {
-      subQuestionMarks += parseFloat(element.subquestionmarks ? element.subquestionmarks : 0);
-    });
+    let mainQuestionMarks = parseFloat(this.examQuestion.totalmarks ? this.examQuestion.totalmarks : 0 ); 
+    let subQuestionMarks = 0.0;
+    if (this.examQuestion.sections ){
+      this.examQuestion.sections.forEach(element => {
+        subQuestionMarks += parseFloat(element.subquestionmarks ? element.subquestionmarks : 0);
+      });
+    }
 
     this.examQuestion.totalmarks = mainQuestionMarks;
     this.subquestiontotal = subQuestionMarks;

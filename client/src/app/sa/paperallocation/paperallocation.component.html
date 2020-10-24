@@ -1,17 +1,24 @@
 <alert></alert>
+<mat-card class="des-mat-card mat-elevation-z8 ">
+    <mat-card-title-group>
+        <div style="width:100%">
+            <div class="card-title">
+                Allocate New Examination Paper Setting to Teachers/Professors/Lecturers
+            </div>
+        </div>
+    </mat-card-title-group>
+</mat-card>
 <mat-card class="des-mat-card mat-elevation-z8">
-    <mat-card-title>
-        Allocate New Examination Paper Setting to Teachers/Professors/Lecturers
-    </mat-card-title>
+
     <mat-card-content>
         <mat-accordion class="example-headers-align">
-            <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+            <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle  class="mat-elevation-z8" style="margin-bottom:5px;">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
                         Examination List
                     </mat-panel-title>
                 </mat-expansion-panel-header>
-                <table class="table table table-hover table-striped">
+                <table class="table table-bordered table-hover table-striped">
                     <thead>
                         <tr>
                             <th>Exam Code</th>
@@ -42,10 +49,10 @@
                 </table>
             </mat-expansion-panel>
 
-            <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+            <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle  class="mat-elevation-z8"  style="margin-bottom:5px;">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
-                        Allocate Examination:
+                        Allocate Examination :
                         <strong> {{(selectedExam ? selectedExam.examname :"")}}</strong>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
@@ -54,23 +61,32 @@
                     <div [hidden]="(Users && Users.length > 0)" class="no-data">
                         No evaluators available. Evaluator's list must be created by Admin.
                     </div>
-                    <mat-list-option *ngFor="let user of Users" [value]="user.username">
-                        <span>{{user.name}}</span>
-                        <!-- <span>{{(user.status == "P" ? "Pending" : "Uploaded")}} - {{user.upload_location}}</span> -->
-
-                    </mat-list-option>
+                    <div style="width:400px;">
+                        <mat-list-option *ngFor="let user of Users" [value]="user.username">
+                            <span>{{user.name}}</span>
+                        </mat-list-option>
+                    </div>
                 </mat-selection-list>
-                <mat-action-row>
 
-                    <mat-form-field>
-                        <input matInput [matDatepicker]="picker" placeholder="Taget Date" [(ngModel)]="targetdate">
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
-                    </mat-form-field>
-                    <button mat-button class="btn btn-success" (click)="allocate()">Allocate</button>
+                <mat-action-row>
+                    <div class="row">
+                        <div class="col col-lg-6 col-md-6 col-sm-6">
+                            <mat-form-field>
+                                <input matInput [matDatepicker]="picker" placeholder="Taget Date"
+                                    [(ngModel)]="targetdate">
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="col col-lg-6 col-md-6 col-sm-6">
+                            <button mat-button class="btn btn-success" (click)="allocate()">Allocate</button>
+                        </div>
+                    </div>
                 </mat-action-row>
+
+
             </mat-expansion-panel>
-            <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+            <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle  class="mat-elevation-z8">
 
                 <mat-expansion-panel-header>
                     <mat-panel-title>
@@ -79,12 +95,13 @@
                     </mat-panel-title>
                 </mat-expansion-panel-header>
 
-                <div *ngIf="selectedExam && (!selectedExam.paperallocation || selectedExam.paperallocation.length == 0)" class="no-data">
+                <div *ngIf="selectedExam && (!selectedExam.paperallocation || selectedExam.paperallocation.length == 0)"
+                    class="no-data">
                     No evaluators are allocated for paper setting. Please click on "Allocate" from Examination List.
                 </div>
-                <mat-card class="mat-elevation-z8 des-mat-card" *ngIf="selectedExam && selectedExam.paperallocation && selectedExam.paperallocation.length >0">
+                
 
-                    <table class="table table table-hover table-striped">
+                    <table class="table table-bordered table-hover table-striped" *ngIf="selectedExam && selectedExam.paperallocation && selectedExam.paperallocation.length >0">
                         <tr>
                             <th>Name</th>
                             <th>Paper Upload Status</th>
@@ -102,12 +119,13 @@
                             </td>
                             <td>
                                 <span [hidden]="!allocation.approved || allocation.approved!='Y'">Approved</span>
-                                <a [hidden]="allocation.approved && allocation.approved=='Y'" class="icon-green" (click)="approvePaper(allocation.username)">{{(allocation.upload_location == "" ? "-" : "Approve")}}</a>
+                                <a [hidden]="allocation.approved && allocation.approved=='Y'" class="icon-green"
+                                    (click)="approvePaper(allocation.username)">{{(allocation.upload_location == "" ? "-" : "Approve")}}</a>
                             </td>
                         </tr>
                     </table>
 
-                </mat-card>
+                
             </mat-expansion-panel>
         </mat-accordion>
     </mat-card-content>

@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AuthenticationService, AlertService } from '../../services';
+import { MatSidenav } from '@angular/material';
 
 
 @Component({ selector: 'app-header', templateUrl: 'header.component.html' })
 export class HeaderComponent implements OnInit{
-
+    @Input() inputSideNav: MatSidenav;
     isLoggedIn : any ;
     currUser : any ; 
     ngOnInit(): void {

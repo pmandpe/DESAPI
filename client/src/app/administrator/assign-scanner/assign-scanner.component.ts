@@ -94,6 +94,7 @@ export class AssignScannerComponent implements OnInit {
 
   saveScanningData(totalAssignedCopies, scanningAssignment) {
     var scannedCopies = (this.examFormValues.totalscannedcopies ? this.examFormValues.totalscannedcopies : 0) ;
+    
     if (totalAssignedCopies > (this.examFormValues.numberofcopies - scannedCopies)) {
       this.alertService.error("Copies assigned for scanning cannot be more than (Total Copies - Already Scanned Copies).");
 

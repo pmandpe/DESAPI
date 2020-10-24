@@ -1,9 +1,9 @@
-<app-header></app-header>
+<app-header [inputSideNav]=""></app-header>
 
 
 
 <div class="row container-fluid">
-        <div class="col-lg-3 col-md-6 col-sm-6" *ngFor="let dashboard of dashboardData">
+        <div class="col-lg-4 col-md-6 col-sm-6" *ngFor="let dashboard of dashboardData">
             <div class="card card-stats">
                 <div class="card-header card-header-info card-header-icon">
                     <div class="card-icon">
@@ -11,8 +11,8 @@
     
                     </div>
     
-                    <p class="card-category">&nbsp;</p>
-                    <h3 class="card-title">{{dashboard.examname}}</h3>
+                    <p class="card-category">{{dashboard.examname}}</p>
+                    <h3 class="card-title"></h3>
     
                 </div>
                 <div class="card-footer">

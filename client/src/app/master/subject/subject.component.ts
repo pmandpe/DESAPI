@@ -100,7 +100,7 @@ export class SubjectComponent implements OnInit {
   get f() { return this.subjectForm.controls; }
 
   addNewSubject(){
-    
+    this.disableSubjectCode = false ;
     this.subjectForm.patchValue({ editmode: 'NEW' });
     this.subjectForm.patchValue({ subjectcode: '0' });
     this.createNewSubjectForm() ; 
