@@ -31,7 +31,7 @@
             "styles": [
               "src/assets/scss/material-dashboard.scss",
               "src/assets/css/indigo-pink.css",
-              "src/styles.css",
+              "src/styles.scss",
               "src/assets/css/demo.css",
               "node_modules/perfect-scrollbar/css/perfect-scrollbar.css"
             ],

@@ -23,14 +23,60 @@
     </mat-sidenav-container>
 </div>  -->
 
-<app-header  [inputSideNav]="sideNav"></app-header>
-<mat-sidenav-container>
+<mat-toolbar>
 
+    <span class="example-icon" aria-label="Example icon-button with menu icon">
+      <img src="../../assets/des-logo.png" class="logo" alt="des-logo"/>
+    </span>
+  
+    <span class="nav-list">
+  
+      <span>
+        <a routerLink="/sa/dashboard" routerLinkActive="active" class="btn">
+          <img src="../../assets/Frame 3.png" alt=""/> Dashboard
+        </a>
+      </span>
+  
+
+      <span>
+        <a routerLink="/sa/paperallocation" routerLinkActive="active" class="btn">
+          <img src="../../assets/Frame 4.png" alt=""/> Paper Allocation
+        </a>
+      </span>
+  
+      <span>
+        <a routerLink="/sa/manage-users" routerLinkActive="active" class="btn">
+          <img src="../../assets/Frame 5.png" alt=""/> Manage Users
+        </a>
+      </span>
+  
+    </span>
+  
+    <span>
+      <button
+        class="example-icon notification-btn"
+        aria-label="Example icon-button with heart icon">
+        <img
+          src="../../assets/Frame 6.png"
+          alt="notification"
+          class="notification-img"/>
+      </button>
+  
+  
+      <button
+        mat-icon-button
+        class="example-icon"
+        aria-label="Example icon-button with share icon"  (click)="logout()"   [hidden]="!isLoggedIn">
+        <i class="fa fa-share" aria-hidden="true"></i>
+      </button>
+    </span>
+</mat-toolbar>
+<router-outlet></router-outlet>      
+
+<!-- 
+ <mat-sidenav-container>
     <mat-sidenav #sideNav  mode="side" opened style="width:200px; ">
         <mat-divider></mat-divider>
         <app-sa-menu></app-sa-menu>
     </mat-sidenav>
-    <mat-sidenav-content>
-        <router-outlet></router-outlet>
-    </mat-sidenav-content>
-</mat-sidenav-container>
+</mat-sidenav-container> -->

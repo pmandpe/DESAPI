@@ -84,25 +84,17 @@
                 <form [formGroup]="userForm" (ngSubmit)="saveUser()" #userEditForm="ngForm">
                     <div class="row">
                         <div class="col-lg-4 col-md-4 col-sm-12">
-                            <div class="form-group">
-
-                                <mat-form-field>
-                                    <input type="text" matInput formControlName="username" [readonly]="disableUsername" required placeholder="User Name"/>
-                                </mat-form-field>
-
-                                <!-- <label for="name">Username</label>
-                                <input type="text" formControlName="username" class="form-control" [readonly]="disableUsername" maxlength="10" [ngClass]="{ 'is-invalid': submitted && f.username.errors }"
-                                />
-                                <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
-                                    <div *ngIf="f.username.errors.required">Username is required</div>
-                                </div> -->
-                            </div>
+                            <label for="username" class="form-label">Username</label> <br>
+                            <mat-form-field class="form-field">
+                              <input matInput type="text" id="username" placeholder="Type your username here"
+                                     formControlName="username">
+                            </mat-form-field>
                         </div>
 
                         <div class="col-lg-4 col-md-4 col-sm-12">
                             
 
-                            <div class="form-group">
+                            <div>
                                 <mat-form-field>
                                     <input type="text" matInput formControlName="name" required placeholder="Name"/>
                                 </mat-form-field>

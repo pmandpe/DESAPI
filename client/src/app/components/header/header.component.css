@@ -1,3 +1,48 @@
-.spacer {
-    flex: 1 1 auto;
-  }
+mat-toolbar {
+	background-color: #fff;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+mat-toolbar .nav-list span {
+	margin-right: 2.5rem;
+}
+
+mat-toolbar .nav-list span a {
+	color: inherit;
+}
+
+mat-toolbar .nav-list span a img {
+	width: 1.5rem;
+	margin-right: 20px;
+}
+
+mat-toolbar .nav-list .active {
+	color: #038081 !important;
+	background-color: #038081 !important;
+	color: #fff !important;
+}
+
+mat-toolbar .logo {
+	height: 68px;
+	width: 98px;
+	margin-left: 14px;
+	margin-top: 3px;
+	border-radius: 0px;
+}
+
+mat-toolbar .notification-btn {
+	padding: 0 !important;
+	text-decoration: underline;
+	cursor: pointer;
+	background: #FFFFFF;
+	border: 1px solid rgba(76, 82, 188, 0.1);
+	box-sizing: border-box;
+	border-radius: 4px;
+	margin-right: 1.7rem;
+}
+
+mat-toolbar .notification-btn .notification-img {
+	width: 1.5rem;
+}

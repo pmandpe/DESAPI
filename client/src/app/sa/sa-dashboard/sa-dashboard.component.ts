@@ -5,10 +5,11 @@ import { AlertService } from '../../services';
 @Component({
   selector: 'app-sa-dashboard',
   templateUrl: './sa-dashboard.component.html',
-  styleUrls: ['./sa-dashboard.component.css']
+  styleUrls: ['./sa-dashboard.component.scss']
 })
 export class SaDashboardComponent implements OnInit {
 
+  value = 40 ; 
 
   constructor(private examService: ExamService, private alertService: AlertService) { }
   Exams: any;

@@ -4,6 +4,7 @@ const MongoClient = require('mongodb').MongoClient
 // For strategies on handling credentials, visit 12factor: https://12factor.net/config.
 //const PROD_URI = "mongodb+srv://gneelesh:abcd1234@cluster0-wgyza.mongodb.net/admin?replicaSet=Cluster0-shard-0&connectTimeoutMS=10000&authSource=&authMechanism=SCRAM-SHA-1"
 const PROD_URI = "mongodb://localhost:27017/desdb" ;
+//const PROD_URI = "mongodb+srv://gneelesh:abcd1234@cluster0-wgyza.mongodb.net/admin?replicaSet=Cluster0-shard-0&connectTimeoutMS=10000";
 //const MKTG_URI = "mongodb://<dbuser>:<dbpassword>@<host1>:<port1>,<host2>:<port2>/<dbname>?replicaSet=<replicaSetName>"
 
 

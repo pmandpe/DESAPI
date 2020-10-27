@@ -1,5 +1,7 @@
+
 <alert></alert>
-<mat-card class="des-mat-card mat-elevation-z8 ">
+<br>
+<!-- <mat-card class="des-mat-card mat-elevation-z8 ">
     <mat-card-title-group>
         <div style="width:100%">
             <div class="card-title">
@@ -7,20 +9,26 @@
             </div>
         </div>
     </mat-card-title-group>
-</mat-card>
+</mat-card> -->
 <mat-card class="des-mat-card mat-elevation-z8">
 
     <mat-card-content>
         <mat-accordion class="example-headers-align">
             <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle  class="mat-elevation-z8" style="margin-bottom:5px;">
-                <mat-expansion-panel-header>
+                <mat-expansion-panel-header class="right-aligned-header">
                     <mat-panel-title>
-                        Examination List
+                     EXAMINATION LIST 
                     </mat-panel-title>
-                </mat-expansion-panel-header>
+                    <mat-panel-description>
+                        <div class="information-text-right">
+                           <b> <i class="fa fa-lightbulb-o" aria-hidden="true"></i></b>&nbsp;Use below list of Examination for paper allocation.
+                        </div>
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>    
+
                 <table class="table table-bordered table-hover table-striped">
                     <thead>
-                        <tr>
+                        <tr style="background-color:teal; color:white">
                             <th>Exam Code</th>
                             <th>Subject Code</th>
                             <th>Exam Name</th>
@@ -50,12 +58,19 @@
             </mat-expansion-panel>
 
             <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle  class="mat-elevation-z8"  style="margin-bottom:5px;">
-                <mat-expansion-panel-header>
+
+                <mat-expansion-panel-header class="right-aligned-header">
                     <mat-panel-title>
-                        Allocate Examination :
-                        <strong> {{(selectedExam ? selectedExam.examname :"")}}</strong>
+                     ALLOCATE  &nbsp; -&nbsp; <strong> {{(selectedExam ? selectedExam.examname :"")}}</strong>
                     </mat-panel-title>
-                </mat-expansion-panel-header>
+                    <mat-panel-description>
+                        <div class="information-text-right">
+                           <b> <i class="fa fa-lightbulb-o" aria-hidden="true"></i></b>&nbsp;Paper Allocations to Evaluators.
+                        </div>
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>    
+                
+             
 
                 <mat-selection-list #users [(ngModel)]="selectedUsers" (ngModelChange)="onNgModelChange($event)">
                     <div [hidden]="(Users && Users.length > 0)" class="no-data">
@@ -87,13 +102,17 @@
 
             </mat-expansion-panel>
             <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle  class="mat-elevation-z8">
-
-                <mat-expansion-panel-header>
+                <mat-expansion-panel-header class="right-aligned-header">
                     <mat-panel-title>
-                        View Allocations &nbsp;
-                        <strong> {{(selectedExam ? selectedExam.examname :"")}}</strong>
+                     VIEW ALLOCATIONS &nbsp;-&nbsp; <strong> {{(selectedExam ? selectedExam.examname :"")}}</strong>
                     </mat-panel-title>
-                </mat-expansion-panel-header>
+                    <mat-panel-description>
+                        <div class="information-text-right">
+                            <i class="fa fa-lightbulb-o" aria-hidden="true"></i>&nbsp;View Allocations for Evaluators.
+                        </div>
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>    
+
 
                 <div *ngIf="selectedExam && (!selectedExam.paperallocation || selectedExam.paperallocation.length == 0)"
                     class="no-data">
@@ -102,7 +121,7 @@
                 
 
                     <table class="table table-bordered table-hover table-striped" *ngIf="selectedExam && selectedExam.paperallocation && selectedExam.paperallocation.length >0">
-                        <tr>
+                        <tr class="table-row-header">
                             <th>Name</th>
                             <th>Paper Upload Status</th>
                             <th>View Paper</th>

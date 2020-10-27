@@ -13,7 +13,7 @@ module.exports = {
 async function authenticate({ username, password }) {
 
 
-
+    console.log("Testing") ;
     //const user = users.find(u => u.username === username && u.password === password);
 
     var query = {
